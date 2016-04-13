@@ -10,7 +10,7 @@ var http = require("http"),
 
 http.createServer(function(request, response) {
 
-  console.log(request);
+  console.log(request.url);
 
   if (request.url.indexOf(prefix) === 0) {
     proxy.web(request, response, { target: 'https://127.0.0.1:7071', secure: false });

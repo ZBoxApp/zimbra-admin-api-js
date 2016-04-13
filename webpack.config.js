@@ -28,11 +28,11 @@ var config = {
   module: {
     loaders: [
       {
-        test: /\.jsx?$/,
+        test: /\.(js|jsx)?$/,
         loader: 'babel',
         exclude: /(node_modules)/,
         query: {
-
+          presets: ['es2015'],
           plugins: ['transform-runtime'],
           cacheDirectory: DEV
         }

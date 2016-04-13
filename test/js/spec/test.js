@@ -30,7 +30,7 @@
         'url': 'http://localhost',
         'user': 'user',
         'password':'pass'});
-      api.client.options.timeout = 1000;
+      api.client.options.timeout = 10000;
       api.login(null, function(err){
         let error = api.handleError(err);
         expect(error.constructor.name).to.equal('Error');
@@ -61,24 +61,51 @@
 
     it('should get all domains', function() {
       var api = new ZimbraAdminApi(auth_data);
-      var success = function(d){
-        d.forEach(function(v){
-          console.log(v.name);
-        })
-      };
-      var error = function(d){console.log(d);};
-      // sucess, err (Why)?
-      api.getAllAccounts(function(data, err){
-        if (err) return console.log(err);
-        data.forEach(function(v){
-          console.log(v.id + ' ' + v.name);
-        })
+      api.getAllDomains(function(err, data){
+        if (err) console.log(err);
+        expect(data[0].constructor.name).to.equal('Domain');
       });
-
     });
 
+    it('should get all accounts', function() {
+      var api = new ZimbraAdminApi(auth_data);
+      api.getAllAccounts(function(err, data){
+        if (err) console.log(err);
+        expect(data[0].constructor.name).to.equal('Account');
+      });
+    });
 
-    describe('Using callbacks', function() {
+    it('should get all distribution_lists', function() {
+      var api = new ZimbraAdminApi(auth_data);
+      api.getAllDistributionLists(function(err, data){
+        if (err) console.log(err);
+        expect(data[0].constructor.name).to.equal('DistributionList');
+      });
+    });
+
+  });
+})();
+
+    // it('should get all domains', function() {
+    //   var api = new ZimbraAdminApi(auth_data);
+    //   var success = function(d){
+    //     d.forEach(function(v){
+    //       console.log(v.name);
+    //     })
+    //   };
+    //   var error = function(d){console.log(d);};
+    //   // sucess, err (Why)?
+    //   api.getAllAccounts(function(data, err){
+    //     if (err) return console.log(err);
+    //     data.forEach(function(v){
+    //       console.log(v.id + ' ' + v.name);
+    //     })
+    //   });
+    //
+    // });
+    //
+    //
+    // describe('Using callbacks', function() {
 
       // it('should get a track', function() {
       //   var callback = sinon.spy();
@@ -131,6 +158,3 @@
       //   expect(that.requests).to.have.length(1);
       //   expect(that.requests[0].url).to.equal('https://api.spotify.com/v1/albums/0sNOF9WDwhWunNAHPD3Baj/tracks');
       // });
-    });
-  });
-})();

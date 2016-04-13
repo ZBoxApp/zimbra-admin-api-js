@@ -2,6 +2,7 @@
 // See LICENSE.txt for license information.
 
 var jszimbra = require('js-zimbra');
+import Dictionary from './utils/dictionary.js';
 
 class Error {
   constructor(err) {
@@ -30,6 +31,8 @@ class ZimbraAdminApi {
     this.password = auth_object.password;
     this._client = new jszimbra.Communication({url: auth_object.url});
     this.default_params = { namespace: 'zimbraAdmin', params: { } };
+    this.parseAllResponse = this.parseAllResponse.bind(this);
+    this.dictionary = new Dictionary();
   }
 
 
@@ -78,7 +81,7 @@ class ZimbraAdminApi {
     return request;
   }
 
-  makeRequest(request, resource, parse_response, success, error) {
+  makeRequest(request, resource, parse_response, callback) {
     let that = this;
     this.default_params.name = `${request}Request`;
     let request_object = that.buildRequest();
@@ -87,11 +90,12 @@ class ZimbraAdminApi {
         return that.handleError(err);
       }
       let obj = new Object(self);
-      obj.success = success;
-      obj.error = error;
       obj.response_name = `${request}Response`;
       obj.param_object_name = resource.toLocaleLowerCase();
-      that.client.send(request_object, parse_response.bind(obj));
+      that.client.send(request_object, function(err, data){
+        if (err) return callback(err);
+        parse_response(data, obj, callback);
+      });
     });
   }
 
@@ -104,33 +108,43 @@ class ZimbraAdminApi {
     return this.success(response_object);
   }
 
-  parseAllResponse(err, data){
-    if (err) {
-      return this.error(err);
-    }
-    let response_object = data.get()[this.response_name][this.param_object_name];
-    return this.success(response_object);
+
+  parseAllResponse(data, obj, callback){
+    const resource = obj.param_object_name.toLowerCase();
+    const that = this;
+    const response_name = that.dictionary.resourceResponseName(resource)
+    const response_object = data.get()[obj.response_name][response_name];
+    const response_array = [];
+    response_object.forEach((r) => {
+      let element = that.dictionary.classFactory(resource, r);
+      response_array.push(element);
+    });
+    return callback(null, response_array);
   }
 
-  getAll(resource, success, error) {
+  getAll(resource, callback) {
     if (this.client.token) {
-      this.makeRequest(`GetAll${resource}s`, resource, this.parseAllResponse, success, error);
+      this.makeRequest(`GetAll${resource}s`, resource, this.parseAllResponse, callback);
     } else {
       var that = this;
-      let callback = function(err, response){
+      let getAllCallback = function(err, response){
         if (err) return this.handleError(err);
-        that.makeRequest(`GetAll${resource}s`, resource, that.parseAllResponse, success, error);
+        that.makeRequest(`GetAll${resource}s`, resource, that.parseAllResponse, callback);
       }
-      this.login(callback);
+      this.login(getAllCallback);
     }
   }
 
-  getAllDomains(success, error) {
-    this.getAll('Domain', success, error);
+  getAllDomains(callback) {
+    this.getAll('Domain', callback);
   }
 
-  getAllAccounts(success, error) {
-    this.getAll('Account', success, error);
+  getAllAccounts(callback) {
+    this.getAll('Account', callback);
+  }
+
+  getAllDistributionLists(callback) {
+    this.getAll('DistributionList', callback);
   }
 
 }
