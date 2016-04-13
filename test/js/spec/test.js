@@ -30,7 +30,6 @@
         'url': 'http://localhost',
         'user': 'user',
         'password':'pass'});
-      api.client.options.timeout = 10000;
       api.login(null, function(err){
         let error = api.handleError(err);
         expect(error.constructor.name).to.equal('Error');
@@ -38,7 +37,7 @@
       });
     });
 
-    it('return error if wrong validation', function() {
+    it('return error if wrong validation', function(done) {
       var auth_data2 = JSON.parse(JSON.stringify(auth_data));
       auth_data2.password = 'abc';
       var api = new ZimbraAdminApi(auth_data2);
@@ -47,39 +46,46 @@
         expect(error.constructor.name).to.equal('Error');
         expect(error.title).to.equal('Internal Server Error');
         expect(error.extra.code).to.equal('account.AUTH_FAILED');
+        done();
       }
       api.login(callback);
     });
 
-    it('return token if ok validation', function() {
+    it('return token if ok validation', function(done) {
       var api = new ZimbraAdminApi(auth_data);
       var callback = function(err, response) {
         expect(api.client.token).to.exist;
+        done();
       }
       api.login(callback);
     });
 
-    it('should get all domains', function() {
+    it('should get all domains', function(done) {
       var api = new ZimbraAdminApi(auth_data);
       api.getAllDomains(function(err, data){
         if (err) console.log(err);
         expect(data[0].constructor.name).to.equal('Domain');
+        done();
       });
     });
 
-    it('should get all accounts', function() {
+    it('should get all accounts', function(done) {
+      // var callback = sinon.spy();
       var api = new ZimbraAdminApi(auth_data);
+      // var proxy = api.getAllAccounts(callback);
       api.getAllAccounts(function(err, data){
         if (err) console.log(err);
         expect(data[0].constructor.name).to.equal('Account');
+        done();
       });
     });
 
-    it('should get all distribution_lists', function() {
+    it('should get all distribution_lists', function(done) {
       var api = new ZimbraAdminApi(auth_data);
       api.getAllDistributionLists(function(err, data){
         if (err) console.log(err);
         expect(data[0].constructor.name).to.equal('DistributionList');
+        done();
       });
     });
 
