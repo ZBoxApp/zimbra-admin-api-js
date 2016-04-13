@@ -11,16 +11,16 @@ export default class Dictionary {
   }
 
   resourceToClass (resource) {
-    return this.zimbra_resources[resource].class_name;
+    return this.zimbra_resources[resource.toLowerCase()].class_name;
   }
 
   classFactory (resource, object) {
-    const class_name = this.resourceToClass(resource);
+    const class_name = this.resourceToClass(resource.toLowerCase());
     return new class_name(object);
   }
 
   resourceResponseName (resource) {
-    return this.zimbra_resources[resource].response_name;
+    return this.zimbra_resources[resource.toLowerCase()].response_name;
   }
 
   ZimbraResources() {

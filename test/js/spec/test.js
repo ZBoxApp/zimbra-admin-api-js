@@ -26,7 +26,7 @@
     };
 
     it('should return error object when timeout', function() {
-      var api = new ZimbraAdminApi({
+      let api = new ZimbraAdminApi({
         'url': 'http://localhost',
         'user': 'user',
         'password':'pass'});
@@ -40,8 +40,8 @@
     it('return error if wrong validation', function(done) {
       var auth_data2 = JSON.parse(JSON.stringify(auth_data));
       auth_data2.password = 'abc';
-      var api = new ZimbraAdminApi(auth_data2);
-      var callback = function(err, response) {
+      let api = new ZimbraAdminApi(auth_data2);
+      let callback = function(err, response) {
         let error = api.handleError(err);
         expect(error.constructor.name).to.equal('Error');
         expect(error.title).to.equal('Internal Server Error');
@@ -52,8 +52,8 @@
     });
 
     it('return token if ok validation', function(done) {
-      var api = new ZimbraAdminApi(auth_data);
-      var callback = function(err, response) {
+      let api = new ZimbraAdminApi(auth_data);
+      let callback = function(err, response) {
         expect(api.client.token).to.exist;
         done();
       }
@@ -61,7 +61,7 @@
     });
 
     it('should get all domains', function(done) {
-      var api = new ZimbraAdminApi(auth_data);
+      let api = new ZimbraAdminApi(auth_data);
       api.getAllDomains(function(err, data){
         if (err) console.log(err);
         expect(data[0].constructor.name).to.equal('Domain');
@@ -71,7 +71,7 @@
 
     it('should get all accounts', function(done) {
       // var callback = sinon.spy();
-      var api = new ZimbraAdminApi(auth_data);
+      let api = new ZimbraAdminApi(auth_data);
       // var proxy = api.getAllAccounts(callback);
       api.getAllAccounts(function(err, data){
         if (err) console.log(err);
@@ -81,7 +81,7 @@
     });
 
     it('should get all distribution_lists', function(done) {
-      var api = new ZimbraAdminApi(auth_data);
+      let api = new ZimbraAdminApi(auth_data);
       api.getAllDistributionLists(function(err, data){
         if (err) console.log(err);
         expect(data[0].constructor.name).to.equal('DistributionList');
@@ -89,11 +89,42 @@
       });
     });
 
+    it('should get and return an account', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.getAccount('admin@zboxapp.dev', function(err, data){
+        expect(data.constructor.name).to.equal('Account');
+        expect(data.name).to.equal('admin@zboxapp.dev');
+        done();
+      });
+    });
+
+    it('should return an error if account not found', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.getAccount('noexiste@nuncajams.com', function(err, data){
+        expect(err.extra.code).to.equal('account.NO_SUCH_ACCOUNT');
+        done();
+      });
+    });
+
+    // it('should get and return with name or id', function(done){
+    //   let api = new ZimbraAdminApi(auth_data);
+    //   let account_id = null;
+    //   api.getAccount('admin@zboxapp.dev', function(err, data){
+    //     expect(data.constructor.name).to.equal('Account');
+    //     expect(data.name).to.equal('admin@zboxapp.dev');
+    //     account_id = data.id;
+    //   });
+    //   api.getAccount(account_id, function(err, data){
+    //     expect(data.name).to.equal('admin@zboxapp.dev');
+    //     done();
+    //   });
+    // });
+
   });
 })();
 
     // it('should get all domains', function() {
-    //   var api = new ZimbraAdminApi(auth_data);
+    //   let api = new ZimbraAdminApi(auth_data);
     //   var success = function(d){
     //     d.forEach(function(v){
     //       console.log(v.name);
@@ -115,7 +146,7 @@
 
       // it('should get a track', function() {
       //   var callback = sinon.spy();
-      //   var api = new SpotifyWebApi();
+      //   let api = new SpotifyWebApi();
       //   api.getTrack('3Qm86XLflmIXVm1wcwkgDK', callback);
       //   that.requests[0].respond(200,
       //     {'Content-Type':'application/json'},
@@ -128,7 +159,7 @@
       //
       // it('should get multiple tracks', function() {
       //   var callback = sinon.spy();
-      //   var api = new SpotifyWebApi();
+      //   let api = new SpotifyWebApi();
       //   api.getTracks(['0eGsygTp906u18L0Oimnem', '1lDWb6b6ieDQ2xT7ewTC3G'], callback);
       //   that.requests[0].respond(200,
       //     {'Content-Type':'application/json'},
@@ -141,7 +172,7 @@
       //
       // it('should get an album', function() {
       //   var callback = sinon.spy();
-      //   var api = new SpotifyWebApi();
+      //   let api = new SpotifyWebApi();
       //   api.getAlbum('0sNOF9WDwhWunNAHPD3Baj', callback);
       //   that.requests[0].respond(200,
       //     {'Content-Type':'application/json'},
@@ -154,7 +185,7 @@
       //
       // it('should get an albums\'s tracks', function() {
       //   var callback = sinon.spy();
-      //   var api = new SpotifyWebApi();
+      //   let api = new SpotifyWebApi();
       //   api.getAlbumTracks('0sNOF9WDwhWunNAHPD3Baj', callback);
       //   that.requests[0].respond(200,
       //     {'Content-Type':'application/json'},

@@ -30,8 +30,8 @@ class ZimbraAdminApi {
     this.user = auth_object.user;
     this.password = auth_object.password;
     this._client = new jszimbra.Communication({url: auth_object.url});
-    this.default_params = { namespace: 'zimbraAdmin', params: { } };
     this.parseAllResponse = this.parseAllResponse.bind(this);
+    this.parseResponse = this.parseResponse.bind(this);
     this.dictionary = new Dictionary();
   }
 
@@ -46,6 +46,10 @@ class ZimbraAdminApi {
 
   get client () {
     return this._client;
+  }
+
+  requestParams() {
+    return { namespace: 'zimbraAdmin', params: { } };
   }
 
   options() {
@@ -81,11 +85,10 @@ class ZimbraAdminApi {
     return request;
   }
 
-  makeRequest(request, resource, parse_response, callback) {
-    let that = this;
-    this.default_params.name = `${request}Request`;
+  makeRequest(request, resource, params, parse_response, callback) {
+    const that = this;
     let request_object = that.buildRequest();
-    request_object.addRequest(this.default_params, function(err){
+    request_object.addRequest(params, function(err){
       if (err) {
         return that.handleError(err);
       }
@@ -93,26 +96,26 @@ class ZimbraAdminApi {
       obj.response_name = `${request}Response`;
       obj.param_object_name = resource.toLocaleLowerCase();
       that.client.send(request_object, function(err, data){
-        if (err) return callback(err);
+        if (err) return callback(that.handleError(err));
         parse_response(data, obj, callback);
       });
     });
   }
 
-  parseResponse(err, data) {
-    if (err) {
-      return this.error(err);
-    }
-
-    let response_object = data.get()[this.response_name][this.param_object_name];
-    return this.success(response_object);
+  parseResponse(data, obj, callback) {
+    const resource = obj.param_object_name.toLowerCase();
+    const that = this;
+    const response_name = that.dictionary.resourceResponseName(resource);
+    const response_object = data.get()[obj.response_name][response_name][0];
+    const result = that.dictionary.classFactory(resource, response_object);
+    return callback(null, result);
   }
 
 
   parseAllResponse(data, obj, callback){
     const resource = obj.param_object_name.toLowerCase();
     const that = this;
-    const response_name = that.dictionary.resourceResponseName(resource)
+    const response_name = that.dictionary.resourceResponseName(resource);
     const response_object = data.get()[obj.response_name][response_name];
     const response_array = [];
     response_object.forEach((r) => {
@@ -122,17 +125,45 @@ class ZimbraAdminApi {
     return callback(null, response_array);
   }
 
-  getAll(resource, callback) {
+  get(resource, name_or_id, callback){
+    let params = this.requestParams();
+    let request_name = `Get${resource}`;
+    params.name = `${request_name}Request`;
+    let resource_name = this.dictionary.resourceResponseName(resource);
+    params.params[resource_name] = {
+      'by': 'name',
+      '_content': name_or_id
+    };
     if (this.client.token) {
-      this.makeRequest(`GetAll${resource}s`, resource, this.parseAllResponse, callback);
+      this.makeRequest(request_name, resource, params, this.parseResponse, callback);
     } else {
-      var that = this;
+      const that = this;
+      let getCallback = function(err, response){
+        if (err) return this.handleError(err);
+        that.makeRequest(request_name, resource, params, that.parseResponse, callback);
+      };
+      this.login(getCallback);
+    }
+  }
+
+  getAll(resource, callback) {
+    let params = this.requestParams();
+    let request_name = `GetAll${resource}s`;
+    params.name = `${request_name}Request`;
+    if (this.client.token) {
+      this.makeRequest(request_name, resource, params, this.parseAllResponse, callback);
+    } else {
+      const that = this;
       let getAllCallback = function(err, response){
         if (err) return this.handleError(err);
-        that.makeRequest(`GetAll${resource}s`, resource, that.parseAllResponse, callback);
-      }
+        that.makeRequest(request_name, resource, params, that.parseAllResponse, callback);
+      };
       this.login(getAllCallback);
     }
+  }
+
+  getAccount(account, callback) {
+    this.get('Account', account, callback);
   }
 
   getAllDomains(callback) {
