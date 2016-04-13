@@ -47,7 +47,7 @@
         expect(error.title).to.equal('Internal Server Error');
         expect(error.extra.code).to.equal('account.AUTH_FAILED');
         done();
-      }
+      };
       api.login(callback);
     });
 
@@ -55,6 +55,16 @@
       let api = new ZimbraAdminApi(auth_data);
       let callback = function(err, response) {
         expect(api.client.token).to.exist;
+        done();
+      };
+      api.login(callback);
+    });
+
+    it('should delete the password after authentication', function(done) {
+      let api = new ZimbraAdminApi(auth_data);
+      let callback = function(err, response) {
+        expect(api.secret).not.to.exist;
+        expect(api.password).not.to.exist;
         done();
       }
       api.login(callback);
@@ -102,6 +112,22 @@
       let api = new ZimbraAdminApi(auth_data);
       api.getAccount('noexiste@nuncajams.com', function(err, data){
         expect(err.extra.code).to.equal('account.NO_SUCH_ACCOUNT');
+        done();
+      });
+    });
+
+    it('should return an error if domain not found', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.getDomain('nuncajams.com', function(err, data){
+        expect(err.extra.code).to.equal('account.NO_SUCH_DOMAIN');
+        done();
+      });
+    });
+
+    it('should return the DL', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.getDistributionList('abierta@customer.dev', function(err, data){
+        expect(data.name).to.equal('abierta@customer.dev');
         done();
       });
     });

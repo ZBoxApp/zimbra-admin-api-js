@@ -71,6 +71,8 @@ class ZimbraAdminApi {
     };
     let that = this;
     this.client.auth(auth_object, function(err, response){
+      that.secret = null;
+      that.password = null;
       if (err) return (callback || that.handleError)(err);
       return (callback || that.handleResponse)(null, response);
     });
@@ -162,8 +164,16 @@ class ZimbraAdminApi {
     }
   }
 
-  getAccount(account, callback) {
-    this.get('Account', account, callback);
+  getAccount(identifier, callback) {
+    this.get('Account', identifier, callback);
+  }
+
+  getDomain(identifier, callback) {
+    this.get('Domain', identifier, callback);
+  }
+
+  getDistributionList(identifier, callback) {
+    this.get('DistributionList', identifier, callback);
   }
 
   getAllDomains(callback) {
