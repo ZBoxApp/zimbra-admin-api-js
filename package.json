@@ -1,0 +1,44 @@
+{
+  "name": "ZimbraAdminApi-JS",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "crypto-browserify": "^3.11.0",
+    "jquery": "2.2.3",
+    "js-zimbra": "github:zboxapp/js-zimbra#webpack",
+    "merge": "^1.2.0",
+    "options-api": "^1.1.0",
+    "sprintf-js": "^1.0.3",
+    "validate.js": "^0.9.0"
+  },
+  "devDependencies": {
+    "babel": "6.3.13",
+    "babel-core": "6.1.18",
+    "babel-eslint": "^6.0.0-beta.6",
+    "babel-loader": "6.1.0",
+    "babel-plugin-add-module-exports": "0.1.2",
+    "babel-plugin-transform-runtime": "^6.7.5",
+    "babel-polyfill": "^6.7.4",
+    "babel-preset-es2015": "^6.3.13",
+    "blanket": "^1.2.3",
+    "chai": "3.4.1",
+    "eslint": "1.7.2",
+    "eslint-loader": "1.1.0",
+    "eslint-plugin-react": "^4.3.0",
+    "grunt": "^1.0.1",
+    "grunt-blanket-mocha": "^0.5.0",
+    "http": "0.0.0",
+    "http-proxy": "^1.13.2",
+    "imports-loader": "^0.6.5",
+    "json-loader": "^0.5.4",
+    "mocha": "2.3.4",
+    "webpack": "1.12.9"
+  },
+  "scripts": {
+    "test": "grunt mocha",
+    "build": "webpack",
+    "dev": "WEBPACK_ENV=dev webpack --progress --colors --watch",
+    "run": "webpack --progress --watch",
+    "dev-server": "webpack-dev-server"
+  }
+}
