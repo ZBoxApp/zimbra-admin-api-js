@@ -19,6 +19,7 @@ zimbraApi.getAllDomains(function(data, err){
   data.forEach(function(v){
     console.log(v.id + ' ' + v.name);
   })
+});
 ```
 
 Here you see how to get basic information using a function like `getAllAccounts`:
@@ -29,6 +30,7 @@ zimbraApi.getAllAccounts(function(data, err){
   data.forEach(function(v){
     console.log(v.id + ' ' + v.name);
   })
+});
 ```
 
 ## TODOS:
