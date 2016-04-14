@@ -14,6 +14,14 @@ export default class Dictionary {
     return this.zimbra_resources[resource.toLowerCase()].class_name;
   }
 
+  // Check if resource_identifier is a ZimbraId (UUID)
+  // and if it is return 'by': 'id' to params.
+  byIdOrName (resource_identifier) {
+    let uuid_regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (resource_identifier.match(uuid_regex)) return 'id';
+    return 'name';
+  }
+
   classFactory (resource, object) {
     const class_name = this.resourceToClass(resource.toLowerCase());
     return new class_name(object);

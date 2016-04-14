@@ -134,14 +134,14 @@
 
     it('should get and return with name or id', function(done){
       let api = new ZimbraAdminApi(auth_data);
-      let resource_id = null;
-      api.getDomain('zboxapp.dev', function(err, data){
-        resource_id = data.id;
-      });
-      api.getDomain(resource_id, function(err, data){
-        expect(data.name).to.equal('zboxapp.dev');
-        done();
-      });
+      let callback = function(err, data){
+        let domain_id = data.id;
+        api.getDomain(domain_id, function(err, data){
+          expect(data.name).to.equal('zboxapp.dev');
+          done();
+        });
+      };
+      api.getDomain('zboxapp.dev', callback);
     });
 
   });

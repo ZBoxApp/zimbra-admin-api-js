@@ -141,7 +141,7 @@ class ZimbraAdminApi {
     return callback(null, response_array);
   }
 
-  get(resource, name_or_id, callback){
+  get(resource, resource_identifier, callback){
     let request_data = { }
     request_data.params = this.requestParams();
     request_data.request_name = `Get${resource}`;
@@ -151,8 +151,8 @@ class ZimbraAdminApi {
     request_data.parse_response = this.parseResponse;
     let resource_name = this.dictionary.resourceResponseName(resource);
     request_data.params.params[resource_name] = {
-      'by': 'name',
-      '_content': name_or_id
+      'by': this.dictionary.byIdOrName(resource_identifier),
+      '_content': resource_identifier
     };
     this.performRequest(request_data);
   }
