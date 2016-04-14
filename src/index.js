@@ -87,21 +87,35 @@ class ZimbraAdminApi {
     return request;
   }
 
-  makeRequest(request, resource, params, parse_response, callback) {
+
+  makeRequest(request_data) {
     const that = this;
     let request_object = that.buildRequest();
-    request_object.addRequest(params, function(err){
+    request_object.addRequest(request_data.params, function(err){
       if (err) {
         return that.handleError(err);
       }
       let obj = new Object(self);
-      obj.response_name = `${request}Response`;
-      obj.param_object_name = resource.toLocaleLowerCase();
+      obj.response_name = `${request_data.request_name}Response`;
+      obj.param_object_name = request_data.resource.toLocaleLowerCase();
       that.client.send(request_object, function(err, data){
-        if (err) return callback(that.handleError(err));
-        parse_response(data, obj, callback);
+        if (err) return request_data.callback(that.handleError(err));
+        request_data.parse_response(data, obj, request_data.callback);
       });
     });
+  }
+
+  performRequest(request_data) {
+    if (this.client.token) {
+      this.makeRequest(request_data);
+    } else {
+      const that = this;
+      let getCallback = function(err, response){
+        if (err) return this.handleError(err);
+        that.makeRequest(request_data);
+      };
+      this.login(getCallback);
+    }
   }
 
   parseResponse(data, obj, callback) {
@@ -128,40 +142,30 @@ class ZimbraAdminApi {
   }
 
   get(resource, name_or_id, callback){
-    let params = this.requestParams();
-    let request_name = `Get${resource}`;
-    params.name = `${request_name}Request`;
+    let request_data = { }
+    request_data.params = this.requestParams();
+    request_data.request_name = `Get${resource}`;
+    request_data.params.name = `${request_data.request_name}Request`;
+    request_data.resource = resource;
+    request_data.callback = callback;
+    request_data.parse_response = this.parseResponse;
     let resource_name = this.dictionary.resourceResponseName(resource);
-    params.params[resource_name] = {
+    request_data.params.params[resource_name] = {
       'by': 'name',
       '_content': name_or_id
     };
-    if (this.client.token) {
-      this.makeRequest(request_name, resource, params, this.parseResponse, callback);
-    } else {
-      const that = this;
-      let getCallback = function(err, response){
-        if (err) return this.handleError(err);
-        that.makeRequest(request_name, resource, params, that.parseResponse, callback);
-      };
-      this.login(getCallback);
-    }
+    this.performRequest(request_data);
   }
 
   getAll(resource, callback) {
-    let params = this.requestParams();
-    let request_name = `GetAll${resource}s`;
-    params.name = `${request_name}Request`;
-    if (this.client.token) {
-      this.makeRequest(request_name, resource, params, this.parseAllResponse, callback);
-    } else {
-      const that = this;
-      let getAllCallback = function(err, response){
-        if (err) return this.handleError(err);
-        that.makeRequest(request_name, resource, params, that.parseAllResponse, callback);
-      };
-      this.login(getAllCallback);
-    }
+    let request_data = { }
+    request_data.params = this.requestParams();
+    request_data.request_name = `GetAll${resource}s`;
+    request_data.params.name = `${request_data.request_name}Request`;
+    request_data.resource = resource;
+    request_data.callback = callback;
+    request_data.parse_response = this.parseAllResponse;
+    this.performRequest(request_data);
   }
 
   getAccount(identifier, callback) {

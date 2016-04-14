@@ -126,27 +126,23 @@
 
     it('should return the DL', function(done){
       let api = new ZimbraAdminApi(auth_data);
-      console.log(api);
       api.getDistributionList('abierta@customer.dev', function(err, data){
-        console.log(data);
         expect(data.name).to.equal('abierta@customer.dev');
         done();
       });
     });
 
-    // it('should get and return with name or id', function(done){
-    //   let api = new ZimbraAdminApi(auth_data);
-    //   let account_id = null;
-    //   api.getAccount('admin@zboxapp.dev', function(err, data){
-    //     expect(data.constructor.name).to.equal('Account');
-    //     expect(data.name).to.equal('admin@zboxapp.dev');
-    //     account_id = data.id;
-    //   });
-    //   api.getAccount(account_id, function(err, data){
-    //     expect(data.name).to.equal('admin@zboxapp.dev');
-    //     done();
-    //   });
-    // });
+    it('should get and return with name or id', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let resource_id = null;
+      api.getDomain('zboxapp.dev', function(err, data){
+        resource_id = data.id;
+      });
+      api.getDomain(resource_id, function(err, data){
+        expect(data.name).to.equal('zboxapp.dev');
+        done();
+      });
+    });
 
   });
 })();
