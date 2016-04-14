@@ -5,6 +5,16 @@ export default class Zimbra {
   constructor(resource_obj) {
     this.name = resource_obj.name;
     this.id = resource_obj.id;
-    this.attrs = resource_obj.a;
+    this.attrs = this.buildAttrsMap(resource_obj.a);
+    this.obj = resource_obj;
   }
+
+  buildAttrsMap(obj_ary) {
+    const attrs = {};
+    obj_ary.forEach((r) => {
+      attrs[r.n] = r._content;
+    });
+    return attrs;
+  }
+
 }

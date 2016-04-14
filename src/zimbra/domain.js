@@ -1,10 +1,10 @@
 // Copyright (c) 2016 ZBox, Spa. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-export default class Domain {
+import Zimbra from './zimbra.js';
+
+export default class Domain extends Zimbra {
   constructor(domain_obj) {
-    this.name = domain_obj.name;
-    this.id = domain_obj.id;
-    this.attrs = domain_obj.a;
+    super(domain_obj);
   }
 }

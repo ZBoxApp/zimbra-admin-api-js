@@ -126,7 +126,9 @@
 
     it('should return the DL', function(done){
       let api = new ZimbraAdminApi(auth_data);
+      console.log(api);
       api.getDistributionList('abierta@customer.dev', function(err, data){
+        console.log(data);
         expect(data.name).to.equal('abierta@customer.dev');
         done();
       });
