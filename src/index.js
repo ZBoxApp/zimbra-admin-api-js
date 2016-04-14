@@ -141,8 +141,20 @@ class ZimbraAdminApi {
     return callback(null, response_array);
   }
 
+  create(resource, resource_data, callback){
+    let request_data = { };
+    request_data.params = this.requestParams();
+    request_data.request_name = `Create${resource}`;
+    request_data.params.name = `${request_data.request_name}Request`;
+    request_data.resource = resource;
+    request_data.callback = callback;
+    request_data.parse_response = this.parseResponse;
+    request_data.params.params = resource_data;
+    this.performRequest(request_data);
+  }
+
   get(resource, resource_identifier, callback){
-    let request_data = { }
+    let request_data = { };
     request_data.params = this.requestParams();
     request_data.request_name = `Get${resource}`;
     request_data.params.name = `${request_data.request_name}Request`;
@@ -158,7 +170,7 @@ class ZimbraAdminApi {
   }
 
   getAll(resource, callback) {
-    let request_data = { }
+    let request_data = { };
     request_data.params = this.requestParams();
     request_data.request_name = `GetAll${resource}s`;
     request_data.params.name = `${request_data.request_name}Request`;
@@ -172,8 +184,26 @@ class ZimbraAdminApi {
     this.get('Account', identifier, callback);
   }
 
+  // attributes debe ser un arreglo de objetos:
+  // resource_data.a = attributes
+  // attributes = [ { n: 'NOMBRE_DEL_CAMPO_ZIMBRA', '_content': 'VALOR_DEL_CAMPO' } ]
+  createAccount(name, password, attributes, callback) {
+    let resource_data = {
+      name: { '_content': name },
+      password: { '_content': password }
+    };
+    this.create('Account', resource_data, callback);
+  }
+
   getDomain(identifier, callback) {
     this.get('Domain', identifier, callback);
+  }
+
+  createDomain(name, attributes, callback) {
+    let resource_data = {
+      name: { '_content': name }
+    };
+    this.create('Domain', resource_data, callback);
   }
 
   getDistributionList(identifier, callback) {

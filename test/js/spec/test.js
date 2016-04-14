@@ -144,6 +144,39 @@
       api.getDomain('zboxapp.dev', callback);
     });
 
+    it('should create and return an account', function(done){
+      let account_name = Date.now() + '@zboxapp.dev';
+      let account_password = Date.now();
+      let account_attributes = {};
+      let api = new ZimbraAdminApi(auth_data);
+      api.createAccount(account_name, account_password, account_attributes, function(err, data){
+        if (err) return console.log(err);
+        expect(data.name).to.equal(account_name);
+        done();
+      });
+    });
+
+    it('should create and return Domain', function(done){
+      let resource_name = Date.now() + '.dev';
+      let resource_attributes = {};
+      let api = new ZimbraAdminApi(auth_data);
+      api.createDomain(resource_name, resource_attributes, function(err, data){
+        if (err) return console.log(err);
+        expect(data.name).to.equal(resource_name);
+        done();
+      });
+    });
+
+    it('should return error "account.DOMAIN_EXISTS" if Domain Exists', function(done){
+      let resource_name = 'zboxapp.dev';
+      let resource_attributes = {};
+      let api = new ZimbraAdminApi(auth_data);
+      api.createDomain(resource_name, resource_attributes, function(err, data){
+        expect(err.extra.code).to.equal('account.DOMAIN_EXISTS');
+        done();
+      });
+    });
+
   });
 })();
 
