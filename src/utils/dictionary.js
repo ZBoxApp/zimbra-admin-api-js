@@ -22,6 +22,8 @@ export default class Dictionary {
     return 'name';
   }
 
+  // Takes an object an return an array
+  // {size: 20, age: 30} => [ {n: size, _content: 20}, {n: age, _content: 30}]
   attributesToArray (attributes) {
     if ($.isEmptyObject(attributes)) return [];
     const result = []

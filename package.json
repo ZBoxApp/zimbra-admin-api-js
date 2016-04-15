@@ -1,7 +1,8 @@
 {
   "name": "ZimbraAdminApi-JS",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
+  "main": "lib/zimbra-admin-api.js",
   "dependencies": {
     "crypto-browserify": "^3.11.0",
     "jquery": "2.2.3",
