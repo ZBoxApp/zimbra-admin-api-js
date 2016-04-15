@@ -1,6 +1,6 @@
 {
-  "name": "ZimbraAdminApi-JS",
-  "version": "0.0.2",
+  "name": "zimbra-admin-api-js",
+  "version": "0.0.3",
   "private": true,
   "main": "lib/zimbra-admin-api.js",
   "dependencies": {
