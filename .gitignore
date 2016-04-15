@@ -54,4 +54,4 @@ sftp-config.json
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 .idea
-
+lib/zimbra-admin-api.js.map
