@@ -95,12 +95,9 @@ export default class ZimbraAdminApi {
       if (err) {
         return that.handleError(err);
       }
-      let obj = new Object(self);
-      obj.response_name = `${request_data.request_name}Response`;
-      obj.param_object_name = request_data.resource.toLocaleLowerCase();
       that.client.send(request_object, function(err, data){
         if (err) return request_data.callback(that.handleError(err));
-        request_data.parse_response(data, obj, request_data.callback);
+        request_data.parse_response(data, request_data, request_data.callback);
       });
     });
   }
@@ -119,7 +116,7 @@ export default class ZimbraAdminApi {
   }
 
   parseResponse(data, obj, callback) {
-    const resource = obj.param_object_name.toLowerCase();
+    const resource = obj.resource.toLowerCase();
     const that = this;
     const response_name = that.dictionary.resourceResponseName(resource);
     const response_object = data.get()[obj.response_name][response_name][0];
@@ -127,9 +124,13 @@ export default class ZimbraAdminApi {
     return callback(null, result);
   }
 
+  parseRawResponse(data, obj, callback) {
+
+  }
+
 
   parseAllResponse(data, obj, callback){
-    const resource = obj.param_object_name.toLowerCase();
+    const resource = obj.resource.toLowerCase();
     const that = this;
     const response_name = that.dictionary.resourceResponseName(resource);
     const response_object = data.get()[obj.response_name][response_name];
@@ -145,6 +146,7 @@ export default class ZimbraAdminApi {
     let request_data = { };
     request_data.params = this.requestParams();
     request_data.request_name = `Create${resource}`;
+    request_data.response_name = `Create${resource}Response`;
     request_data.params.name = `${request_data.request_name}Request`;
     request_data.resource = resource;
     request_data.callback = callback;
@@ -157,6 +159,7 @@ export default class ZimbraAdminApi {
     let request_data = { };
     request_data.params = this.requestParams();
     request_data.request_name = `Get${resource}`;
+    request_data.response_name = `Get${resource}Response`;
     request_data.params.name = `${request_data.request_name}Request`;
     request_data.resource = resource;
     request_data.callback = callback;
@@ -173,6 +176,7 @@ export default class ZimbraAdminApi {
     let request_data = { };
     request_data.params = this.requestParams();
     request_data.request_name = `GetAll${resource}s`;
+    request_data.response_name = `GetAll${resource}sResponse`;
     request_data.params.name = `${request_data.request_name}Request`;
     request_data.resource = resource;
     request_data.callback = callback;
@@ -226,20 +230,53 @@ export default class ZimbraAdminApi {
 
   // Get current logged account information
   getInfo(callback) {
-    const req_params = { name: 'GetInfoRequest', namespace: 'zimbraAccount' };
+    const request_data = { };
+    request_data.params = { namespace: 'zimbraAccount' };
+    request_data.request_name = "GetInfo";
+    request_data.params.name = `${request_data.request_name}Request`;
+    request_data.callback = callback;
     const that = this;
-    this.client.getRequest({}, function(err, req) {
-      if (err) return callback(this.handleError(err));
+    request_data.parse_response = function(data, _, callback){
+      return callback(null, data.response[0].GetInfoResponse);
+    };
+    this.performRequest(request_data);
+  }
 
-      req.addRequest(req_params, function(err){
-        if (err) return callback(that.handleError(err));
-        that.client.send(req, function(err, data){
-          if (err) return callback(that.handleError(err));
-          const result = data.response[0].GetInfoResponse
-          return callback(null, result);
-        });
-      });
-    });
+
+  //   const req_params =
+  //   const that = this;
+  //   this.client.getRequest({}, function(err, req) {
+  //     if (err) return callback(this.handleError(err));
+  //
+  //     req.addRequest(req_params, function(err){
+  //       if (err) return callback(that.handleError(err));
+  //       that.client.send(req, function(err, data){
+  //         if (err) return callback(that.handleError(err));
+  //         const result = data.response[0].GetInfoResponse
+  //         return callback(null, result);
+  //       });
+  //     });
+  //   });
+  // }
+
+  // TODO: Fix this fucking code
+  // Search the Directory
+  // search_object = {
+  //   query: An LDAP query or null for everything,
+  //   maxResults: Maximum results that the backend will attempt to fetch from the directory before returning an account.TOO_MANY_SEARCH_RESULTS error.,
+  //   limit: the maximum number of accounts to return ,
+  //   offset: The starting offset (0, 25, etc),
+  //   domain: The domain name to limit the search to,
+  //   sortBy: Name of attribute to sort on. Default is the account name.,
+  //   types: Comma-separated list of types to return. Legal values are:
+  //           accounts|distributionlists|aliases|resources|domains|coses
+  //           (default is accounts)
+  //   sortAscending: Whether to sort in ascending order. Default is 1 (true)
+  //   countOnly: Whether response should be count only. Default is 0 (false),
+  //   attrs: Comma separated list of attributes
+  // }
+  directorySearch(search_object, callback) {
+
   }
 
 }
