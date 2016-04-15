@@ -24,7 +24,7 @@ class Error {
 
 }
 
-class ZimbraAdminApi {
+export default class ZimbraAdminApi {
   constructor(auth_object) {
     this.url = auth_object.url;
     this.user = auth_object.user;
