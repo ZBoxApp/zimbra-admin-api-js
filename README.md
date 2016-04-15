@@ -14,7 +14,7 @@ var zimbraApi = new ZimbraAdminApi({
 Here you see how to get basic information using a function like `getAllDomains`:
 
 ```javascript
-zimbraApi.getAllDomains(function(data, err){
+zimbraApi.getAllDomains(function(err, data){
   if (err) return console.log(err);
   data.forEach(function(v){
     console.log(v.id + ' ' + v.name);
@@ -25,7 +25,7 @@ zimbraApi.getAllDomains(function(data, err){
 Here you see how to get basic information using a function like `getAllAccounts`:
 
 ```javascript
-zimbraApi.getAllAccounts(function(data, err){
+zimbraApi.getAllAccounts(function(err, data){
   if (err) return console.log(err);
   data.forEach(function(v){
     console.log(v.id + ' ' + v.name);

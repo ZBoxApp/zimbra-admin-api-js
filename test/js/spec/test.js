@@ -207,6 +207,19 @@
       });
     });
 
+    it('getInfo() should return the logged user info', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let callback = function(err, data) {
+        if (err) return console.log(err);
+        api.getInfo(function(err, data){
+          if (err) return console.log(err);
+          expect(data.name).to.equal('admin@zboxapp.dev');
+          done();
+        });
+      };
+      api.login(callback);
+    });
+
   });
 })();
 

@@ -224,6 +224,24 @@ export default class ZimbraAdminApi {
     this.getAll('DistributionList', callback);
   }
 
+  // Get current logged account information
+  getInfo(callback) {
+    const req_params = { name: 'GetInfoRequest', namespace: 'zimbraAccount' };
+    const that = this;
+    this.client.getRequest({}, function(err, req) {
+      if (err) return callback(this.handleError(err));
+
+      req.addRequest(req_params, function(err){
+        if (err) return callback(that.handleError(err));
+        that.client.send(req, function(err, data){
+          if (err) return callback(that.handleError(err));
+          const result = data.response[0].GetInfoResponse
+          return callback(null, result);
+        });
+      });
+    });
+  }
+
 }
 
 if (typeof module === 'object' && typeof module.exports === 'object') {
