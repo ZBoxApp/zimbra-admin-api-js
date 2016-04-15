@@ -32,6 +32,7 @@ export default class ZimbraAdminApi {
     this._client = new jszimbra.Communication({url: auth_object.url});
     this.parseAllResponse = this.parseAllResponse.bind(this);
     this.parseResponse = this.parseResponse.bind(this);
+    this.parseSearchResponse = this.parseSearchResponse.bind(this);
     this.dictionary = new Dictionary();
   }
 
@@ -115,25 +116,38 @@ export default class ZimbraAdminApi {
     }
   }
 
-  parseResponse(data, obj, callback) {
-    const resource = obj.resource.toLowerCase();
+  parseResponse(data, request_data, callback) {
+    const resource = request_data.resource.toLowerCase();
     const that = this;
     const response_name = that.dictionary.resourceResponseName(resource);
-    const response_object = data.get()[obj.response_name][response_name][0];
+    const response_object = data.get()[request_data.response_name][response_name][0];
     const result = that.dictionary.classFactory(resource, response_object);
     return callback(null, result);
   }
 
-  parseRawResponse(data, obj, callback) {
-
+  parseSearchResponse(data, request_data, callback) {
+    const response_types = this.dictionary.searchResponseTypes();
+    const response_object = data.get()[request_data.response_name];
+    const result = { total: response_object.searchTotal, more: response_object.more };
+    const that = this;
+    response_types.forEach((type) => {
+      const resources = [];
+      if (typeof response_object[type] !== 'undefined') {
+        response_object[type].forEach((resource) => {
+          const object = that.dictionary.classFactory(type, resource);
+          resources.push(object);
+        });
+        result[type] = resources;
+      }
+    });
+    return callback(null, result);
   }
 
-
-  parseAllResponse(data, obj, callback){
-    const resource = obj.resource.toLowerCase();
+  parseAllResponse(data, request_data, callback){
+    const resource = request_data.resource.toLowerCase();
     const that = this;
     const response_name = that.dictionary.resourceResponseName(resource);
-    const response_object = data.get()[obj.response_name][response_name];
+    const response_object = data.get()[request_data.response_name][response_name];
     const response_array = [];
     response_object.forEach((r) => {
       let element = that.dictionary.classFactory(resource, r);
@@ -216,16 +230,24 @@ export default class ZimbraAdminApi {
     this.get('DistributionList', identifier, callback);
   }
 
-  getAllDomains(callback) {
-    this.getAll('Domain', callback);
+  getAllDomains(callback, query_object = {}) {
+    query_object.types = 'domains';
+    this.directorySearch(query_object, callback);
   }
 
-  getAllAccounts(callback) {
-    this.getAll('Account', callback);
+  getAllAccounts(callback, query_object = {}) {
+    query_object.types = 'accounts';
+    this.directorySearch(query_object, callback);
   }
 
-  getAllDistributionLists(callback) {
-    this.getAll('DistributionList', callback);
+  getAllDistributionLists(callback, query_object = {}) {
+    query_object.types = 'distributionlists';
+    this.directorySearch(query_object, callback);
+  }
+
+  getAllAliases(callback, query_object = {}) {
+    query_object.types = 'aliases';
+    this.directorySearch(query_object, callback);
   }
 
   // Get current logged account information
@@ -241,23 +263,6 @@ export default class ZimbraAdminApi {
     };
     this.performRequest(request_data);
   }
-
-
-  //   const req_params =
-  //   const that = this;
-  //   this.client.getRequest({}, function(err, req) {
-  //     if (err) return callback(this.handleError(err));
-  //
-  //     req.addRequest(req_params, function(err){
-  //       if (err) return callback(that.handleError(err));
-  //       that.client.send(req, function(err, data){
-  //         if (err) return callback(that.handleError(err));
-  //         const result = data.response[0].GetInfoResponse
-  //         return callback(null, result);
-  //       });
-  //     });
-  //   });
-  // }
 
   // TODO: Fix this fucking code
   // Search the Directory
@@ -276,7 +281,15 @@ export default class ZimbraAdminApi {
   //   attrs: Comma separated list of attributes
   // }
   directorySearch(search_object, callback) {
-
+    const request_data = { };
+    request_data.params = this.requestParams();
+    request_data.params.params = search_object;
+    request_data.request_name = "SearchDirectory";
+    request_data.response_name = "SearchDirectoryResponse";
+    request_data.params.name = `${request_data.request_name}Request`;
+    request_data.callback = callback;
+    request_data.parse_response = this.parseSearchResponse;
+    this.performRequest(request_data);
   }
 
 }

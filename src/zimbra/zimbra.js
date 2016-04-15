@@ -6,7 +6,7 @@ export default class Zimbra {
     this.name = resource_obj.name;
     this.id = resource_obj.id;
     this.attrs = this.buildAttrsMap(resource_obj.a);
-    this.obj = resource_obj;
+    // this.obj = resource_obj;
   }
 
   buildAttrsMap(obj_ary) {

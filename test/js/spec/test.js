@@ -74,7 +74,7 @@
       let api = new ZimbraAdminApi(auth_data);
       api.getAllDomains(function(err, data){
         if (err) console.log(err);
-        expect(data[0].constructor.name).to.equal('Domain');
+        expect(data.domain[0].constructor.name).to.equal('Domain');
         done();
       });
     });
@@ -85,7 +85,7 @@
       // var proxy = api.getAllAccounts(callback);
       api.getAllAccounts(function(err, data){
         if (err) console.log(err);
-        expect(data[0].constructor.name).to.equal('Account');
+        expect(data.account[0].constructor.name).to.equal('Account');
         done();
       });
     });
@@ -94,7 +94,7 @@
       let api = new ZimbraAdminApi(auth_data);
       api.getAllDistributionLists(function(err, data){
         if (err) console.log(err);
-        expect(data[0].constructor.name).to.equal('DistributionList');
+        expect(data.dl[0].constructor.name).to.equal('DistributionList');
         done();
       });
     });
@@ -145,7 +145,7 @@
     });
 
     it('should create and return an account', function(done){
-      let account_name = Date.now() + '@zboxapp.dev';
+      let account_name = Date.now() + '@big.com';
       let account_password = Date.now();
       let account_attributes = {};
       let api = new ZimbraAdminApi(auth_data);
@@ -195,7 +195,7 @@
 
 
     it('should create and return an account with extra attributes', function(done){
-      let account_name = Date.now() + '@zboxapp.dev';
+      let account_name = Date.now() + '@big.com';
       let account_password = Date.now();
       let account_attributes = { 'sn': 'Bruna', 'givenName': 'Patricio' };
       let api = new ZimbraAdminApi(auth_data);
@@ -218,6 +218,17 @@
         });
       };
       api.login(callback);
+    });
+
+    it('should return directorySearch with total info', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let query_object = {limit: 10, domain: 'customer.dev', types: "accounts,distributionlists,aliases"};
+      api.directorySearch(query_object, function(err, data){
+        expect(data.more).to.equal(true);
+        expect(data.total).to.be.above(1);
+        expect(data.account.length).to.be.at.least(2);
+        done();
+      });
     });
 
   });

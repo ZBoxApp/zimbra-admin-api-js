@@ -3,6 +3,7 @@
 
 import Domain from './../zimbra/domain.js';
 import Account from './../zimbra/account.js';
+import Alias from './../zimbra/alias.js';
 import DistributionList from './../zimbra/distribution_list.js';
 
 export default class Dictionary {
@@ -26,7 +27,7 @@ export default class Dictionary {
   // {size: 20, age: 30} => [ {n: size, _content: 20}, {n: age, _content: 30}]
   attributesToArray (attributes) {
     if ($.isEmptyObject(attributes)) return [];
-    const result = []
+    const result = [];
     const map = new Map(Object.entries(attributes));
     map.forEach((key, value) => {
       result.push({ 'n': value, '_content': key });
@@ -43,6 +44,15 @@ export default class Dictionary {
     return this.zimbra_resources[resource.toLowerCase()].response_name;
   }
 
+  searchResponseTypes () {
+    const result = [];
+    const that = this;
+    Object.keys(this.zimbra_resources).forEach((k) => {
+      result.push(that.zimbra_resources[k].response_name);
+    });
+    return result;
+  }
+
   ZimbraResources() {
     return {
       domain: {
@@ -56,7 +66,16 @@ export default class Dictionary {
       distributionlist: {
         class_name: DistributionList,
         response_name: 'dl'
-      }
+      },
+      dl: {
+        class_name: DistributionList,
+        response_name: 'dl'
+      },
+      alias: {
+        response_name: 'alias',
+        class_name: Alias,
+      },
+
     };
   }
 
