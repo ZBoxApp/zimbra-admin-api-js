@@ -22,7 +22,7 @@ var config = {
     path: __dirname + '/lib',
     filename: outputFile,
     library: 'ZimbraAdminApi',
-    libraryTarget: 'var',
+    libraryTarget: 'umd',
     umdNamedDefine: true
   },
   module: {
