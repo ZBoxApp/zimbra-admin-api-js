@@ -16,7 +16,7 @@ if (NPM_TARGET === 'run' || NPM_TARGET === 'run-fullmap') {
 }
 
 var config = {
-  entry: ['babel-polyfill', './src/index.js'],
+  entry: ['./src/index.js'],
   devtool: 'source-map',
   output: {
     path: __dirname + '/lib',
