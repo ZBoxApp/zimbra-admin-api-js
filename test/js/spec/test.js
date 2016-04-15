@@ -177,6 +177,36 @@
       });
     });
 
+    it('should create and return Domain with attributes', function(done){
+      let resource_name = Date.now() + '.dev';
+      let resource_attributes = {
+        zimbraSkinLogoURL: 'http://www.zboxapp.com',
+        postOfficeBox: 'ZBoxApp'
+      };
+      let api = new ZimbraAdminApi(auth_data);
+      let callback = function(err, data){
+        if (err) return console.log(err);
+        expect(data.attrs.zimbraSkinLogoURL).to.equal('http://www.zboxapp.com');
+        expect(data.attrs.postOfficeBox).to.equal('ZBoxApp');
+        done();
+      };
+      api.createDomain(resource_name, resource_attributes, callback);
+    });
+
+
+    it('should create and return an account with extra attributes', function(done){
+      let account_name = Date.now() + '@zboxapp.dev';
+      let account_password = Date.now();
+      let account_attributes = { 'sn': 'Bruna', 'givenName': 'Patricio' };
+      let api = new ZimbraAdminApi(auth_data);
+      api.createAccount(account_name, account_password, account_attributes, function(err, data){
+        if (err) return console.log(err);
+        expect(data.attrs.sn).to.equal('Bruna');
+        expect(data.attrs.givenName).to.equal('Patricio');
+        done();
+      });
+    });
+
   });
 })();
 

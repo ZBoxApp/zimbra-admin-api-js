@@ -190,7 +190,8 @@ class ZimbraAdminApi {
   createAccount(name, password, attributes, callback) {
     let resource_data = {
       name: { '_content': name },
-      password: { '_content': password }
+      password: { '_content': password },
+      a: this.dictionary.attributesToArray(attributes)
     };
     this.create('Account', resource_data, callback);
   }
@@ -201,7 +202,8 @@ class ZimbraAdminApi {
 
   createDomain(name, attributes, callback) {
     let resource_data = {
-      name: { '_content': name }
+      name: { '_content': name },
+      a: this.dictionary.attributesToArray(attributes)
     };
     this.create('Domain', resource_data, callback);
   }

@@ -22,6 +22,16 @@ export default class Dictionary {
     return 'name';
   }
 
+  attributesToArray (attributes) {
+    if ($.isEmptyObject(attributes)) return [];
+    const result = []
+    const map = new Map(Object.entries(attributes));
+    map.forEach((key, value) => {
+      result.push({ 'n': value, '_content': key });
+    });
+    return result;
+  }
+
   classFactory (resource, object) {
     const class_name = this.resourceToClass(resource.toLowerCase());
     return new class_name(object);
