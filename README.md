@@ -255,4 +255,4 @@ zimbraApi.removeAccount(zimbraId, callback);
 ```
 
 * If everything goes OK you receive **nothing** as result.
-* You **can't delete** a `Domain` that is not empty. If it has any `Account` or `DistributionList`. You have to empty it first.
+* You **can't delete** a `Domain` that is not empty. If it has any `Account` or `DistributionList`, You have to delete those first.
