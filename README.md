@@ -9,6 +9,7 @@
 - [Common Functions](#common-functions)
 - [Creating Resources](#creating-resources)
 - [Modify Resources](#modify-resources)
+- [Remove Resources](#remove-resources)
 
 
 ## Example
@@ -237,3 +238,22 @@ zimbraApi.modifyAccount(zimbraId, zimbra_attributes, callback);
 // attrs.sn = 'Hanks'
 // attrs.givenName = 'Tom'
 ```
+
+## Remove Resources
+For deleting resources **you have** to use the `ZimbraId`
+
+* `removeAccount(zimbra_id, callback)`,
+* `removeDomain(zimbra_id, callback)`,
+* `removeDistributionList(zimbra_id, callback)`
+
+For example:
+
+```javascript
+// user@example.com
+var zimbraId = "1919c856-08cc-43c9-b927-0c4cf88f50c7";
+zimbraApi.removeAccount(zimbraId, callback);
+```
+
+* If everything goes OK you receive **nothing** as result.
+* You **can't delete** a `Domain` that is not empty, that has `Accounts` or `DistributionList`. You
+have to empty it first.

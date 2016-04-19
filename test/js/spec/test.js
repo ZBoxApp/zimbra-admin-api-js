@@ -280,7 +280,48 @@
       });
     });
 
+    it('should remove account', function(done){
+      let account_name = Date.now() + '@big.com';
+      let account_password = Date.now();
+      let account_attributes = {};
+      let api = new ZimbraAdminApi(auth_data);
+      api.createAccount(account_name, account_password, account_attributes, function(err, data){
+        if (err) return console.log(err);
+        api.removeAccount(data.id, function(err, data){
+          if (err) return console.log(err);
+          expect(data._jsns).to.equal("urn:zimbraAdmin");
+          done();
+        });
+      });
+    });
+
+    it('should remove Domain', function(done){
+      let resource_name = Date.now() + '.dev';
+      let resource_attributes = {};
+      let api = new ZimbraAdminApi(auth_data);
+      api.createDomain(resource_name, resource_attributes, function(err, data){
+        if (err) return console.log(err);
+        api.removeDomain(data.id, function(err, data){
+          if (err) return console.log(err);
+          expect(data._jsns).to.equal("urn:zimbraAdmin");
+          done();
+        });
+      });
+    });
+
+    it('should remove DL', function(done){
+      let resource_name = Date.now() + '@zboxapp.dev';
+      let resource_attributes = {};
+      let api = new ZimbraAdminApi(auth_data);
+      api.createDistributionList(resource_name, resource_attributes, function(err, data){
+        if (err) return console.log(err);
+        api.removeDistributionList(data.id, function(err, data){
+          if (err) return console.log(err);
+          expect(data._jsns).to.equal("urn:zimbraAdmin");
+          done();
+        });
+      });
+    });
+
   });
 })();
-
-    

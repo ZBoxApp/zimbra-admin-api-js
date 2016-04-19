@@ -1,7 +1,7 @@
 ## Todos los Resourcers
 
 * [X] Poder Modificar
-* [ ] Poder Elmininar
+* [X] Poder Elmininar
 
 ## Accounts
 

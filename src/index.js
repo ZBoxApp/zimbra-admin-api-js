@@ -32,6 +32,7 @@ export default class ZimbraAdminApi {
     this._client = new jszimbra.Communication({url: auth_object.url});
     this.parseAllResponse = this.parseAllResponse.bind(this);
     this.parseResponse = this.parseResponse.bind(this);
+    this.parseRemoveResponse = this.parseRemoveResponse.bind(this);
     this.parseSearchResponse = this.parseSearchResponse.bind(this);
     this.dictionary = new Dictionary();
   }
@@ -125,6 +126,11 @@ export default class ZimbraAdminApi {
     return callback(null, result);
   }
 
+  parseRemoveResponse(data, request_data, callback){
+    const response_object = data.get()[request_data.response_name];
+    return callback(null, response_object);
+  }
+
   parseSearchResponse(data, request_data, callback) {
     const response_types = this.dictionary.searchResponseTypes();
     const response_object = data.get()[request_data.response_name];
@@ -168,6 +174,20 @@ export default class ZimbraAdminApi {
     request_data.params.params = resource_data;
     this.performRequest(request_data);
   }
+
+  remove(resource, resource_data, callback){
+    let request_data = { };
+    request_data.params = this.requestParams();
+    request_data.request_name = `Delete${resource}`;
+    request_data.response_name = `Delete${resource}Response`;
+    request_data.params.name = `${request_data.request_name}Request`;
+    request_data.resource = resource;
+    request_data.callback = callback;
+    request_data.parse_response = this.parseRemoveResponse;
+    request_data.params.params = resource_data;
+    this.performRequest(request_data);
+  }
+
 
   modify(resource, resource_data, callback){
     let request_data = { };
@@ -245,6 +265,15 @@ export default class ZimbraAdminApi {
     this.get('DistributionList', identifier, callback);
   }
 
+  createDistributionList(name, attributes, callback) {
+    let resource_data = {
+      name: { '_content': name },
+      a: this.dictionary.attributesToArray(attributes)
+    };
+    this.create('DistributionList', resource_data, callback);
+  }
+
+
   getAllDomains(callback, query_object = {}) {
     query_object.types = 'domains';
     this.directorySearch(query_object, callback);
@@ -304,6 +333,24 @@ export default class ZimbraAdminApi {
       a: this.dictionary.attributesToArray(attributes)
     };
     this.modify('DistributionList', resource_data, callback);
+  }
+
+  // Remove Account
+  removeAccount(zimbra_id, callback) {
+    let resource_data = { id: zimbra_id };
+    this.remove('Account', resource_data, callback);
+  }
+
+  // Remove Account
+  removeDomain(zimbra_id, callback) {
+    let resource_data = { id: zimbra_id };
+    this.remove('Domain', resource_data, callback);
+  }
+
+  // Remove DL
+  removeDistributionList(zimbra_id, callback) {
+    let resource_data = { id: zimbra_id };
+    this.remove('DistributionList', resource_data, callback);
   }
 
   // Search the Directory
