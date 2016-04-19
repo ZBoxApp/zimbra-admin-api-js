@@ -203,8 +203,10 @@ export default class ZimbraAdminApi {
   }
 
   // attributes debe ser un arreglo de objetos:
-  // resource_data.a = attributes
-  // attributes = [ { n: 'NOMBRE_DEL_CAMPO_ZIMBRA', '_content': 'VALOR_DEL_CAMPO' } ]
+  // let resource_attributes = {
+  //   zimbraSkinLogoURL: 'http://www.zboxapp.com',
+  //   postOfficeBox: 'ZBoxApp'
+  // };
   createAccount(name, password, attributes, callback) {
     let resource_data = {
       name: { '_content': name },
