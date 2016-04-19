@@ -1,13 +1,13 @@
 # Zimbra Admin Api Javascript
 
 ## Table of Contents
-- [Example](https://github.com/ZBoxApp/zimbra-admin-api-js#example)
-- [Install](https://github.com/ZBoxApp/zimbra-admin-api-js#install)
-- [Callback](https://github.com/ZBoxApp/zimbra-admin-api-js#callback)
-- [Errors](https://github.com/ZBoxApp/zimbra-admin-api-js#callback)
-- [Zimbra Resources](https://github.com/ZBoxApp/zimbra-admin-api-js#zimbra-resources)
-- [Common Functions](https://github.com/ZBoxApp/zimbra-admin-api-js#common-functions)
-- [Creating Resources](https://github.com/ZBoxApp/zimbra-admin-api-js#creating-resources)
+- [Example](#example)
+- [Install](#install)
+- [Callback](#callback)
+- [Errors](#errors)
+- [Zimbra Resources](#zimbra-resources)
+- [Common Functions](#common-functions)
+- [Creating Resources](#creating-resources)
 
 
 ## Example
