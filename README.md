@@ -8,6 +8,7 @@
 - [Zimbra Resources](#zimbra-resources)
 - [Common Functions](#common-functions)
 - [Creating Resources](#creating-resources)
+- [Modify Resources](#modify-resources)
 
 
 ## Example
@@ -209,5 +210,28 @@ var zimbra_attributes = {
   zimbraMailQuota: 53687091200
 }
 zimbraApi.createAccount('user@example.com', 'SuP3rS3cur3P4ss', zimbra_attributes, callback);
-// Account {name: "user@customer.dev", id: "1919c856-08cc-43c9-b927-0c4cf88f50c7", attrs: Object}
+// Account {name: "user@example.com", id: "1919c856-08cc-43c9-b927-0c4cf88f50c7", attrs: Object}
+```
+
+## Modify Resources
+For updating resources **you have** to use the `ZimbraId`
+
+* `modifyAccount(zimbra_id, attributes, callback)`,
+* `modifyDomain(zimbra_id, attributes, callback)`,
+* `modifyDistributionList(zimbra_id, attributes, callback)`
+
+For example:
+
+```javascript
+// Attributes to modify
+var zimbra_attributes = {
+  givenName: 'Tom',
+  sn: 'Hanks'
+}
+
+// user@example.com
+var zimbraId = "1919c856-08cc-43c9-b927-0c4cf88f50c7";
+
+zimbraApi.modifyAccount(zimbraId, zimbra_attributes, callback);
+// Account {name: "user@example.com", id: "1919c856-08cc-43c9-b927-0c4cf88f50c7", attrs: Object}
 ```

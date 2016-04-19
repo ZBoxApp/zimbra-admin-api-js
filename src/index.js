@@ -169,6 +169,19 @@ export default class ZimbraAdminApi {
     this.performRequest(request_data);
   }
 
+  modify(resource, resource_data, callback){
+    let request_data = { };
+    request_data.params = this.requestParams();
+    request_data.request_name = `Modify${resource}`;
+    request_data.response_name = `Modify${resource}Response`;
+    request_data.params.name = `${request_data.request_name}Request`;
+    request_data.resource = resource;
+    request_data.callback = callback;
+    request_data.parse_response = this.parseResponse;
+    request_data.params.params = resource_data;
+    this.performRequest(request_data);
+  }
+
   get(resource, resource_identifier, callback){
     let request_data = { };
     request_data.params = this.requestParams();
@@ -266,7 +279,33 @@ export default class ZimbraAdminApi {
     this.performRequest(request_data);
   }
 
-  // TODO: Fix this fucking code
+  // Modify Account
+  modifyAccount(zimbra_id, attributes, callback) {
+    let resource_data = {
+      id: zimbra_id,
+      a: this.dictionary.attributesToArray(attributes)
+    };
+    this.modify('Account', resource_data, callback);
+  }
+
+  // Modify Domain
+  modifyDomain(zimbra_id, attributes, callback) {
+    let resource_data = {
+      id: zimbra_id,
+      a: this.dictionary.attributesToArray(attributes)
+    };
+    this.modify('Domain', resource_data, callback);
+  }
+
+  // Modify DistributionList
+  modifyDistributionList(zimbra_id, attributes, callback) {
+    let resource_data = {
+      id: zimbra_id,
+      a: this.dictionary.attributesToArray(attributes)
+    };
+    this.modify('DistributionList', resource_data, callback);
+  }
+
   // Search the Directory
   // search_object = {
   //   query: An LDAP query or null for everything,

@@ -231,78 +231,56 @@
       });
     });
 
+    it('should modify Account attributes', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let description = Date.now().toString();
+      let physicalDeliveryOfficeName = Date.now().toString();
+      let attributes = {
+        physicalDeliveryOfficeName: physicalDeliveryOfficeName,
+        description: description
+      };
+      api.getAccount('admin@zboxapp.dev', function(err, data){
+        if (err) return console.log(err);
+        api.modifyAccount(data.id, attributes, function(err, data){
+          if (err) return console.log(err);
+          expect(data.attrs.description).to.be.equal(description);
+          expect(data.attrs.physicalDeliveryOfficeName).to.be.equal(physicalDeliveryOfficeName);
+          done();
+        });
+      });
+    });
+
+    it('should modify Domain attributes', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let description = Date.now().toString();
+      let attributes = {
+        description: description
+      };
+      api.getDomain('zboxapp.dev', function(err, data){
+        if (err) console.log(err);
+        api.modifyDomain(data.id, attributes, function(err, data){
+          expect(data.attrs.description).to.be.equal(description);
+          done();
+        });
+      });
+    });
+
+    it('should modify DistributionList attributes', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let description = Date.now().toString();
+      let attributes = {
+        description: description
+      };
+      api.getDistributionList('abierta@customer.dev', function(err, data){
+        if (err) console.log(err);
+        api.modifyDistributionList(data.id, attributes, function(err, data){
+          expect(data.attrs.description).to.be.equal(description);
+          done();
+        });
+      });
+    });
+
   });
 })();
 
-    // it('should get all domains', function() {
-    //   let api = new ZimbraAdminApi(auth_data);
-    //   var success = function(d){
-    //     d.forEach(function(v){
-    //       console.log(v.name);
-    //     })
-    //   };
-    //   var error = function(d){console.log(d);};
-    //   // sucess, err (Why)?
-    //   api.getAllAccounts(function(data, err){
-    //     if (err) return console.log(err);
-    //     data.forEach(function(v){
-    //       console.log(v.id + ' ' + v.name);
-    //     })
-    //   });
-    //
-    // });
-    //
-    //
-    // describe('Using callbacks', function() {
-
-      // it('should get a track', function() {
-      //   var callback = sinon.spy();
-      //   let api = new SpotifyWebApi();
-      //   api.getTrack('3Qm86XLflmIXVm1wcwkgDK', callback);
-      //   that.requests[0].respond(200,
-      //     {'Content-Type':'application/json'},
-      //     JSON.stringify(that.fixtures.track)
-      //   );
-      //   expect(callback.calledWith(null, that.fixtures.track)).to.be.ok;
-      //   expect(that.requests).to.have.length(1);
-      //   expect(that.requests[0].url).to.equal('https://api.spotify.com/v1/tracks/3Qm86XLflmIXVm1wcwkgDK');
-      // });
-      //
-      // it('should get multiple tracks', function() {
-      //   var callback = sinon.spy();
-      //   let api = new SpotifyWebApi();
-      //   api.getTracks(['0eGsygTp906u18L0Oimnem', '1lDWb6b6ieDQ2xT7ewTC3G'], callback);
-      //   that.requests[0].respond(200,
-      //     {'Content-Type':'application/json'},
-      //     JSON.stringify(that.fixtures.tracks)
-      //   );
-      //   expect(callback.calledWith(null, that.fixtures.tracks)).to.be.ok;
-      //   expect(that.requests).to.have.length(1);
-      //   expect(that.requests[0].url).to.equal('https://api.spotify.com/v1/tracks/?ids=0eGsygTp906u18L0Oimnem%2C1lDWb6b6ieDQ2xT7ewTC3G');
-      // });
-      //
-      // it('should get an album', function() {
-      //   var callback = sinon.spy();
-      //   let api = new SpotifyWebApi();
-      //   api.getAlbum('0sNOF9WDwhWunNAHPD3Baj', callback);
-      //   that.requests[0].respond(200,
-      //     {'Content-Type':'application/json'},
-      //     JSON.stringify(that.fixtures.album)
-      //   );
-      //   expect(callback.calledWith(null, that.fixtures.album)).to.be.ok;
-      //   expect(that.requests).to.have.length(1);
-      //   expect(that.requests[0].url).to.equal('https://api.spotify.com/v1/albums/0sNOF9WDwhWunNAHPD3Baj');
-      // });
-      //
-      // it('should get an albums\'s tracks', function() {
-      //   var callback = sinon.spy();
-      //   let api = new SpotifyWebApi();
-      //   api.getAlbumTracks('0sNOF9WDwhWunNAHPD3Baj', callback);
-      //   that.requests[0].respond(200,
-      //     {'Content-Type':'application/json'},
-      //     JSON.stringify(that.fixtures.album_tracks)
-      //   );
-      //   expect(callback.calledWith(null, that.fixtures.album_tracks)).to.be.ok;
-      //   expect(that.requests).to.have.length(1);
-      //   expect(that.requests[0].url).to.equal('https://api.spotify.com/v1/albums/0sNOF9WDwhWunNAHPD3Baj/tracks');
-      // });
+    

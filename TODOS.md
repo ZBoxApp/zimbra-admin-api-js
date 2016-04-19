@@ -1,7 +1,11 @@
 ## Todos los Resourcers
 
-* [ ] Poder Modificar
+* [X] Poder Modificar
 * [ ] Poder Elmininar
+
+## Accounts
+
+* [ ] Que Dominios administra
 
 ## Domains
 
