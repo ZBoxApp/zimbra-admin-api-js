@@ -95,7 +95,7 @@ zimbraApi.getDistributionList('list@domain.com', callback);
 A successful response will always return a `Object` named after the `Resource` your are requesting.
 
 
-### Get All and Search
+### GetAll and Search
 You have the following functions:
 
 * `getAllAccounts(callback, query_object)`,
