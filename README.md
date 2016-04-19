@@ -234,4 +234,6 @@ var zimbraId = "1919c856-08cc-43c9-b927-0c4cf88f50c7";
 
 zimbraApi.modifyAccount(zimbraId, zimbra_attributes, callback);
 // Account {name: "user@example.com", id: "1919c856-08cc-43c9-b927-0c4cf88f50c7", attrs: Object}
+// attrs.sn = 'Hanks'
+// attrs.givenName = 'Tom'
 ```
