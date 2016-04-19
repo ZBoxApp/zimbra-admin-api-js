@@ -162,8 +162,41 @@ The methods are:
 * `createDomain('domain_name', zimbra_attributes, callback)`,
 * `createDistributionList('email_address', zimbra_attributes, callback)`
 
+
+#### Examples
+
+##### 1. Create an account
+Always have to pass an `email_address` and a `password`:
+
+```javascript
+var zimbra_attributes = {};
+zimbraApi.createAccount('user1@example.com', 'SuP3rS3cur3P4ss', zimbra_attributes, callback);
+// Account {name: "user1@example.com", id: "1919c856-08cc-43c9-b927-0c4cf88f50c7", attrs: Object}
+```
+
+We are making `zimbra_attributes` and empty object, because we are not passing any attributes.
+If everything goes OK you get the created Object as a result.
+
+##### 2. Create an account with a invalid Email Address
+Check the *space* between `user` and `1@example.com`
+
+```javascript
+var zimbra_attributes = {};
+zimbraApi.createAccount('user 1@example.com', 'SuP3rS3cur3P4ss', zimbra_attributes, callback);
+// Error {status: 500, title: "Internal Server Error", extra: Object}
+// Error.extra {
+//  code: "service.INVALID_REQUEST",
+//  reason: "invalid request: invalid email address"
+// }
+```
+
+You get an `Error` Object with the reason of the failure.
+
+##### 3. Create an Account with some attributes
 `zimbra_attributes` must be an `Object`, that can be empty, that should have valid Zimbra attributes
-for the `Resource` being created. For example, lets create an `Account` with:
+for the `Resource` being created.
+
+In this example we are creating an account with the following attributes:
 
 * First Name (`givenName`),
 * Last Name (`sn`), and
@@ -178,5 +211,3 @@ var zimbra_attributes = {
 zimbraApi.createAccount('user@example.com', 'SuP3rS3cur3P4ss', zimbra_attributes, callback);
 // Account {name: "user@customer.dev", id: "1919c856-08cc-43c9-b927-0c4cf88f50c7", attrs: Object}
 ```
-
-All the functions returns the created resource `Object`.
