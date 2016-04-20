@@ -293,14 +293,24 @@ Count number of accounts by `CoS` in a domain.
 ```javascript
 zimbraApi.countAccounts('example.com', callback);
 
-// Object {unknow: 2, default: 33, basic: 28, premium: 31, professional: 31}
+// Object { premium: Object, professional: Object}
+// premium: {
+//   id: _COSId_,
+//   used: 50
+// }
+}
 ```
 
-If you have a `Domain` you can call `countAccounts(callback)` on it:
+If you have a `Domain` you can call `countAccounts(callback)` on it and it will returns the **Limit of Accounts** for the `Domain`:
 
 ```javascript
 // domain is a Domain, you got it from zimbraApi.getDomain....
 domain.countAccounts(callback);
-
-// Object {unknow: 2, default: 33, basic: 28, premium: 31, professional: 31}
+// Object { premium: Object, professional: Object}
+// premium: {
+//   id: _COSId_,
+//   used: 50,
+//   limit: 28
+// }
+}
 ```

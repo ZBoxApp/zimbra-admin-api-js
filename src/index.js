@@ -124,7 +124,10 @@ export default class ZimbraAdminApi {
     const result = {};
     const coses = data.get().CountAccountResponse.cos;
     coses.forEach((cos) => {
-      result[cos.name] = parseInt(cos._content);
+      result[cos.name] = {
+        used: parseInt(cos._content),
+        id: cos.id
+      }
     });
     // const counts = Object.values(result);
     // result.total = counts.reduce((a,b) => {return(a+b);});

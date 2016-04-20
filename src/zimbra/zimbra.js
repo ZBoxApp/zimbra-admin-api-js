@@ -13,7 +13,13 @@ export default class Zimbra {
   buildAttrsMap(obj_ary) {
     const attrs = {};
     obj_ary.forEach((r) => {
-      attrs[r.n] = r._content;
+      if (attrs[r.n]) {
+        const ary = [attrs[r.n]];
+        attrs[r.n] = ary;
+        attrs[r.n].push(r._content);
+      } else {
+        attrs[r.n] = r._content;
+      }
     });
     return attrs;
   }
