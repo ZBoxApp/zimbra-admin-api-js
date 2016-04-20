@@ -24,6 +24,8 @@ class Error {
 
 }
 
+
+// TODO: To many parseResponse types
 export default class ZimbraAdminApi {
   constructor(auth_object) {
     this.url = auth_object.url;
@@ -33,6 +35,7 @@ export default class ZimbraAdminApi {
     this.parseAllResponse = this.parseAllResponse.bind(this);
     this.parseResponse = this.parseResponse.bind(this);
     this.parseRemoveResponse = this.parseRemoveResponse.bind(this);
+    this.parseCountAccountResponse = this.parseCountAccountResponse.bind(this);
     this.parseSearchResponse = this.parseSearchResponse.bind(this);
     this.dictionary = new Dictionary();
   }
@@ -117,12 +120,24 @@ export default class ZimbraAdminApi {
     }
   }
 
+  parseCountAccountResponse(data, request_data, callback) {
+    const result = {};
+    const coses = data.get().CountAccountResponse.cos;
+    coses.forEach((cos) => {
+      result[cos.name] = parseInt(cos._content);
+    });
+    // const counts = Object.values(result);
+    // result.total = counts.reduce((a,b) => {return(a+b);});
+    return callback(null, result);
+
+  }
+
   parseResponse(data, request_data, callback) {
     const resource = request_data.resource.toLowerCase();
     const that = this;
     const response_name = that.dictionary.resourceResponseName(resource);
     const response_object = data.get()[request_data.response_name][response_name][0];
-    const result = that.dictionary.classFactory(resource, response_object);
+    const result = that.dictionary.classFactory(resource, response_object, that);
     return callback(null, result);
   }
 
@@ -140,7 +155,7 @@ export default class ZimbraAdminApi {
       const resources = [];
       if (typeof response_object[type] !== 'undefined') {
         response_object[type].forEach((resource) => {
-          const object = that.dictionary.classFactory(type, resource);
+          const object = that.dictionary.classFactory(type, resource, that);
           resources.push(object);
         });
         result[type] = resources;
@@ -156,7 +171,7 @@ export default class ZimbraAdminApi {
     const response_object = data.get()[request_data.response_name][response_name];
     const response_array = [];
     response_object.forEach((r) => {
-      let element = that.dictionary.classFactory(resource, r);
+      let element = that.dictionary.classFactory(resource, r, that);
       response_array.push(element);
     });
     return callback(null, response_array);
@@ -377,6 +392,24 @@ export default class ZimbraAdminApi {
     request_data.params.name = `${request_data.request_name}Request`;
     request_data.callback = callback;
     request_data.parse_response = this.parseSearchResponse;
+    this.performRequest(request_data);
+  }
+
+  // TODO: Fucking ugly code to make it better
+  // Count Accounts
+  // Count number of accounts by cos in a domain,
+  countAccounts(domain_idenfitier, callback) {
+    const request_data = { };
+    request_data.params = this.requestParams();
+    request_data.request_name = 'CountAccount';
+    request_data.response_name = 'CountAccountResponse';
+    request_data.params.name = `${request_data.request_name}Request`;
+    request_data.callback = callback;
+    request_data.parse_response = this.parseCountAccountResponse;
+    request_data.params.params.domain = {
+      'by': this.dictionary.byIdOrName(domain_idenfitier),
+      '_content': domain_idenfitier
+    };
     this.performRequest(request_data);
   }
 

@@ -4,8 +4,8 @@
 import Zimbra from './zimbra.js';
 
 export default class DistributionList extends Zimbra {
-  constructor(dl_obj) {
-    super(dl_obj);
+  constructor(dl_obj, zimbra_api_client) {
+    super(dl_obj, zimbra_api_client);
     this.members = this.parseMembers(dl_obj);
   }
 

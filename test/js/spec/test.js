@@ -323,5 +323,27 @@
       });
     });
 
+    it('should counts of account for the Domain', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.countAccounts('zboxapp.dev', function(err, data){
+        if (err) console.error(err);
+        expect(data.default).to.be.above(1);
+        done();
+      });
+    });
+
+
+    it('domain.countAccounts() should return the counts', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.getDomain('zboxapp.dev', function(err, data){
+        if (err) console.error(err);
+        let domain = data;
+        domain.countAccounts(function(e, d){
+          expect(d.default).to.be.above(1);
+          done();
+        });
+      });
+    });
+
   });
 })();

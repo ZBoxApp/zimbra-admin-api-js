@@ -4,7 +4,7 @@
 import Zimbra from './zimbra.js';
 
 export default class Account extends Zimbra {
-    constructor(account_obj) {
-      super(account_obj);
+    constructor(account_obj, zimbra_api_client) {
+      super(account_obj, zimbra_api_client);
     }
 }

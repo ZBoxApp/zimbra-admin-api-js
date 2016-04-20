@@ -10,6 +10,7 @@
 - [Creating Resources](#creating-resources)
 - [Modify Resources](#modify-resources)
 - [Remove Resources](#remove-resources)
+- [Domains](#domains)
 
 
 ## Example
@@ -256,3 +257,25 @@ zimbraApi.removeAccount(zimbraId, callback);
 
 * If everything goes OK you receive **nothing** as result.
 * You **can't delete** a `Domain` that is not empty. If it has any `Account` or `DistributionList`, You have to delete those first.
+
+
+## Domains
+This are functions especifics to `Domains`.
+
+### Count Accounts
+Count number of accounts by `CoS` in a domain.
+
+```javascript
+zimbraApi.countAccounts('example.com', callback);
+
+// Object {unknow: 2, default: 33, basic: 28, premium: 31, professional: 31}
+```
+
+If you have a `Domain` you can call `countAccounts(callback)` on it:
+
+```javascript
+// domain is a Domain, you got it from zimbraApi.getDomain....
+domain.countAccounts(callback);
+
+// Object {unknow: 2, default: 33, basic: 28, premium: 31, professional: 31}
+```

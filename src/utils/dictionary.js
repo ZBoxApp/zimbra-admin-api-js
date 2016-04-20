@@ -35,9 +35,9 @@ export default class Dictionary {
     return result;
   }
 
-  classFactory (resource, object) {
+  classFactory (resource, object, client) {
     const class_name = this.resourceToClass(resource.toLowerCase());
-    return new class_name(object);
+    return new class_name(object, client);
   }
 
   resourceResponseName (resource) {

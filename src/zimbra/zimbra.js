@@ -2,10 +2,11 @@
 // See LICENSE.txt for license information.
 
 export default class Zimbra {
-  constructor(resource_obj) {
+  constructor(resource_obj, zimbra_api_client) {
     this.name = resource_obj.name;
     this.id = resource_obj.id;
     this.attrs = this.buildAttrsMap(resource_obj.a);
+    this.api = zimbra_api_client;
     // this.obj = resource_obj;
   }
 
