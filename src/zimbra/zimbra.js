@@ -18,4 +18,14 @@ export default class Zimbra {
     return attrs;
   }
 
+  // getZimbraACEs () {
+  //   const result = {};
+  //   this.attrs.zimbraACE.forEach((ace) => {
+  //     const split = ace.split(/\s+/);
+  //     result.granteeId = split[0];
+  //     result.granteeType = split[1];
+  //     result.granteeId = split[2];
+  //   });
+  // }
+
 }

@@ -10,7 +10,7 @@
 ## Domains
 
 * [X] Devolver casillas segun el tipo de plan, cantidad asignadas y cantidad utilizadas para un dominio
-* [ ] Devolver MX Record
+* [ ] Limite de casillas
 * [ ] Devolver Tipo de renovación
 * [ ] Devolver Fecha de la proxima renovación
 * [ ] Devolver Empresa (esto entiendo necesitamos otro API)

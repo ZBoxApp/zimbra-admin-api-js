@@ -4,6 +4,7 @@
 import Domain from './../zimbra/domain.js';
 import Account from './../zimbra/account.js';
 import Alias from './../zimbra/alias.js';
+import Cos from './../zimbra/cos.js';
 import DistributionList from './../zimbra/distribution_list.js';
 
 export default class Dictionary {
@@ -75,6 +76,10 @@ export default class Dictionary {
         response_name: 'alias',
         class_name: Alias,
       },
+      cos: {
+        class_name: Cos,
+        response_name: 'cos'
+      }
 
     };
   }

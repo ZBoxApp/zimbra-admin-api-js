@@ -10,6 +10,7 @@
 - [Creating Resources](#creating-resources)
 - [Modify Resources](#modify-resources)
 - [Remove Resources](#remove-resources)
+- [Cos](#cos)
 - [Domains](#domains)
 
 
@@ -258,6 +259,29 @@ zimbraApi.removeAccount(zimbraId, callback);
 * If everything goes OK you receive **nothing** as result.
 * You **can't delete** a `Domain` that is not empty. If it has any `Account` or `DistributionList`, You have to delete those first.
 
+## Accounts
+
+### Cos Name
+The account only has the Id of the Cos, `zimbraCOSId`, but not the name. To get the name you call `zimbraCosName` on the Account:
+
+```javascript
+// account is a Account, you got it from zimbraApi.getAccount....
+account.cosName(callback);
+// professional
+
+// An account without Cos
+no_cos_account.cosName(callback);
+// null
+```
+
+## Cos
+This are functions especifics to `Cos`.
+
+### Get All Cos
+
+```javascript
+zimbraApi.getAllCos(callback);
+```
 
 ## Domains
 This are functions especifics to `Domains`.

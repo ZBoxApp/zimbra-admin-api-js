@@ -264,6 +264,10 @@ export default class ZimbraAdminApi {
     this.create('Account', resource_data, callback);
   }
 
+  getCos(identifier, callback) {
+    this.get('Cos', identifier, callback);
+  }
+
   getDomain(identifier, callback) {
     this.get('Domain', identifier, callback);
   }
@@ -307,6 +311,40 @@ export default class ZimbraAdminApi {
   getAllAliases(callback, query_object = {}) {
     query_object.types = 'aliases';
     this.directorySearch(query_object, callback);
+  }
+
+  getAllCos(callback) {
+    let request_data = { };
+    const resource = 'Cos';
+    request_data.params = this.requestParams();
+    request_data.request_name = `GetAll${resource}`;
+    request_data.response_name = `GetAll${resource}Response`;
+    request_data.params.name = `${request_data.request_name}Request`;
+    request_data.resource = resource;
+    request_data.callback = callback;
+    request_data.parse_response = this.parseAllResponse;
+    this.performRequest(request_data);
+  }
+
+  getGrants(target_data, grantee_data, callback) {
+    const request_data = { };
+    request_data.params = this.requestParams();
+    request_data.request_name = 'GetGrants';
+    request_data.response_name = 'GetGrantsResponse';
+    request_data.params.name = `${request_data.request_name}Request`;
+    request_data.callback = callback;
+    request_data.parse_response = this.parseGetGrantsResponse;
+    request_data.params.params.target = {
+      'type': target_data.type,
+      'by': this.dictionary.byIdOrName(target_data.identifier),
+      '_content': target_data.identifier
+    };
+    request_data.params.params.grantee = {
+      'type': target_data.type,
+      'by': this.dictionary.byIdOrName(target_data.identifier),
+      '_content': target_data.identifier
+    };
+    this.performRequest(request_data);
   }
 
   // Get current logged account information

@@ -15,4 +15,8 @@ export default class Domain extends Zimbra {
     });
   }
 
+  maxAccounts(callback) {
+
+  }
+
 }

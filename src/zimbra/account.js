@@ -7,4 +7,16 @@ export default class Account extends Zimbra {
     constructor(account_obj, zimbra_api_client) {
       super(account_obj, zimbra_api_client);
     }
+
+    cosName(callback) {
+      if (this.attrs.zimbraCOSId) {
+        api.getCos(this.attrs.zimbraCOSId, function(e,d){
+          if (e) return callback(e);
+          return callback(null, d.name);
+        });
+      } else {
+        return null;
+      }
+    }
+
 }
