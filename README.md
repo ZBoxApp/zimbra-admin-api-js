@@ -10,6 +10,7 @@
 - [Creating Resources](#creating-resources)
 - [Modify Resources](#modify-resources)
 - [Remove Resources](#remove-resources)
+- [Accounts](#accounts)
 - [Cos](#cos)
 - [Domains](#domains)
 
