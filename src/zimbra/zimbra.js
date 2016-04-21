@@ -7,14 +7,14 @@ export default class Zimbra {
     this.id = resource_obj.id;
     this.attrs = this.buildAttrsMap(resource_obj.a);
     this.api = zimbra_api_client;
-    // this.obj = resource_obj;
+    this.raw_obj = resource_obj;
   }
 
   buildAttrsMap(obj_ary) {
     const attrs = {};
     obj_ary.forEach((r) => {
       if (attrs[r.n]) {
-        const ary = [attrs[r.n]];
+        const ary = [].concat.apply([],[attrs[r.n]]);
         attrs[r.n] = ary;
         attrs[r.n].push(r._content);
       } else {
