@@ -236,6 +236,19 @@
       });
     });
 
+    it('should set password', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.getAccount('pbruna@itlinux.cl', function(err, data){
+        let account = data;
+        account.setPassword('12345678910', function(err, data){
+          if (err) return console.log(err);
+          console.log(data);
+          done();
+        });
+      });
+    });
+
+
   });
 
   describe('Domain tests', function() {
@@ -345,7 +358,7 @@
       api.getDomain('customer.dev', function(err, data){
         if (err) console.error(err);
         let domain = data;
-        domain.admins(function(e, d){
+        domain.getAdmins(function(e, d){
           expect(d.length).to.be.above(1);
           expect(d[0].constructor.name).to.be.equal('Account');
           done();
@@ -358,7 +371,8 @@
       api.getDomain('zboxapp.dev', function(err, data){
         if (err) console.error(err);
         let domain = data;
-        domain.admins(function(e, d){
+        domain.getAdmins(function(e, d){
+          if (e) return console.log(e);
           expect(d.length).to.be.empty;
           done();
         });

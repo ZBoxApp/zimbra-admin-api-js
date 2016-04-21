@@ -19,4 +19,8 @@ export default class Account extends Zimbra {
       }
     }
 
+    // setPassword(password, callback) {
+    //   this.api.setPassword(this.id, password, callback);
+    // }
+
 }

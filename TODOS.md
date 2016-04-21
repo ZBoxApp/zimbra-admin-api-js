@@ -6,6 +6,7 @@
 ## Accounts
 
 * [ ] Que Dominios administra una cuenta
+* [ ] Espacio usado
 
 ## DistributionList
 
@@ -18,7 +19,7 @@
 * [ ] Devolver Tipo de renovación
 * [ ] Devolver Fecha de la proxima renovación
 * [ ] Devolver Empresa (esto entiendo necesitamos otro API)
-* [ ] Devolver Admins del dominio
+* [X] Devolver Admins del dominio
 * [ ] Devolver Listas de distribución del dominio
 
 ## parseResponse Class?

@@ -468,6 +468,22 @@ export default class ZimbraAdminApi {
     this.performRequest(request_data);
   }
 
+  setPassword(zimbra_id, password, callback) {
+    const request_data = { };
+    request_data.params = this.buildRequest();
+    request_data.request_name = "SetPassword";
+    request_data.params.name = `${request_data.request_name}Request`;
+    request_data.params.params = {
+      id: zimbra_id,
+      newPassword: password
+    };
+    request_data.callback = callback;
+    const that = this;
+    request_data.parse_response = function(data, _, callback){
+      return callback(null, data.response[0].SetPasswordResponse);
+    };
+    this.performRequest(request_data);
+  }
 
 }
 

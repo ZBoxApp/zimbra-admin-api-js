@@ -10,11 +10,11 @@ export default class Domain extends Zimbra {
   }
 
   // TODO: Fix this fucking ugly code
-  admins(callback) {
+  getAdmins(callback) {
     const that = this;
     this.getAdminsIdsFromGrants(function(e,d){
       if (e) return callback(e);
-      if (d.length < 1) return [];
+      if (d.length < 1) return callback(null, []);
       let query = "(|";
       d.forEach((id) => {
         const zimbra_id = `(zimbraId=${id})`;
@@ -24,7 +24,7 @@ export default class Domain extends Zimbra {
       that.api.getAllAccounts(function(e,d){
         if (e) return callback(e);
         if (d.total > 0) return callback(null, d.account);
-        callback(null, []);
+        return callback(null, []);
       }, {query: query});
     });
   }

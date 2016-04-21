@@ -323,6 +323,6 @@ Return an Array of the Domain Admins `Accounts`.
 
 ```javascript
 // domain is a Domain, you got it from zimbraApi.getDomain....
-domain.admins(callback);
+domain.getAdmins(callback);
 // [Account, Account]
 ```
