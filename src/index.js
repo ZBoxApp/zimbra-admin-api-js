@@ -468,9 +468,10 @@ export default class ZimbraAdminApi {
     this.performRequest(request_data);
   }
 
+  // TODO: TO ugly
   setPassword(zimbra_id, password, callback) {
     const request_data = { };
-    request_data.params = this.buildRequest();
+    request_data.params = this.requestParams();
     request_data.request_name = "SetPassword";
     request_data.params.name = `${request_data.request_name}Request`;
     request_data.params.params = {
@@ -480,7 +481,37 @@ export default class ZimbraAdminApi {
     request_data.callback = callback;
     const that = this;
     request_data.parse_response = function(data, _, callback){
-      return callback(null, data.response[0].SetPasswordResponse);
+      const response_object = data.response[0].SetPasswordResponse;
+      if (response_object.message) {
+        const err = {
+          status: 500,
+          statusText: response_object.message[0]._content,
+          responseJSON: {}
+        };
+        return callback(that.handleError(err));
+      } else {
+        return callback(null, {});
+      }
+    };
+    this.performRequest(request_data);
+  }
+
+  // TODO: Ugly
+  getMailbox(zimbra_id, callback) {
+    const request_data = { };
+    request_data.params = this.requestParams();
+    request_data.request_name = "GetMailbox";
+    request_data.params.name = `${request_data.request_name}Request`;
+    request_data.params.params = { mbox: { id: zimbra_id } };
+    request_data.callback = callback;
+    request_data.parse_response = function(data, _, callback){
+      const response_object = data.get().GetMailboxResponse.mbox[0];
+      const result = {
+        mbxid: response_object.mbxid,
+        account_id: response_object.id,
+        size: response_object.s
+      };
+      return callback(null, result);
     };
     this.performRequest(request_data);
   }

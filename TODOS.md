@@ -20,7 +20,7 @@
 * [ ] Devolver Fecha de la proxima renovación
 * [ ] Devolver Empresa (esto entiendo necesitamos otro API)
 * [X] Devolver Admins del dominio
-* [ ] Devolver Listas de distribución del dominio
+* [X] Devolver Listas de distribución del dominio
 
 ## parseResponse Class?
 

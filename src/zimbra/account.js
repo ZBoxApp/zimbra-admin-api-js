@@ -19,8 +19,19 @@ export default class Account extends Zimbra {
       }
     }
 
-    // setPassword(password, callback) {
-    //   this.api.setPassword(this.id, password, callback);
-    // }
+    setPassword(password, callback) {
+      this.api.setPassword(this.id, password, callback);
+    }
+
+    getMailbox(callback) {
+      this.api.getMailbox(this.id, callback);
+    }
+
+    getMailboxSize(callback) {
+      this.getMailbox(function(e,d){
+        if (e) return callback(e);
+        return callback(null, d.size);
+      });
+    }
 
 }

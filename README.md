@@ -262,6 +262,28 @@ zimbraApi.removeAccount(zimbraId, callback);
 
 ## Accounts
 
+### Set Password
+
+```javascript
+account.setPassword(password, callback);
+// {} if OK
+// Error if not OK
+```
+
+### Get Mailbox
+```javascript
+account.getMailbox(callback);
+// Object { mbxid: Mailbox ID, size: Quota Used}
+//
+```
+
+### Get Mailbox Size
+```javascript
+account.getMailboxSize(callback);
+// Returns a Integer represeting Bytes 
+//
+```
+
 ### Cos Name
 The account only has the Id of the Cos, `zimbraCOSId`, but not the name. To get the name you call `zimbraCosName` on the Account:
 

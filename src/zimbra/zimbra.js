@@ -7,7 +7,6 @@ export default class Zimbra {
     this.id = resource_obj.id;
     this.attrs = this.buildAttrsMap(resource_obj.a);
     this.api = zimbra_api_client;
-    this.raw_obj = resource_obj;
   }
 
   buildAttrsMap(obj_ary) {
@@ -23,15 +22,5 @@ export default class Zimbra {
     });
     return attrs;
   }
-
-  // getZimbraACEs () {
-  //   const result = {};
-  //   this.attrs.zimbraACE.forEach((ace) => {
-  //     const split = ace.split(/\s+/);
-  //     result.granteeId = split[0];
-  //     result.granteeType = split[1];
-  //     result.granteeId = split[2];
-  //   });
-  // }
 
 }

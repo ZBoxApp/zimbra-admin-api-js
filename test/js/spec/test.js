@@ -240,9 +240,44 @@
       let api = new ZimbraAdminApi(auth_data);
       api.getAccount('pbruna@itlinux.cl', function(err, data){
         let account = data;
-        account.setPassword('12345678910', function(err, data){
+        account.setPassword('123456789', function(err, data){
           if (err) return console.log(err);
-          console.log(data);
+          expect(data).to.be.empty;
+          done();
+        });
+      });
+    });
+
+    it('Should Return Error for Invalid Password', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.getAccount('pbruna@itlinux.cl', function(err, data){
+        let account = data;
+        account.setPassword('', function(err, data){
+          expect(err.title).to.exist;
+          done();
+        });
+      });
+    });
+
+    it('Should Get The Account Mailbox', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.getAccount('pbruna@itlinux.cl', function(err, data){
+        let account = data;
+        account.getMailbox(function(err, data){
+          if (err) return console.log(err);
+          expect(data.size).to.be.exist;
+          done();
+        });
+      });
+    });
+
+    it('Should Get The Account Mailbox Size', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.getAccount('pbruna@itlinux.cl', function(err, data){
+        let account = data;
+        account.getMailboxSize(function(err, data){
+          if (err) return console.log(err);
+          expect(data).to.be.at.least(0);
           done();
         });
       });
