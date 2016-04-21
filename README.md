@@ -314,3 +314,5 @@ domain.countAccounts(callback);
 // }
 }
 ```
+
+If the `Domain` is empty, no 'Accounts', the result will be a `{}`.

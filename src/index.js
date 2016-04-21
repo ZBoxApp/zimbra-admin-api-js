@@ -123,16 +123,13 @@ export default class ZimbraAdminApi {
   parseCountAccountResponse(data, request_data, callback) {
     const result = {};
     const coses = data.get().CountAccountResponse.cos;
-    coses.forEach((cos) => {
+    if (typeof coses !== 'undefined') coses.forEach((cos) => {
       result[cos.name] = {
         used: parseInt(cos._content),
         id: cos.id
       }
     });
-    // const counts = Object.values(result);
-    // result.total = counts.reduce((a,b) => {return(a+b);});
     return callback(null, result);
-
   }
 
   parseResponse(data, request_data, callback) {

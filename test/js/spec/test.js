@@ -332,6 +332,15 @@
       });
     });
 
+    it('countAccounts hould return {} for empty Domain', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.countAccounts('juanitalapoderosa.com', function(err, data){
+        if (err) console.error(err);
+        expect(data).to.be.empty;
+        done();
+      });
+    });
+
 
     it('domain.countAccounts() should return the counts', function(done){
       let api = new ZimbraAdminApi(auth_data);
