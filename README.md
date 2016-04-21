@@ -326,3 +326,12 @@ Return an Array of the Domain Admins `Accounts`.
 domain.getAdmins(callback);
 // [Account, Account]
 ```
+
+### Distribution Lists
+Return an Array of the Domain `DistributionList`s.
+
+```javascript
+// domain is a Domain, you got it from zimbraApi.getDomain....
+domain.getAllDistributionLists(callback);
+// [DistributionList, DistributionList]
+```

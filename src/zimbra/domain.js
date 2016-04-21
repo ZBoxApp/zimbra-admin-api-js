@@ -43,6 +43,15 @@ export default class Domain extends Zimbra {
     });
   }
 
+  getAllDistributionLists(callback) {
+    let query_object = { domain: this.name };
+    this.api.getAllDistributionLists(function(e,d){
+      if (e) return callback(e);
+      if (d.total === 0) return callback(null, []);
+      return callback(null, d.dl);
+    }, query_object);
+  }
+
   countAccounts(callback) {
     const maxAccountsByCos = this.maxAccountsByCos();
     this.api.countAccounts(this.id, function(e,d){

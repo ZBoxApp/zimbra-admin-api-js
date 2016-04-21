@@ -353,7 +353,7 @@
       });
     });
 
-    it('domain.admins() should return the domain admins', function(done){
+    it('domain.getAdmins() should return the domain admins', function(done){
       let api = new ZimbraAdminApi(auth_data);
       api.getDomain('customer.dev', function(err, data){
         if (err) console.error(err);
@@ -366,18 +366,20 @@
       });
     });
 
-    it('domain.admins() should return empty array if no admins', function(done){
+    it('domain.getAllDistributionLists should return the DLs', function(done){
       let api = new ZimbraAdminApi(auth_data);
-      api.getDomain('zboxapp.dev', function(err, data){
+      api.getDomain('customer.dev', function(err, data){
         if (err) console.error(err);
         let domain = data;
-        domain.getAdmins(function(e, d){
+        domain.getAllDistributionLists(function(e, d){
           if (e) return console.log(e);
-          expect(d.length).to.be.empty;
+          expect(d[0].constructor.name).to.be.equal('DistributionList');
           done();
         });
       });
     });
+
+
 
   });
 
