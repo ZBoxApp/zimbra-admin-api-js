@@ -316,3 +316,13 @@ domain.countAccounts(callback);
 ```
 
 If the `Domain` is empty, no 'Accounts', the result will be a `{}`.
+
+
+### Domain Admins
+Return an Array of the Domain Admins `Accounts`.
+
+```javascript
+// domain is a Domain, you got it from zimbraApi.getDomain....
+domain.admins(callback);
+// [Account, Account]
+```

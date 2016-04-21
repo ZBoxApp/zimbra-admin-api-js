@@ -340,6 +340,31 @@
       });
     });
 
+    it('domain.admins() should return the domain admins', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.getDomain('customer.dev', function(err, data){
+        if (err) console.error(err);
+        let domain = data;
+        domain.admins(function(e, d){
+          expect(d.length).to.be.above(1);
+          expect(d[0].constructor.name).to.be.equal('Account');
+          done();
+        });
+      });
+    });
+
+    it('domain.admins() should return empty array if no admins', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.getDomain('zboxapp.dev', function(err, data){
+        if (err) console.error(err);
+        let domain = data;
+        domain.admins(function(e, d){
+          expect(d.length).to.be.empty;
+          done();
+        });
+      });
+    });
+
   });
 
   describe('DistributionList tests', function() {

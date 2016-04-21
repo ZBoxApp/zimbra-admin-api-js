@@ -6,5 +6,13 @@ export default class Grant {
     this.grantee = grant.grantee[0];
     this.target = grant.target[0];
     this.right = grant.right[0];
+    this.rightName = this.right._content;
+    this.granteeId = this.grantee.id;
   }
+
+  isDomainAdminGrant() {
+    if (this.rightName === 'domainAdminRights') return true;
+    return false;
+  }
+
 }
