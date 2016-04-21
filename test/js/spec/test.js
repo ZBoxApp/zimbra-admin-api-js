@@ -21,10 +21,6 @@
 
   describe('Basic tests', function() {
 
-    this.fixtures = {
-      domain: loadFixture('domain')
-    };
-
     it('should return error object when timeout', function() {
       let api = new ZimbraAdminApi({
         'url': 'http://localhost',
@@ -144,6 +140,43 @@
       api.getDomain('zboxapp.dev', callback);
     });
 
+    it('getInfo() should return the logged user info', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let callback = function(err, data) {
+        if (err) return console.log(err);
+        api.getInfo(function(err, data){
+          if (err) return console.log(err);
+          expect(data.name).to.equal('admin@zboxapp.dev');
+          done();
+        });
+      };
+      api.login(callback);
+    });
+
+    it('should return directorySearch with total info', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let query_object = {limit: 10, domain: 'customer.dev', types: "accounts,distributionlists,aliases"};
+      api.directorySearch(query_object, function(err, data){
+        expect(data.more).to.equal(true);
+        expect(data.total).to.be.above(1);
+        expect(data.account.length).to.be.at.least(2);
+        done();
+      });
+    });
+
+    it('countAccounts hould return {} for empty Domain', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.countAccounts('juanitalapoderosa.com', function(err, data){
+        if (err) console.error(err);
+        expect(data).to.be.empty;
+        done();
+      });
+    });
+
+  });
+
+  describe('Account tests', function() {
+
     it('should create and return an account', function(done){
       let account_name = Date.now() + '@big.com';
       let account_password = Date.now();
@@ -155,6 +188,57 @@
         done();
       });
     });
+
+    it('should create and return an account with extra attributes', function(done){
+      let account_name = Date.now() + '@big.com';
+      let account_password = Date.now();
+      let account_attributes = { 'sn': 'Bruna', 'givenName': 'Patricio' };
+      let api = new ZimbraAdminApi(auth_data);
+      api.createAccount(account_name, account_password, account_attributes, function(err, data){
+        if (err) return console.log(err);
+        expect(data.attrs.sn).to.equal('Bruna');
+        expect(data.attrs.givenName).to.equal('Patricio');
+        done();
+      });
+    });
+
+    it('should modify Account attributes', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let description = Date.now().toString();
+      let physicalDeliveryOfficeName = Date.now().toString();
+      let attributes = {
+        physicalDeliveryOfficeName: physicalDeliveryOfficeName,
+        description: description
+      };
+      api.getAccount('admin@zboxapp.dev', function(err, data){
+        if (err) return console.log(err);
+        api.modifyAccount(data.id, attributes, function(err, data){
+          if (err) return console.log(err);
+          expect(data.attrs.description).to.be.equal(description);
+          expect(data.attrs.physicalDeliveryOfficeName).to.be.equal(physicalDeliveryOfficeName);
+          done();
+        });
+      });
+    });
+
+    it('should remove account', function(done){
+      let account_name = Date.now() + '@big.com';
+      let account_password = Date.now();
+      let account_attributes = {};
+      let api = new ZimbraAdminApi(auth_data);
+      api.createAccount(account_name, account_password, account_attributes, function(err, data){
+        if (err) return console.log(err);
+        api.removeAccount(data.id, function(err, data){
+          if (err) return console.log(err);
+          expect(data._jsns).to.equal("urn:zimbraAdmin");
+          done();
+        });
+      });
+    });
+
+  });
+
+  describe('Domain tests', function() {
 
     it('should create and return Domain', function(done){
       let resource_name = Date.now() + '.dev';
@@ -193,63 +277,6 @@
       api.createDomain(resource_name, resource_attributes, callback);
     });
 
-
-    it('should create and return an account with extra attributes', function(done){
-      let account_name = Date.now() + '@big.com';
-      let account_password = Date.now();
-      let account_attributes = { 'sn': 'Bruna', 'givenName': 'Patricio' };
-      let api = new ZimbraAdminApi(auth_data);
-      api.createAccount(account_name, account_password, account_attributes, function(err, data){
-        if (err) return console.log(err);
-        expect(data.attrs.sn).to.equal('Bruna');
-        expect(data.attrs.givenName).to.equal('Patricio');
-        done();
-      });
-    });
-
-    it('getInfo() should return the logged user info', function(done){
-      let api = new ZimbraAdminApi(auth_data);
-      let callback = function(err, data) {
-        if (err) return console.log(err);
-        api.getInfo(function(err, data){
-          if (err) return console.log(err);
-          expect(data.name).to.equal('admin@zboxapp.dev');
-          done();
-        });
-      };
-      api.login(callback);
-    });
-
-    it('should return directorySearch with total info', function(done){
-      let api = new ZimbraAdminApi(auth_data);
-      let query_object = {limit: 10, domain: 'customer.dev', types: "accounts,distributionlists,aliases"};
-      api.directorySearch(query_object, function(err, data){
-        expect(data.more).to.equal(true);
-        expect(data.total).to.be.above(1);
-        expect(data.account.length).to.be.at.least(2);
-        done();
-      });
-    });
-
-    it('should modify Account attributes', function(done){
-      let api = new ZimbraAdminApi(auth_data);
-      let description = Date.now().toString();
-      let physicalDeliveryOfficeName = Date.now().toString();
-      let attributes = {
-        physicalDeliveryOfficeName: physicalDeliveryOfficeName,
-        description: description
-      };
-      api.getAccount('admin@zboxapp.dev', function(err, data){
-        if (err) return console.log(err);
-        api.modifyAccount(data.id, attributes, function(err, data){
-          if (err) return console.log(err);
-          expect(data.attrs.description).to.be.equal(description);
-          expect(data.attrs.physicalDeliveryOfficeName).to.be.equal(physicalDeliveryOfficeName);
-          done();
-        });
-      });
-    });
-
     it('should modify Domain attributes', function(done){
       let api = new ZimbraAdminApi(auth_data);
       let description = Date.now().toString();
@@ -260,36 +287,6 @@
         if (err) console.log(err);
         api.modifyDomain(data.id, attributes, function(err, data){
           expect(data.attrs.description).to.be.equal(description);
-          done();
-        });
-      });
-    });
-
-    it('should modify DistributionList attributes', function(done){
-      let api = new ZimbraAdminApi(auth_data);
-      let description = Date.now().toString();
-      let attributes = {
-        description: description
-      };
-      api.getDistributionList('abierta@customer.dev', function(err, data){
-        if (err) console.log(err);
-        api.modifyDistributionList(data.id, attributes, function(err, data){
-          expect(data.attrs.description).to.be.equal(description);
-          done();
-        });
-      });
-    });
-
-    it('should remove account', function(done){
-      let account_name = Date.now() + '@big.com';
-      let account_password = Date.now();
-      let account_attributes = {};
-      let api = new ZimbraAdminApi(auth_data);
-      api.createAccount(account_name, account_password, account_attributes, function(err, data){
-        if (err) return console.log(err);
-        api.removeAccount(data.id, function(err, data){
-          if (err) return console.log(err);
-          expect(data._jsns).to.equal("urn:zimbraAdmin");
           done();
         });
       });
@@ -309,34 +306,11 @@
       });
     });
 
-    it('should remove DL', function(done){
-      let resource_name = Date.now() + '@zboxapp.dev';
-      let resource_attributes = {};
-      let api = new ZimbraAdminApi(auth_data);
-      api.createDistributionList(resource_name, resource_attributes, function(err, data){
-        if (err) return console.log(err);
-        api.removeDistributionList(data.id, function(err, data){
-          if (err) return console.log(err);
-          expect(data._jsns).to.equal("urn:zimbraAdmin");
-          done();
-        });
-      });
-    });
-
     it('should counts of account for the Domain', function(done){
       let api = new ZimbraAdminApi(auth_data);
       api.countAccounts('zboxapp.dev', function(err, data){
         if (err) console.error(err);
         expect(data.default.used).to.be.above(1);
-        done();
-      });
-    });
-
-    it('countAccounts hould return {} for empty Domain', function(done){
-      let api = new ZimbraAdminApi(auth_data);
-      api.countAccounts('juanitalapoderosa.com', function(err, data){
-        if (err) console.error(err);
-        expect(data).to.be.empty;
         done();
       });
     });
@@ -367,4 +341,75 @@
     });
 
   });
+
+  describe('DistributionList tests', function() {
+
+    it('should remove DL', function(done){
+      let resource_name = Date.now() + '@zboxapp.dev';
+      let resource_attributes = {};
+      let api = new ZimbraAdminApi(auth_data);
+      api.createDistributionList(resource_name, resource_attributes, function(err, data){
+        if (err) return console.log(err);
+        api.removeDistributionList(data.id, function(err, data){
+          if (err) return console.log(err);
+          expect(data._jsns).to.equal("urn:zimbraAdmin");
+          done();
+        });
+      });
+    });
+
+    it('should modify DistributionList attributes', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let description = Date.now().toString();
+      let attributes = {
+        description: description
+      };
+      api.getDistributionList('abierta@customer.dev', function(err, data){
+        if (err) console.log(err);
+        api.modifyDistributionList(data.id, attributes, function(err, data){
+          expect(data.attrs.description).to.be.equal(description);
+          done();
+        });
+      });
+    });
+
+  });
+
+  describe('Grants tests', function() {
+
+    it('should get the Grants with null target_data', function(done) {
+      let api = new ZimbraAdminApi(auth_data);
+      let grantee_data = {type: 'usr', identifier: 'domain_admin@customer.dev'};
+      api.getGrants(null, grantee_data, function(err, data){
+        if (err) console.log(err);
+        expect(data[0].constructor.name).to.equal('Grant');
+        expect(data[0].right._content).to.equal("domainAdminRights");
+        done();
+      });
+    });
+
+    it('should get the Grants with null grantee_data', function(done) {
+      let api = new ZimbraAdminApi(auth_data);
+      let target_data = {type: 'domain', identifier: 'customer.dev'};
+      api.getGrants(target_data, null, function(err, data){
+        if (err) console.log(err);
+        expect(data[0].constructor.name).to.equal('Grant');
+        expect(data[0].right._content).to.equal("domainAdminRights");
+        done();
+      });
+    });
+
+    it('should return Empty Array if no Grants', function(done) {
+      let api = new ZimbraAdminApi(auth_data);
+      let target_data = {type: 'domain', identifier: 'zboxapp.dev'};
+      api.getGrants(target_data, null, function(err, data){
+        if (err) console.log(err);
+        expect(data).to.be.empty;
+        done();
+      });
+    });
+
+
+  });
+
 })();

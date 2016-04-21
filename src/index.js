@@ -37,6 +37,7 @@ export default class ZimbraAdminApi {
     this.parseRemoveResponse = this.parseRemoveResponse.bind(this);
     this.parseCountAccountResponse = this.parseCountAccountResponse.bind(this);
     this.parseSearchResponse = this.parseSearchResponse.bind(this);
+    this.parseGrantsResponse = this.parseGrantsResponse.bind(this);
     this.dictionary = new Dictionary();
   }
 
@@ -127,9 +128,15 @@ export default class ZimbraAdminApi {
       result[cos.name] = {
         used: parseInt(cos._content),
         id: cos.id
-      }
+      };
     });
     return callback(null, result);
+  }
+
+  parseGrantsResponse(data, request_data, callback) {
+    const result = {};
+    const response_object = data.get().GetGrantsResponse;
+    callback(null, response_object);
   }
 
   parseResponse(data, request_data, callback) {
@@ -170,7 +177,7 @@ export default class ZimbraAdminApi {
     const response_name = that.dictionary.resourceResponseName(resource);
     const response_object = data.get()[request_data.response_name][response_name];
     const response_array = [];
-    response_object.forEach((r) => {
+    if (response_object) response_object.forEach((r) => {
       let element = that.dictionary.classFactory(resource, r, that);
       response_array.push(element);
     });
@@ -326,23 +333,33 @@ export default class ZimbraAdminApi {
     this.performRequest(request_data);
   }
 
+  // Returns all grants on the specified target entry, or all grants granted to the specified grantee entry.
+  // target_data  and grantee_data are both objects like:
+  // {
+  //  type: (account|cos|dl|domain),
+  //  identifier: (name or zimbraId)
+  // }
+
   getGrants(target_data, grantee_data, callback) {
     const request_data = { };
+    const resource = 'Grant';
     request_data.params = this.requestParams();
-    request_data.request_name = 'GetGrants';
-    request_data.response_name = 'GetGrantsResponse';
+    request_data.request_name = `Get${resource}s`;
+    request_data.response_name = `Get${resource}sResponse`;
     request_data.params.name = `${request_data.request_name}Request`;
     request_data.callback = callback;
-    request_data.parse_response = this.parseGetGrantsResponse;
-    request_data.params.params.target = {
+    request_data.resource = resource;
+    request_data.parse_response = this.parseAllResponse;
+    if (target_data) request_data.params.params.target = {
       'type': target_data.type,
       'by': this.dictionary.byIdOrName(target_data.identifier),
       '_content': target_data.identifier
     };
-    request_data.params.params.grantee = {
-      'type': target_data.type,
-      'by': this.dictionary.byIdOrName(target_data.identifier),
-      '_content': target_data.identifier
+    if (grantee_data) request_data.params.params.grantee = {
+      'type': grantee_data.type,
+      'by': this.dictionary.byIdOrName(grantee_data.identifier),
+      'all': 1,
+      '_content': grantee_data.identifier
     };
     this.performRequest(request_data);
   }

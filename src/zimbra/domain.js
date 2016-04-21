@@ -6,6 +6,7 @@ import Zimbra from './zimbra.js';
 export default class Domain extends Zimbra {
   constructor(domain_obj, zimbra_api_client) {
     super(domain_obj, zimbra_api_client);
+    this.domainAdminRights = 'domainAdminRights';
   }
 
   countAccounts(callback) {
