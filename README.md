@@ -13,6 +13,7 @@
 - [Accounts](#accounts)
 - [Cos](#cos)
 - [Domains](#domains)
+- [Distribution Lists](#distribution-lists)
 
 
 ## Example
@@ -367,4 +368,21 @@ Return an Array of the Domain `DistributionList`s.
 // domain is a Domain, you got it from zimbraApi.getDomain....
 domain.getAllDistributionLists(callback);
 // [DistributionList, DistributionList]
+```
+
+## Distribution Lists
+
+### Add / Remove Members
+
+```javascript
+dl.addMembers('new_member@example.com', callback);
+// {} if Success
+
+dl.addMembers(['1@example.com', '2@example.com'], callback);
+
+dl.removeMembers('new_member@example.com', callback);
+// {} if Success
+
+dl.removeMembers(['1@example.com', '2@example.com'], callback);
+// Return Error if any of the emails isn't a member
 ```

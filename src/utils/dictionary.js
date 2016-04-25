@@ -42,6 +42,17 @@ export default class Dictionary {
     return new class_name(object, client);
   }
 
+  // This return a string or array of objects
+  // useful for Zimbra functions that works with both
+  convertToZimbraArray (object) {
+    const elements = [].concat.apply([], [object]);
+    const result = [];
+    elements.forEach((el) => {
+      result.push({ '_content': el });
+    });
+    return result;
+  }
+
   resourceResponseName (resource) {
     return this.zimbra_resources[resource.toLowerCase()].response_name;
   }

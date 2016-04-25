@@ -491,6 +491,56 @@
       });
     });
 
+    it('Add member to DL should work with only one', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let member = Date.now().toString() + '@customer.dev';
+      api.getDistributionList('abierta@customer.dev', function(err, data){
+        if (err) console.log(err);
+        const dl = data;
+        dl.addMembers(member, function(err, data){
+          if (err) return console.error(err);
+          expect(err).to.be.null;
+          done();
+        });
+      });
+    });
+
+    it('Add member to DL should work with array', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let name = Date.now().toString();
+      let members = [name + '@customer.dev', name + '@zboxapp.dev' ];
+      api.getDistributionList('abierta@customer.dev', function(err, data){
+        if (err) console.log(err);
+        const dl = data;
+        dl.addMembers(members, function(err, data){
+          if (err) return console.error(err);
+          expect(err).to.be.null;
+          done();
+        });
+      });
+    });
+
+    it('Remove members works with an array', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let name = Date.now().toString();
+      let members = [name + '@customer.dev', name + '@zboxapp.dev' ];
+      api.getDistributionList('abierta@customer.dev', function(err, data){
+        if (err) console.log(err);
+        const dl = data;
+        const original_members = dl.members;
+        dl.addMembers(members, function(err, data){
+          if (err) return console.error(err);
+          dl.removeMembers(members, function(err, data){
+            if (err) return console.error(err);
+            api.getDistributionList('abierta@customer.dev', function(err, data){
+              expect(original_members.length).to.be.equal(data.members.length);
+              done();
+            });
+          });
+        });
+      });
+    });
+
   });
 
   describe('Grants tests', function() {
@@ -501,7 +551,6 @@
       api.getGrants(null, grantee_data, function(err, data){
         if (err) console.log(err);
         expect(data[0].constructor.name).to.equal('Grant');
-        expect(data[0].right._content).to.equal("domainAdminRights");
         done();
       });
     });

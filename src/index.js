@@ -268,6 +268,20 @@ export default class ZimbraAdminApi {
     this.performRequest(request_data);
   }
 
+  // Add New members tos distributionlists
+  // members is an array of emails
+  addDistributionListMember(dl_id, members, callback) {
+    const request_data = { };
+    request_data.params = this.requestParams();
+    request_data.request_name = 'AddDistributionListMember';
+    request_data.params.name = `${request_data.request_name}Request`;
+    request_data.response_name = `${request_data.request_name}Response`;
+    request_data.callback = callback;
+    request_data.parse_response = this.parseEmptyResponse;
+    request_data.params.params = { id: dl_id, dlm: this.dictionary.convertToZimbraArray(members) };
+    this.performRequest(request_data);
+  }
+
   getAccount(identifier, callback) {
     this.get('Account', identifier, callback);
   }
@@ -354,7 +368,6 @@ export default class ZimbraAdminApi {
   //  type: (account|cos|dl|domain),
   //  identifier: (name or zimbraId)
   // }
-
   getGrants(target_data, grantee_data, callback) {
     const request_data = { };
     const resource = 'Grant';
@@ -449,6 +462,20 @@ export default class ZimbraAdminApi {
   removeDistributionList(zimbra_id, callback) {
     let resource_data = { id: zimbra_id };
     this.remove('DistributionList', resource_data, callback);
+  }
+
+  // Add New members tos distributionlists
+  // members is one email or array of emails
+  removeDistributionListMember(dl_id, members, callback) {
+    const request_data = { };
+    request_data.params = this.requestParams();
+    request_data.request_name = 'RemoveDistributionListMember';
+    request_data.params.name = `${request_data.request_name}Request`;
+    request_data.response_name = `${request_data.request_name}Response`;
+    request_data.callback = callback;
+    request_data.parse_response = this.parseEmptyResponse;
+    request_data.params.params = { id: dl_id, dlm: this.dictionary.convertToZimbraArray(members) };
+    this.performRequest(request_data);
   }
 
   // Search the Directory

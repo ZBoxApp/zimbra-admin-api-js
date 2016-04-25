@@ -9,6 +9,11 @@ export default class DistributionList extends Zimbra {
     this.members = this.parseMembers(dl_obj);
   }
 
+  // Add members to DL
+  addMembers(members, callback) {
+    this.api.addDistributionListMember(this.id, members, callback);
+  }
+
   parseMembers(obj) {
     let members = [];
     if (obj.dlm) {
@@ -17,6 +22,11 @@ export default class DistributionList extends Zimbra {
       });
     }
     return members;
+  }
+
+  // Remove members from DL
+  removeMembers(members, callback) {
+    this.api.removeDistributionListMember(this.id, members, callback);
   }
 
 }
