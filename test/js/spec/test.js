@@ -283,6 +283,48 @@
       });
     });
 
+    it('Should return error for bad AddAccountAlias', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let alias = 'pbruna@gmail.com';
+      api.getAccount('pbruna@itlinux.cl', function(err, data){
+        let account = data;
+        account.addAccountAlias(alias, function(err, data){
+          expect(err.extra.code).to.be.equal("account.NO_SUCH_DOMAIN");
+          done();
+        });
+      });
+    });
+
+    it('AddAccountAlias should add the alias', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let alias = Date.now() + '@itlinux.cl';
+      api.getAccount('pbruna@itlinux.cl', function(err, data){
+        let account = data;
+        account.addAccountAlias(alias, function(err, data){
+          if (err) return console.error(err);
+          expect(err).to.be.null;
+          done();
+        });
+      });
+    });
+
+    it('RemoveAccountAlias should remove the alias', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let alias = Date.now() + '@itlinux.cl';
+      api.getAccount('pbruna@itlinux.cl', function(err, data){
+        let account = data;
+        account.addAccountAlias(alias, function(err, data){
+          if (err) return console.error(err);
+          account.removeAccountAlias(alias, function(err, data){
+            if (err) return console.error(err);
+            expect(err).to.be.null;
+            done();
+          });
+        });
+      });
+    });
+
+
 
   });
 
@@ -356,7 +398,7 @@
 
     it('should counts of account for the Domain', function(done){
       let api = new ZimbraAdminApi(auth_data);
-      api.countAccounts('zboxapp.dev', function(err, data){
+      api.countAccounts('customer.dev', function(err, data){
         if (err) console.error(err);
         expect(data.default.used).to.be.above(1);
         done();
@@ -366,7 +408,7 @@
 
     it('domain.countAccounts() should return the counts', function(done){
       let api = new ZimbraAdminApi(auth_data);
-      api.getDomain('zboxapp.dev', function(err, data){
+      api.getDomain('customer.dev', function(err, data){
         if (err) console.error(err);
         let domain = data;
         domain.countAccounts(function(e, d){

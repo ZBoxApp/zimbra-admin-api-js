@@ -8,9 +8,13 @@ export default class Account extends Zimbra {
       super(account_obj, zimbra_api_client);
     }
 
+    addAccountAlias(alias, callback) {
+      this.api.addAccountAlias(this.id, alias, callback);
+    }
+
     cosName(callback) {
       if (this.attrs.zimbraCOSId) {
-        api.getCos(this.attrs.zimbraCOSId, function(e,d){
+        this.api.getCos(this.attrs.zimbraCOSId, function(e,d){
           if (e) return callback(e);
           return callback(null, d.name);
         });
@@ -32,6 +36,10 @@ export default class Account extends Zimbra {
         if (e) return callback(e);
         return callback(null, d.size);
       });
+    }
+
+    removeAccountAlias(alias, callback) {
+      this.api.removeAccountAlias(this.id, alias, callback);
     }
 
 }

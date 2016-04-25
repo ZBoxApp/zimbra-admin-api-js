@@ -280,8 +280,19 @@ account.getMailbox(callback);
 ### Get Mailbox Size
 ```javascript
 account.getMailboxSize(callback);
-// Returns a Integer represeting Bytes 
+// Returns a Integer represeting Bytes
 //
+```
+
+### Account Alias
+The `alias` **must** be an email with `Domain` in Zimbra.
+
+```javascript
+account.addAccountAlias(alias, callback);
+// Empty {} if everything goes Ok
+
+account.removeAccountAlias(alias, callback);
+// Empty {} if everything goes Ok
 ```
 
 ### Cos Name

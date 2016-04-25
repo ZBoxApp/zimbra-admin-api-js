@@ -5,20 +5,24 @@
 
 ## Accounts
 
+* [X] Add y remove Alias
 * [ ] Que Dominios administra una cuenta
-* [ ] Espacio usado
+* [X] Espacio usado
 
 ## DistributionList
 
 * [ ] Listas privadas
+* [ ] Toda su gestion
 
 ## Domains
 
+* [ ] Add y remove Admins
+
+* [ ] Devolver Tipo de renovación
+* [ ] Devolver Empresa (esto entiendo necesitamos otro API)
 * [X] Devolver casillas segun el tipo de plan, cantidad asignadas y cantidad utilizadas para un dominio
 * [X] Limite de casillas
-* [ ] Devolver Tipo de renovación
-* [ ] Devolver Fecha de la proxima renovación
-* [ ] Devolver Empresa (esto entiendo necesitamos otro API)
+* [X] Devolver Fecha de la proxima renovación
 * [X] Devolver Admins del dominio
 * [X] Devolver Listas de distribución del dominio
 

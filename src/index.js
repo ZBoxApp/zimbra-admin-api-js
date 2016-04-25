@@ -34,7 +34,7 @@ export default class ZimbraAdminApi {
     this._client = new jszimbra.Communication({url: auth_object.url});
     this.parseAllResponse = this.parseAllResponse.bind(this);
     this.parseResponse = this.parseResponse.bind(this);
-    this.parseRemoveResponse = this.parseRemoveResponse.bind(this);
+    this.parseEmptyResponse = this.parseEmptyResponse.bind(this);
     this.parseCountAccountResponse = this.parseCountAccountResponse.bind(this);
     this.parseSearchResponse = this.parseSearchResponse.bind(this);
     this.parseGrantsResponse = this.parseGrantsResponse.bind(this);
@@ -148,7 +148,8 @@ export default class ZimbraAdminApi {
     return callback(null, result);
   }
 
-  parseRemoveResponse(data, request_data, callback){
+  // For requests that returns empty Object when Success
+  parseEmptyResponse(data, request_data, callback){
     const response_object = data.get()[request_data.response_name];
     return callback(null, response_object);
   }
@@ -205,7 +206,7 @@ export default class ZimbraAdminApi {
     request_data.params.name = `${request_data.request_name}Request`;
     request_data.resource = resource;
     request_data.callback = callback;
-    request_data.parse_response = this.parseRemoveResponse;
+    request_data.parse_response = this.parseEmptyResponse;
     request_data.params.params = resource_data;
     this.performRequest(request_data);
   }
@@ -250,6 +251,20 @@ export default class ZimbraAdminApi {
     request_data.resource = resource;
     request_data.callback = callback;
     request_data.parse_response = this.parseAllResponse;
+    this.performRequest(request_data);
+  }
+
+  // Specific functions
+
+  addAccountAlias(account_id, alias, callback) {
+    const request_data = { };
+    request_data.params = this.requestParams();
+    request_data.request_name = 'AddAccountAlias';
+    request_data.params.name = `${request_data.request_name}Request`;
+    request_data.response_name = `${request_data.request_name}Response`;
+    request_data.callback = callback;
+    request_data.parse_response = this.parseEmptyResponse;
+    request_data.params.params = { 'id': account_id, 'alias': alias };
     this.performRequest(request_data);
   }
 
@@ -409,6 +424,19 @@ export default class ZimbraAdminApi {
   removeAccount(zimbra_id, callback) {
     let resource_data = { id: zimbra_id };
     this.remove('Account', resource_data, callback);
+  }
+
+  // Remove Account Alias
+  removeAccountAlias(account_id, alias, callback) {
+    const request_data = { };
+    request_data.params = this.requestParams();
+    request_data.request_name = 'RemoveAccountAlias';
+    request_data.params.name = `${request_data.request_name}Request`;
+    request_data.response_name = `${request_data.request_name}Response`;
+    request_data.callback = callback;
+    request_data.parse_response = this.parseEmptyResponse;
+    request_data.params.params = { 'id': account_id, 'alias': alias };
+    this.performRequest(request_data);
   }
 
   // Remove Account
