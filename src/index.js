@@ -254,6 +254,35 @@ export default class ZimbraAdminApi {
     this.performRequest(request_data);
   }
 
+  // Grant a right on a target to an individual or group grantee.
+  // target_data  and grantee_data are both objects like:
+  // {
+  //  type: (account|cos|dl|domain),
+  //  identifier: (name or zimbraId)
+  // }
+  grantRight(target_data, grantee_data, right_name, callback) {
+    const request_data = { };
+    request_data.params = this.requestParams();
+    request_data.request_name = 'GrantRight';
+    request_data.params.name = `${request_data.request_name}Request`;
+    request_data.response_name = `${request_data.request_name}Response`;
+    request_data.callback = callback;
+    request_data.parse_response = this.parseEmptyResponse;
+    if (target_data) request_data.params.params.target = {
+      'type': target_data.type,
+      'by': this.dictionary.byIdOrName(target_data.identifier),
+      '_content': target_data.identifier
+    };
+    if (grantee_data) request_data.params.params.grantee = {
+      'type': grantee_data.type,
+      'by': this.dictionary.byIdOrName(grantee_data.identifier),
+      'all': 1,
+      '_content': grantee_data.identifier
+    };
+    request_data.params.params.right = { '_content': right_name };
+    this.performRequest(request_data);
+  }
+
   // Specific functions
 
   addAccountAlias(account_id, alias, callback) {

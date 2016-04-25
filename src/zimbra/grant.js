@@ -15,4 +15,9 @@ export default class Grant {
     return false;
   }
 
+  isDistributionListOwnerGrant() {
+    if (this.rightName === 'sendToDistList') return true;
+    return false;
+  }
+
 }

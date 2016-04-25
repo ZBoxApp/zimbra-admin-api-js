@@ -386,3 +386,13 @@ dl.removeMembers('new_member@example.com', callback);
 dl.removeMembers(['1@example.com', '2@example.com'], callback);
 // Return Error if any of the emails isn't a member
 ```
+
+### Get Owners
+Owners are the Zimbra emails addresses that are allowed to send emails to the `DL`.
+If a `DL` has at least one `Owener` is a **Private DL**.
+
+```javascript
+dl.getOwners(callback);
+// Array of Objects
+// {name: 'email_address', id: 'ZimbraId', type: 'usr|grp'}
+```

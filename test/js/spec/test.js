@@ -541,6 +541,20 @@
       });
     });
 
+    it('dl.getOwners should return the DL owners', function(done) {
+      let api = new ZimbraAdminApi(auth_data);
+      api.getDistributionList('restringida@customer.dev', function(err, data){
+        if (err) console.log(err);
+        const dl = data;
+        dl.getOwners(function(err, data){
+          if (err) console.log(err);
+          console.log(data);
+          expect(data[0].type).to.be.exist;
+          done();
+        });
+      });
+    });
+
   });
 
   describe('Grants tests', function() {
@@ -560,6 +574,7 @@
       let target_data = {type: 'domain', identifier: 'customer.dev'};
       api.getGrants(target_data, null, function(err, data){
         if (err) console.log(err);
+        console.log(data);
         expect(data[0].constructor.name).to.equal('Grant');
         expect(data[0].right._content).to.equal("domainAdminRights");
         done();
@@ -575,8 +590,6 @@
         done();
       });
     });
-
-
   });
 
 })();
