@@ -41,6 +41,22 @@ export default class ZimbraAdminApi {
     this.dictionary = new Dictionary();
   }
 
+  buildRequestData (request_name, callback) {
+    const request_data = { };
+    request_data.params = this.requestParams();
+    request_data.request_name = request_name;
+    request_data.params.name = `${request_data.request_name}Request`;
+    request_data.response_name = `${request_data.request_name}Response`;
+    request_data.callback = callback;
+    return(request_data);
+  }
+
+  buildResourceData (name, attributes) {
+    return {
+      name: { '_content': name },
+      a: this.dictionary.attributesToArray(attributes)
+    };
+  }
 
   set token (token) {
     this._token = token;
@@ -186,26 +202,16 @@ export default class ZimbraAdminApi {
   }
 
   create(resource, resource_data, callback){
-    let request_data = { };
-    request_data.params = this.requestParams();
-    request_data.request_name = `Create${resource}`;
-    request_data.response_name = `Create${resource}Response`;
-    request_data.params.name = `${request_data.request_name}Request`;
+    const request_data = this.buildRequestData(`Create${resource}`, callback);
     request_data.resource = resource;
-    request_data.callback = callback;
     request_data.parse_response = this.parseResponse;
     request_data.params.params = resource_data;
     this.performRequest(request_data);
   }
 
   remove(resource, resource_data, callback){
-    let request_data = { };
-    request_data.params = this.requestParams();
-    request_data.request_name = `Delete${resource}`;
-    request_data.response_name = `Delete${resource}Response`;
-    request_data.params.name = `${request_data.request_name}Request`;
+    const request_data = this.buildRequestData(`Delete${resource}`, callback);
     request_data.resource = resource;
-    request_data.callback = callback;
     request_data.parse_response = this.parseEmptyResponse;
     request_data.params.params = resource_data;
     this.performRequest(request_data);
@@ -213,26 +219,16 @@ export default class ZimbraAdminApi {
 
 
   modify(resource, resource_data, callback){
-    let request_data = { };
-    request_data.params = this.requestParams();
-    request_data.request_name = `Modify${resource}`;
-    request_data.response_name = `Modify${resource}Response`;
-    request_data.params.name = `${request_data.request_name}Request`;
+    const request_data = this.buildRequestData(`Modify${resource}`, callback);
     request_data.resource = resource;
-    request_data.callback = callback;
     request_data.parse_response = this.parseResponse;
     request_data.params.params = resource_data;
     this.performRequest(request_data);
   }
 
   get(resource, resource_identifier, callback){
-    let request_data = { };
-    request_data.params = this.requestParams();
-    request_data.request_name = `Get${resource}`;
-    request_data.response_name = `Get${resource}Response`;
-    request_data.params.name = `${request_data.request_name}Request`;
+    const request_data = this.buildRequestData(`Get${resource}`, callback);
     request_data.resource = resource;
-    request_data.callback = callback;
     request_data.parse_response = this.parseResponse;
     let resource_name = this.dictionary.resourceResponseName(resource);
     request_data.params.params[resource_name] = {
@@ -243,13 +239,8 @@ export default class ZimbraAdminApi {
   }
 
   getAll(resource, callback) {
-    let request_data = { };
-    request_data.params = this.requestParams();
-    request_data.request_name = `GetAll${resource}s`;
-    request_data.response_name = `GetAll${resource}sResponse`;
-    request_data.params.name = `${request_data.request_name}Request`;
+    const request_data = this.buildRequestData(`GetAll${resource}s`, callback);
     request_data.resource = resource;
-    request_data.callback = callback;
     request_data.parse_response = this.parseAllResponse;
     this.performRequest(request_data);
   }
@@ -261,13 +252,8 @@ export default class ZimbraAdminApi {
   //  identifier: (name or zimbraId)
   // }
   grantRight(target_data, grantee_data, right_name, callback) {
-    const request_data = { };
+    const request_data = this.buildRequestData('GrantRight', callback);
     const [target, grantee] = this.dictionary.buildTargetGrantee(target_data, grantee_data);
-    request_data.params = this.requestParams();
-    request_data.request_name = 'GrantRight';
-    request_data.params.name = `${request_data.request_name}Request`;
-    request_data.response_name = `${request_data.request_name}Response`;
-    request_data.callback = callback;
     request_data.parse_response = this.parseEmptyResponse;
     request_data.params.params.grantee = grantee;
     request_data.params.params.target = target;
@@ -278,12 +264,7 @@ export default class ZimbraAdminApi {
   // Specific functions
 
   addAccountAlias(account_id, alias, callback) {
-    const request_data = { };
-    request_data.params = this.requestParams();
-    request_data.request_name = 'AddAccountAlias';
-    request_data.params.name = `${request_data.request_name}Request`;
-    request_data.response_name = `${request_data.request_name}Response`;
-    request_data.callback = callback;
+    const request_data = this.buildRequestData('AddAccountAlias', callback);
     request_data.parse_response = this.parseEmptyResponse;
     request_data.params.params = { 'id': account_id, 'alias': alias };
     this.performRequest(request_data);
@@ -292,12 +273,7 @@ export default class ZimbraAdminApi {
   // Add New members tos distributionlists
   // members is an array of emails
   addDistributionListMember(dl_id, members, callback) {
-    const request_data = { };
-    request_data.params = this.requestParams();
-    request_data.request_name = 'AddDistributionListMember';
-    request_data.params.name = `${request_data.request_name}Request`;
-    request_data.response_name = `${request_data.request_name}Response`;
-    request_data.callback = callback;
+    const request_data = this.buildRequestData('AddDistributionListMember', callback);
     request_data.parse_response = this.parseEmptyResponse;
     request_data.params.params = { id: dl_id, dlm: this.dictionary.convertToZimbraArray(members) };
     this.performRequest(request_data);
@@ -313,11 +289,8 @@ export default class ZimbraAdminApi {
   //   postOfficeBox: 'ZBoxApp'
   // };
   createAccount(name, password, attributes, callback) {
-    let resource_data = {
-      name: { '_content': name },
-      password: { '_content': password },
-      a: this.dictionary.attributesToArray(attributes)
-    };
+    const resource_data = this.buildResourceData(name, attributes);
+    resource_data.password = { '_content': password };
     this.create('Account', resource_data, callback);
   }
 
@@ -330,10 +303,7 @@ export default class ZimbraAdminApi {
   }
 
   createDomain(name, attributes, callback) {
-    let resource_data = {
-      name: { '_content': name },
-      a: this.dictionary.attributesToArray(attributes)
-    };
+    const resource_data = this.buildResourceData(name, attributes);
     this.create('Domain', resource_data, callback);
   }
 
@@ -342,10 +312,7 @@ export default class ZimbraAdminApi {
   }
 
   createDistributionList(name, attributes, callback) {
-    let resource_data = {
-      name: { '_content': name },
-      a: this.dictionary.attributesToArray(attributes)
-    };
+    const resource_data = this.buildResourceData(name, attributes);
     this.create('DistributionList', resource_data, callback);
   }
 
@@ -371,14 +338,8 @@ export default class ZimbraAdminApi {
   }
 
   getAllCos(callback) {
-    let request_data = { };
-    const resource = 'Cos';
-    request_data.params = this.requestParams();
-    request_data.request_name = `GetAll${resource}`;
-    request_data.response_name = `GetAll${resource}Response`;
-    request_data.params.name = `${request_data.request_name}Request`;
-    request_data.resource = resource;
-    request_data.callback = callback;
+    const request_data = this.buildRequestData('GetAllCos', callback);
+    request_data.resource = 'Cos';
     request_data.parse_response = this.parseAllResponse;
     this.performRequest(request_data);
   }
@@ -390,15 +351,9 @@ export default class ZimbraAdminApi {
   //  identifier: (name or zimbraId)
   // }
   getGrants(target_data, grantee_data, callback) {
-    const request_data = { };
     const [target, grantee] = this.dictionary.buildTargetGrantee(target_data, grantee_data);
-    const resource = 'Grant';
-    request_data.params = this.requestParams();
-    request_data.request_name = `Get${resource}s`;
-    request_data.response_name = `Get${resource}sResponse`;
-    request_data.params.name = `${request_data.request_name}Request`;
-    request_data.callback = callback;
-    request_data.resource = resource;
+    const request_data = this.buildRequestData('GetGrants', callback);
+    request_data.resource = 'Grant';
     request_data.parse_response = this.parseAllResponse;
     request_data.params.params.grantee = grantee;
     request_data.params.params.target = target;
@@ -407,11 +362,8 @@ export default class ZimbraAdminApi {
 
   // Get current logged account information
   getInfo(callback) {
-    const request_data = { };
-    request_data.params = { namespace: 'zimbraAccount' };
-    request_data.request_name = "GetInfo";
-    request_data.params.name = `${request_data.request_name}Request`;
-    request_data.callback = callback;
+    const request_data = this.buildRequestData('GetInfo', callback);
+    request_data.params.namespace = 'zimbraAccount';
     const that = this;
     request_data.parse_response = function(data, _, callback){
       return callback(null, data.response[0].GetInfoResponse);
@@ -454,12 +406,7 @@ export default class ZimbraAdminApi {
 
   // Remove Account Alias
   removeAccountAlias(account_id, alias, callback) {
-    const request_data = { };
-    request_data.params = this.requestParams();
-    request_data.request_name = 'RemoveAccountAlias';
-    request_data.params.name = `${request_data.request_name}Request`;
-    request_data.response_name = `${request_data.request_name}Response`;
-    request_data.callback = callback;
+    const request_data = this.buildRequestData('RemoveAccountAlias', callback);
     request_data.parse_response = this.parseEmptyResponse;
     request_data.params.params = { 'id': account_id, 'alias': alias };
     this.performRequest(request_data);
@@ -480,25 +427,15 @@ export default class ZimbraAdminApi {
   // Add New members tos distributionlists
   // members is one email or array of emails
   removeDistributionListMember(dl_id, members, callback) {
-    const request_data = { };
-    request_data.params = this.requestParams();
-    request_data.request_name = 'RemoveDistributionListMember';
-    request_data.params.name = `${request_data.request_name}Request`;
-    request_data.response_name = `${request_data.request_name}Response`;
-    request_data.callback = callback;
+    const request_data = this.buildRequestData('RemoveDistributionListMember', callback);
     request_data.parse_response = this.parseEmptyResponse;
     request_data.params.params = { id: dl_id, dlm: this.dictionary.convertToZimbraArray(members) };
     this.performRequest(request_data);
   }
 
   revokeRight(target_data, grantee_data, right_name, callback) {
-    const request_data = { };
     const [target, grantee] = this.dictionary.buildTargetGrantee(target_data, grantee_data);
-    request_data.params = this.requestParams();
-    request_data.request_name = 'RevokeRight';
-    request_data.params.name = `${request_data.request_name}Request`;
-    request_data.response_name = `${request_data.request_name}Response`;
-    request_data.callback = callback;
+    const request_data = this.buildRequestData('RevokeRight', callback);
     request_data.parse_response = this.parseEmptyResponse;
     request_data.params.params.grantee = grantee;
     request_data.params.params.target = target;
@@ -522,13 +459,8 @@ export default class ZimbraAdminApi {
   //   attrs: Comma separated list of attributes
   // }
   directorySearch(search_object, callback) {
-    const request_data = { };
-    request_data.params = this.requestParams();
+    const request_data = this.buildRequestData(`SearchDirectory`, callback);
     request_data.params.params = search_object;
-    request_data.request_name = "SearchDirectory";
-    request_data.response_name = "SearchDirectoryResponse";
-    request_data.params.name = `${request_data.request_name}Request`;
-    request_data.callback = callback;
     request_data.parse_response = this.parseSearchResponse;
     this.performRequest(request_data);
   }
@@ -537,12 +469,7 @@ export default class ZimbraAdminApi {
   // Count Accounts
   // Count number of accounts by cos in a domain,
   countAccounts(domain_idenfitier, callback) {
-    const request_data = { };
-    request_data.params = this.requestParams();
-    request_data.request_name = 'CountAccount';
-    request_data.response_name = 'CountAccountResponse';
-    request_data.params.name = `${request_data.request_name}Request`;
-    request_data.callback = callback;
+    const request_data = this.buildRequestData(`CountAccount`, callback);
     request_data.parse_response = this.parseCountAccountResponse;
     request_data.params.params.domain = {
       'by': this.dictionary.byIdOrName(domain_idenfitier),
@@ -553,15 +480,8 @@ export default class ZimbraAdminApi {
 
   // TODO: TO ugly
   setPassword(zimbra_id, password, callback) {
-    const request_data = { };
-    request_data.params = this.requestParams();
-    request_data.request_name = "SetPassword";
-    request_data.params.name = `${request_data.request_name}Request`;
-    request_data.params.params = {
-      id: zimbra_id,
-      newPassword: password
-    };
-    request_data.callback = callback;
+    const request_data = this.buildRequestData(`SetPassword`, callback);
+    request_data.params.params = { id: zimbra_id, newPassword: password };
     const that = this;
     request_data.parse_response = function(data, _, callback){
       const response_object = data.response[0].SetPasswordResponse;
@@ -581,12 +501,8 @@ export default class ZimbraAdminApi {
 
   // TODO: Ugly
   getMailbox(zimbra_id, callback) {
-    const request_data = { };
-    request_data.params = this.requestParams();
-    request_data.request_name = "GetMailbox";
-    request_data.params.name = `${request_data.request_name}Request`;
+    const request_data = this.buildRequestData('GetMailbox', callback);
     request_data.params.params = { mbox: { id: zimbra_id } };
-    request_data.callback = callback;
     request_data.parse_response = function(data, _, callback){
       const response_object = data.get().GetMailboxResponse.mbox[0];
       const result = {

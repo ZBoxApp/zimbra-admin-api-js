@@ -155,11 +155,11 @@
 
     it('should return directorySearch with total info', function(done){
       let api = new ZimbraAdminApi(auth_data);
-      let query_object = {limit: 10, domain: 'customer.dev', types: "accounts,distributionlists,aliases"};
+      let query_object = {limit: 10, domain: 'customer.dev', types: "accounts"};
       api.directorySearch(query_object, function(err, data){
         expect(data.more).to.equal(true);
         expect(data.total).to.be.above(1);
-        expect(data.account.length).to.be.at.least(2);
+        expect(data.account.length).to.be.at.least(1);
         done();
       });
     });
