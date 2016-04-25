@@ -23,6 +23,20 @@ export default class Zimbra {
     return attrs;
   }
 
+  buildRighTargetData() {
+    const type = this.api.dictionary.classNameToZimbraType(this.constructor.name);
+    return { type: type, identifier: this.id };
+  }
+
+  buildGranteeData(object_id, type) {
+    return {
+      'type': type,
+      'by': this.api.dictionary.byIdOrName(object_id),
+      'all': 1,
+      '_content': object_id
+    };
+  }
+
   parseACL(acls) {
     const elements = [].concat.apply([], [acls]);
     const grantees = {};
@@ -31,6 +45,21 @@ export default class Zimbra {
       grantees[grantee_data[0]] = {type: grantee_data[1], right: grantee_data[2]};
     });
     return grantees;
+  }
+
+  // return ACLS for the Object
+  getACLs(callback) {
+    if (this.grants) return callback(null, this.grants);
+    const that = this;
+    this.api.getGrants(this.buildRighTargetData(), null, function(err, data){
+      if (err) return callback(err);
+      that.grants = data;
+      callback(null, data);
+    });
+  }
+
+  grantRight(grantee_data, right_name, callback){
+    this.api.grantRight(this.buildRighTargetData(), grantee_data, right_name, callback);
   }
 
 }

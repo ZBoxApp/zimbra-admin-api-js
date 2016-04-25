@@ -17,22 +17,10 @@ export default class DistributionList extends Zimbra {
   // return the ID of the owner
   getOwners(callback) {
     if (this.owners) return callback(null, this.owners);
-    const owners = [];
-    const target_data = { type: 'dl', identifier: this.id };
     const that = this;
-    this.api.getGrants(target_data, null, function(error, data){
-      if (error) return callback(error);
-      if (data.length > 0) data.forEach((grant) => {
-        if (grant.isDistributionListOwnerGrant()) {
-          owners.push({
-            name: grant.grantee.name,
-            id: grant.granteeId,
-            type: grant.grantee.type
-          });
-        }
-      });
-      that.owners = owners;
-      return callback(null, owners);
+    this.getACLs(function(err, data){
+      if (err) return callback(err);
+      return callback(null, that.parseOwnerACLs(data));
     });
   }
 
@@ -44,6 +32,20 @@ export default class DistributionList extends Zimbra {
       });
     }
     return members;
+  }
+
+  parseOwnerACLs(data) {
+    const owners = [];
+    data.forEach((grant) => {
+      if (grant.isDistributionListOwnerGrant()) {
+        owners.push({
+          name: grant.grantee.name,
+          id: grant.granteeId,
+          type: grant.grantee.type
+        });
+      }
+    });
+    return owners;
   }
 
   // Remove members from DL

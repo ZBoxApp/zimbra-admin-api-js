@@ -548,7 +548,6 @@
         const dl = data;
         dl.getOwners(function(err, data){
           if (err) console.log(err);
-          console.log(data);
           expect(data[0].type).to.be.exist;
           done();
         });
@@ -574,7 +573,6 @@
       let target_data = {type: 'domain', identifier: 'customer.dev'};
       api.getGrants(target_data, null, function(err, data){
         if (err) console.log(err);
-        console.log(data);
         expect(data[0].constructor.name).to.equal('Grant');
         expect(data[0].right._content).to.equal("domainAdminRights");
         done();

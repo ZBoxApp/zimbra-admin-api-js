@@ -9,6 +9,11 @@ export default class Domain extends Zimbra {
     this.domainAdminRights = 'domainAdminRights';
   }
 
+  addAdmin(account_id, callback) {
+    const grantee_data = this.buildGranteeData(account_id, 'Account');
+    this.grantRight(grantee_data, this.domainAdminRights, callback);
+  }
+
   // TODO: Fix this fucking ugly code
   getAdmins(callback) {
     const that = this;
@@ -33,10 +38,9 @@ export default class Domain extends Zimbra {
   // Grant.right_name() == domainAdminRights
   getAdminsIdsFromGrants(callback) {
     const ids = [];
-    const target_data = { type: 'domain', identifier: this.id };
-    this.api.getGrants(target_data, null, function(error, data){
-      if (error) return callback(error);
-      if (data.length > 0) data.forEach((grant) => {
+    this.getACLs(function(err, data){
+      if (err) return callback(err);
+      data.forEach((grant) => {
         if (grant.isDomainAdminGrant()) ids.push(grant.granteeId);
       });
       return callback(null, ids);

@@ -66,6 +66,12 @@ export default class Dictionary {
     return result;
   }
 
+  classNameToZimbraType(class_name) {
+    const obj = { 'Account': 'account', 'Domain': 'domain',
+                  'Alias': 'alias', 'DistributionList': 'dl'};
+    return obj[class_name];
+  }
+
   ZimbraResources() {
     return {
       domain: {
