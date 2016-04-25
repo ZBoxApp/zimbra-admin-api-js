@@ -28,13 +28,8 @@ export default class Zimbra {
     return { type: type, identifier: this.id };
   }
 
-  buildGranteeData(object_id, type) {
-    return {
-      'type': type,
-      'by': this.api.dictionary.byIdOrName(object_id),
-      'all': 1,
-      '_content': object_id
-    };
+  buildGranteeData(grantee_id, type) {
+    return this.api.dictionary.buildGranteeData(grantee_id, type);
   }
 
   parseACL(acls) {
@@ -60,6 +55,10 @@ export default class Zimbra {
 
   grantRight(grantee_data, right_name, callback){
     this.api.grantRight(this.buildRighTargetData(), grantee_data, right_name, callback);
+  }
+
+  revokeRight(grantee_data, right_name, callback){
+    this.api.revokeRight(this.buildRighTargetData(), grantee_data, right_name, callback);
   }
 
 }

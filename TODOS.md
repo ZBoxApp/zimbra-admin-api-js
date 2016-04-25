@@ -11,15 +11,15 @@
 
 ## DistributionList
 
-* [ ] Listas privadas
-* [ ] Toda su gestion
+* [X] Listas privadas
+* [X] Toda su gestion
 
 ## Domains
 
-* [ ] Add y remove Admins
+* [X] Add y remove Admins
 
-* [ ] Devolver Tipo de renovación
-* [ ] Devolver Empresa (esto entiendo necesitamos otro API)
+* [X] Devolver Tipo de renovación
+* [X] Devolver Empresa (esto entiendo necesitamos otro API)
 * [X] Devolver casillas segun el tipo de plan, cantidad asignadas y cantidad utilizadas para un dominio
 * [X] Limite de casillas
 * [X] Devolver Fecha de la proxima renovación

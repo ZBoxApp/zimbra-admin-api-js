@@ -10,7 +10,10 @@ export default class Domain extends Zimbra {
   }
 
   addAdmin(account_id, callback) {
-    const grantee_data = this.buildGranteeData(account_id, 'Account');
+    const grantee_data = {
+      'type': 'usr',
+      'identifier': account_id
+    }
     this.grantRight(grantee_data, this.domainAdminRights, callback);
   }
 
@@ -78,6 +81,14 @@ export default class Domain extends Zimbra {
       results[split[0]] = parseInt(split[1]);
     });
     return results;
+  }
+
+  removeAdmin(account_id, callback) {
+    const grantee_data = {
+      'type': 'usr',
+      'identifier': account_id
+    }
+    this.revokeRight(grantee_data, this.domainAdminRights, callback);
   }
 
 }

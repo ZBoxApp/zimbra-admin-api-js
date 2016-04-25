@@ -351,6 +351,15 @@ domain.countAccounts(callback);
 
 If the `Domain` is empty, no 'Accounts', the result will be a `{}`.
 
+### Add / Remove Admin
+
+```javascript
+domain.addAdmin('new_member@example.com', callback);
+// {} if Success
+
+domain.removeAdmin('new_member@example.com', callback);
+// {} if Success
+```
 
 ### Domain Admins
 Return an Array of the Domain Admins `Accounts`.
@@ -385,6 +394,16 @@ dl.removeMembers('new_member@example.com', callback);
 
 dl.removeMembers(['1@example.com', '2@example.com'], callback);
 // Return Error if any of the emails isn't a member
+```
+
+### Add / Remove Owner
+
+```javascript
+dl.addOwner('new_member@example.com', callback);
+// {} if Success
+
+dl.removeOwner('new_member@example.com', callback);
+// {} if Success
 ```
 
 ### Get Owners

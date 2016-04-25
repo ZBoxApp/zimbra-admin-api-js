@@ -37,6 +37,33 @@ export default class Dictionary {
     return result;
   }
 
+  buildTargetGrantee(target_data, grantee_data) {
+    let target = null, grantee = null;
+    if (target_data) target = {
+      'type': target_data.type,
+      'by': this.byIdOrName(target_data.identifier),
+      '_content': target_data.identifier
+    }
+    if (grantee_data) grantee =
+    {
+      'type': grantee_data.type,
+      'by': this.byIdOrName(grantee_data.identifier),
+      'all': 1,
+      '_content': grantee_data.identifier
+    };
+    return([target, grantee]);
+  }
+
+  buildGranteeData(grantee_id, type) {
+    return {
+      'type': type,
+      'by': this.byIdOrName(grantee_id),
+      'all': 1,
+      '_content': grantee_id,
+      'identifier': grantee_id
+    };
+  }
+
   classFactory (resource, object, client) {
     const class_name = this.resourceToClass(resource.toLowerCase());
     return new class_name(object, client);

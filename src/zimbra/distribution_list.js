@@ -7,11 +7,20 @@ export default class DistributionList extends Zimbra {
   constructor(dl_obj, zimbra_api_client) {
     super(dl_obj, zimbra_api_client);
     this.members = this.parseMembers(dl_obj);
+    this.ownerRights = 'sendToDistList';
   }
 
   // Add members to DL
   addMembers(members, callback) {
     this.api.addDistributionListMember(this.id, members, callback);
+  }
+
+  addOwner(account_id, callback) {
+    const grantee_data = {
+      'type': 'usr',
+      'identifier': account_id
+    }
+    this.grantRight(grantee_data, this.ownerRights, callback);
   }
 
   // return the ID of the owner
@@ -52,5 +61,14 @@ export default class DistributionList extends Zimbra {
   removeMembers(members, callback) {
     this.api.removeDistributionListMember(this.id, members, callback);
   }
+
+  removeOwner(account_id, callback) {
+    const grantee_data = {
+      'type': 'usr',
+      'identifier': account_id
+    }
+    this.revokeRight(grantee_data, this.ownerRights, callback);
+  }
+
 
 }

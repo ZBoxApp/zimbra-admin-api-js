@@ -262,23 +262,15 @@ export default class ZimbraAdminApi {
   // }
   grantRight(target_data, grantee_data, right_name, callback) {
     const request_data = { };
+    const [target, grantee] = this.dictionary.buildTargetGrantee(target_data, grantee_data);
     request_data.params = this.requestParams();
     request_data.request_name = 'GrantRight';
     request_data.params.name = `${request_data.request_name}Request`;
     request_data.response_name = `${request_data.request_name}Response`;
     request_data.callback = callback;
     request_data.parse_response = this.parseEmptyResponse;
-    if (target_data) request_data.params.params.target = {
-      'type': target_data.type,
-      'by': this.dictionary.byIdOrName(target_data.identifier),
-      '_content': target_data.identifier
-    };
-    if (grantee_data) request_data.params.params.grantee = {
-      'type': grantee_data.type,
-      'by': this.dictionary.byIdOrName(grantee_data.identifier),
-      'all': 1,
-      '_content': grantee_data.identifier
-    };
+    request_data.params.params.grantee = grantee;
+    request_data.params.params.target = target;
     request_data.params.params.right = { '_content': right_name };
     this.performRequest(request_data);
   }
@@ -399,6 +391,7 @@ export default class ZimbraAdminApi {
   // }
   getGrants(target_data, grantee_data, callback) {
     const request_data = { };
+    const [target, grantee] = this.dictionary.buildTargetGrantee(target_data, grantee_data);
     const resource = 'Grant';
     request_data.params = this.requestParams();
     request_data.request_name = `Get${resource}s`;
@@ -407,17 +400,8 @@ export default class ZimbraAdminApi {
     request_data.callback = callback;
     request_data.resource = resource;
     request_data.parse_response = this.parseAllResponse;
-    if (target_data) request_data.params.params.target = {
-      'type': target_data.type,
-      'by': this.dictionary.byIdOrName(target_data.identifier),
-      '_content': target_data.identifier
-    };
-    if (grantee_data) request_data.params.params.grantee = {
-      'type': grantee_data.type,
-      'by': this.dictionary.byIdOrName(grantee_data.identifier),
-      'all': 1,
-      '_content': grantee_data.identifier
-    };
+    request_data.params.params.grantee = grantee;
+    request_data.params.params.target = target;
     this.performRequest(request_data);
   }
 
@@ -504,6 +488,21 @@ export default class ZimbraAdminApi {
     request_data.callback = callback;
     request_data.parse_response = this.parseEmptyResponse;
     request_data.params.params = { id: dl_id, dlm: this.dictionary.convertToZimbraArray(members) };
+    this.performRequest(request_data);
+  }
+
+  revokeRight(target_data, grantee_data, right_name, callback) {
+    const request_data = { };
+    const [target, grantee] = this.dictionary.buildTargetGrantee(target_data, grantee_data);
+    request_data.params = this.requestParams();
+    request_data.request_name = 'RevokeRight';
+    request_data.params.name = `${request_data.request_name}Request`;
+    request_data.response_name = `${request_data.request_name}Response`;
+    request_data.callback = callback;
+    request_data.parse_response = this.parseEmptyResponse;
+    request_data.params.params.grantee = grantee;
+    request_data.params.params.target = target;
+    request_data.params.params.right = { '_content': right_name };
     this.performRequest(request_data);
   }
 

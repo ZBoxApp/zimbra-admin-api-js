@@ -456,7 +456,41 @@
       });
     });
 
+    it('addAdmin should add Admin', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let domain_admin = 'domain_admin@customer.dev';
+      let resource_name = Date.now() + '.dev';
+      api.createDomain(resource_name, {}, function(err, data){
+        if (err) console.error(err);
+        let domain = data;
+        domain.addAdmin(domain_admin, function(e, d){
+          if (e) return console.error(e);
+          expect(err).to.be.null;
+          domain.getACLs(function(e, d){
+            if (e) return console.error(e);
+            expect(d[0].grantee.name).to.be.equal(domain_admin);
+            done();
+          });
+        });
+      });
+    });
 
+    it('removeAdmin should remove the Admin', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let domain_admin = 'domain_admin@customer.dev';
+      let resource_name = Date.now() + '.dev';
+      api.createDomain(resource_name, {}, function(err, domain){
+        domain.addAdmin(domain_admin, function(e, d){
+          domain.removeAdmin(domain_admin, function(e, d){
+            domain.getACLs(function(e, d){
+              if (e) return console.error(e);
+              expect(d.length).to.be.equal(0);
+              done();
+            });
+          });
+        });
+      });
+    });
 
   });
 
@@ -550,6 +584,40 @@
           if (err) console.log(err);
           expect(data[0].type).to.be.exist;
           done();
+        });
+      });
+    });
+
+    it('addOwner should add Owner', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let owner_email = 'domain_admin@customer.dev';
+      let resource_name = Date.now() + '@customer.dev';
+      api.createDistributionList(resource_name, {}, function(err, dl){
+        dl.addOwner(owner_email, function(e, d){
+          if (e) return console.error(e);
+          expect(err).to.be.null;
+          dl.getACLs(function(e, d){
+            if (e) return console.error(e);
+            expect(d[0].grantee.name).to.be.equal(owner_email);
+            done();
+          });
+        });
+      });
+    });
+
+    it('removeOwner should remove the Owner', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let owner_email = 'domain_admin@customer.dev';
+      let resource_name = Date.now() + '@customer.dev';
+      api.createDistributionList(resource_name, {}, function(err, dl){
+        dl.addOwner(owner_email, function(e, d){
+          dl.removeOwner(owner_email, function(e, d){
+            dl.getACLs(function(e, d){
+              if (e) return console.error(e);
+              expect(d.length).to.be.equal(0);
+              done();
+            });
+          });
         });
       });
     });
