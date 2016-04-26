@@ -7,6 +7,7 @@
 - [Errors](#errors)
 - [Zimbra Resources](#zimbra-resources)
 - [Common Functions](#common-functions)
+- [Batch Request Functions](#batch-request-functions)
 - [Creating Resources](#creating-resources)
 - [Modify Resources](#modify-resources)
 - [Remove Resources](#remove-resources)
@@ -159,6 +160,18 @@ zimbraApi.getAllDistributionLists(callback, query_object);
 var query_object = { query: 'mail=*basic*' }
 zimbraApi.getAllAccounts(callback, query_object);
 // Object {total: 29, more: false, account: Array[29]}
+```
+
+## Batch Request Functions
+
+### Count Accounts for several Domains
+Pass an array of domains ids or names and you get back an array of `countAccounts` responses
+objects. The response arrays has the same order of the request array:
+
+```javascript
+var domains = ['zboxapp.com', 'example.com', 'zboxnow.com'];
+zimbraApi.batchCountAccounts(domains, callback);
+// [Object, Object];
 ```
 
 ## Creating Resources

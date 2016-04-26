@@ -80,6 +80,17 @@ export default class Dictionary {
     return result;
   }
 
+  cosesToCountAccountObject (coses) {
+    const result = {};
+    if (typeof coses !== 'undefined') coses.forEach((cos) => {
+      result[cos.name] = {
+        used: parseInt(cos._content),
+        id: cos.id
+      };
+    });
+    return result;
+  }
+
   resourceResponseName (resource) {
     return this.zimbra_resources[resource.toLowerCase()].response_name;
   }

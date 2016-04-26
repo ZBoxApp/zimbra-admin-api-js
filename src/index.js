@@ -100,19 +100,34 @@ export default class ZimbraAdminApi {
     });
   }
 
-  buildRequest() {
+
+  buildRequest(options = {}) {
     let request = null;
-    this.client.getRequest({}, (err, req) => {
+    this.client.getRequest(options, (err, req) => {
       if (err) return error(err);
         request = req;
       });
     return request;
   }
 
+  makeBatchRequest(request_data_array, callback) {
+    const that = this;
+    if (request_data_array.length === 0) return;
+    let request_object = this.buildRequest({isBatch: true});
+    request_data_array.forEach((request_data) => {
+      request_object.addRequest(request_data.params, function(err, reqid){
+        if (err) return that.handleError(err);
+      });
+    });
+    this.client.send(request_object, function(err, data){
+      if (err) return callback(that.handleError(err));
+      that.parseBatchResponse(data, callback);
+    });
+  }
 
   makeRequest(request_data) {
     const that = this;
-    let request_object = that.buildRequest();
+    let request_object = this.buildRequest();
     request_object.addRequest(request_data.params, function(err){
       if (err) {
         return that.handleError(err);
@@ -124,28 +139,29 @@ export default class ZimbraAdminApi {
     });
   }
 
-  performRequest(request_data) {
+  performRequest(request_data, batch = false) {
     if (this.client.token) {
+      if (batch) return this.makeBatchRequest(request_data.requests, request_data.callback);
       this.makeRequest(request_data);
     } else {
       const that = this;
       let getCallback = function(err, response){
         if (err) return this.handleError(err);
+        if (batch) return that.makeBatchRequest(request_data.requests, request_data.callback);
         that.makeRequest(request_data);
       };
       this.login(getCallback);
     }
   }
 
+  parseBatchResponse(data, callback) {
+    const response_object = data.options.response.BatchResponse;
+    callback(null, response_object);
+  }
+
   parseCountAccountResponse(data, request_data, callback) {
-    const result = {};
     const coses = data.get().CountAccountResponse.cos;
-    if (typeof coses !== 'undefined') coses.forEach((cos) => {
-      result[cos.name] = {
-        used: parseInt(cos._content),
-        id: cos.id
-      };
-    });
+    const result = this.dictionary.cosesToCountAccountObject(coses);
     return callback(null, result);
   }
 
@@ -476,6 +492,32 @@ export default class ZimbraAdminApi {
       '_content': domain_idenfitier
     };
     this.performRequest(request_data);
+  }
+
+  // TODO: Fix this ugly FCKing Code
+  batchCountAccounts(domains_ids, callback) {
+    const that = this;
+    const request_data = {};
+    const result = [];
+    request_data.callback = function(err, data) {
+      if (err) return callback(err);
+      data.CountAccountResponse.forEach((r) => {
+        const reqid = parseInt(r.requestId);
+        result[reqid - 1] = that.dictionary.cosesToCountAccountObject(r.cos);
+      });
+      return callback(null, result);
+    };
+    request_data.requests = [];
+    domains_ids.forEach((domain_id) => {
+      const request = this.buildRequestData(`CountAccount`, callback);
+      request.parse_response = this.parseCountAccountResponse;
+      request.params.params.domain = {
+        'by': this.dictionary.byIdOrName(domain_id),
+        '_content': domain_id
+      };
+      request_data.requests.push(request);
+    });
+    this.performRequest(request_data, true);
   }
 
   // TODO: TO ugly

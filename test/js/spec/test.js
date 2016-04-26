@@ -173,6 +173,27 @@
       });
     });
 
+    it('Should return correct response from BatchRequest', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.client.options.timeout = 5000;
+      let callback = function(err, data) {
+        if (err) return console.error(err);
+        expect(data.options.response.BatchResponse).to.exist;
+        expect(data.options.response.BatchResponse.GetAllAccountsResponse).to.exist;
+        expect(data.options.response.BatchResponse.GetAllDomainsResponse).to.exist;
+        expect(data.isBatch).to.be.true;
+        done();
+      }
+      const getAllAccounts = api.buildRequestData('GetAllAccounts', callback);
+      const getAllDomains = api.buildRequestData('GetAllDomains', callback);
+      const that = this;
+      let getCallback = function(err, response){
+        if (err) return this.handleError(err);
+        api.makeBatchRequest([getAllAccounts, getAllDomains], callback);
+      };
+      api.login(getCallback);
+    });
+
   });
 
   describe('Account tests', function() {
@@ -403,6 +424,16 @@
         expect(data.default.used).to.be.above(1);
         done();
       });
+    });
+
+    it('Batch Count Account Response Should return the correct', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      const callback = function(err, data){
+        if (err) console.error(err);
+        expect(data[0].default.used).to.be.above(1);
+        done();
+      };
+      api.batchCountAccounts(['customer.dev', 'zboxapp.dev'], callback);
     });
 
 
