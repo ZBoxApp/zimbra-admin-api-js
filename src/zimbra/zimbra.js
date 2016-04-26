@@ -53,12 +53,12 @@ export default class Zimbra {
     });
   }
 
-  grantRight(grantee_data, right_name, callback){
-    this.api.grantRight(this.buildRighTargetData(), grantee_data, right_name, callback);
+  grantRight(grantee_data, right_name, callback, forBatch = false){
+    return this.api.grantRight(this.buildRighTargetData(), grantee_data, right_name, callback, forBatch);
   }
 
-  revokeRight(grantee_data, right_name, callback){
-    this.api.revokeRight(this.buildRighTargetData(), grantee_data, right_name, callback);
+  revokeRight(grantee_data, right_name, callback, forBatch = false){
+    return this.api.revokeRight(this.buildRighTargetData(), grantee_data, right_name, callback, forBatch);
   }
 
 }

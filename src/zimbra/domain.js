@@ -9,12 +9,18 @@ export default class Domain extends Zimbra {
     this.domainAdminRights = 'domainAdminRights';
   }
 
+  // TODO: Too ugly code
   addAdmin(account_id, callback) {
-    const grantee_data = {
-      'type': 'usr',
-      'identifier': account_id
-    }
-    this.grantRight(grantee_data, this.domainAdminRights, callback);
+    const request_data = {};
+    const grantee_data = { 'type': 'usr', 'identifier': account_id };
+    let modifyAccountRequest = this.api.modifyAccount(account_id, { zimbraIsDelegatedAdminAccount: 'TRUE' }, callback, true);
+    const grantRightRequest = this.grantRight(grantee_data, this.domainAdminRights, callback, true);
+    request_data.requests = [modifyAccountRequest, grantRightRequest];
+    request_data.callback = function(err, data) {
+      if (err) return callback(err);
+      callback(null, data.GrantRightResponse);
+    };
+    this.api.performRequest(request_data, true);
   }
 
   // TODO: Fix this fucking ugly code

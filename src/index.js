@@ -234,11 +234,12 @@ export default class ZimbraAdminApi {
   }
 
 
-  modify(resource, resource_data, callback){
+  modify(resource, resource_data, callback, forBatch = false){
     const request_data = this.buildRequestData(`Modify${resource}`, callback);
     request_data.resource = resource;
     request_data.parse_response = this.parseResponse;
     request_data.params.params = resource_data;
+    if (forBatch) return request_data;
     this.performRequest(request_data);
   }
 
@@ -267,13 +268,14 @@ export default class ZimbraAdminApi {
   //  type: (account|cos|dl|domain),
   //  identifier: (name or zimbraId)
   // }
-  grantRight(target_data, grantee_data, right_name, callback) {
+  grantRight(target_data, grantee_data, right_name, callback, forBatch = false) {
     const request_data = this.buildRequestData('GrantRight', callback);
     const [target, grantee] = this.dictionary.buildTargetGrantee(target_data, grantee_data);
     request_data.parse_response = this.parseEmptyResponse;
     request_data.params.params.grantee = grantee;
     request_data.params.params.target = target;
     request_data.params.params.right = { '_content': right_name };
+    if (forBatch) return request_data;
     this.performRequest(request_data);
   }
 
@@ -388,12 +390,12 @@ export default class ZimbraAdminApi {
   }
 
   // Modify Account
-  modifyAccount(zimbra_id, attributes, callback) {
+  modifyAccount(zimbra_id, attributes, callback, forBatch = false) {
     let resource_data = {
       id: zimbra_id,
       a: this.dictionary.attributesToArray(attributes)
     };
-    this.modify('Account', resource_data, callback);
+    return this.modify('Account', resource_data, callback, forBatch);
   }
 
   // Modify Domain

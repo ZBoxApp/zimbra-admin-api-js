@@ -491,16 +491,18 @@
       let api = new ZimbraAdminApi(auth_data);
       let domain_admin = 'domain_admin@customer.dev';
       let resource_name = Date.now() + '.dev';
-      api.createDomain(resource_name, {}, function(err, data){
-        if (err) console.error(err);
-        let domain = data;
-        domain.addAdmin(domain_admin, function(e, d){
-          if (e) return console.error(e);
-          expect(err).to.be.null;
-          domain.getACLs(function(e, d){
+      api.getAccount(domain_admin, function(err, account){
+        api.createDomain(resource_name, {}, function(err, data){
+          if (err) console.error(err);
+          let domain = data;
+          domain.addAdmin(account.id, function(e, d){
             if (e) return console.error(e);
-            expect(d[0].grantee.name).to.be.equal(domain_admin);
-            done();
+            expect(err).to.be.null;
+            domain.getACLs(function(e, d){
+              if (e) return console.error(e);
+              expect(d[0].grantee.name).to.be.equal(account.name);
+              done();
+            });
           });
         });
       });
