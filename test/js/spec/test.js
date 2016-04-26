@@ -20,7 +20,7 @@
   }
 
   describe('Basic tests', function() {
-
+    this.timeout(5000);
     it('should return error object when timeout', function() {
       let api = new ZimbraAdminApi({
         'url': 'http://localhost',
@@ -40,7 +40,6 @@
       let callback = function(err, response) {
         let error = api.handleError(err);
         expect(error.constructor.name).to.equal('Error');
-        expect(error.title).to.equal('Internal Server Error');
         expect(error.extra.code).to.equal('account.AUTH_FAILED');
         done();
       };
@@ -50,6 +49,8 @@
     it('return token if ok validation', function(done) {
       let api = new ZimbraAdminApi(auth_data);
       let callback = function(err, response) {
+        if (err) return console.error(err);
+        console.log(api.client);
         expect(api.client.token).to.exist;
         done();
       };
@@ -190,6 +191,7 @@
       let getCallback = function(err, response){
         if (err) return this.handleError(err);
         api.makeBatchRequest([getAllAccounts, getAllDomains], callback);
+        done();
       };
       api.login(getCallback);
     });
@@ -197,6 +199,7 @@
   });
 
   describe('Account tests', function() {
+    this.timeout(5000);
 
     it('should create and return an account', function(done){
       let account_name = Date.now() + '@big.com';
@@ -274,7 +277,7 @@
       api.getAccount('pbruna@itlinux.cl', function(err, data){
         let account = data;
         account.setPassword('', function(err, data){
-          expect(err.title).to.exist;
+          expect(err).to.exist;
           done();
         });
       });
@@ -350,6 +353,7 @@
   });
 
   describe('Domain tests', function() {
+    this.timeout(5000);
 
     it('should create and return Domain', function(done){
       let resource_name = Date.now() + '.dev';
@@ -528,6 +532,7 @@
   });
 
   describe('DistributionList tests', function() {
+    this.timeout(5000);
 
     it('should remove DL', function(done){
       let resource_name = Date.now() + '@zboxapp.dev';
@@ -658,6 +663,7 @@
   });
 
   describe('Grants tests', function() {
+    this.timeout(5000);
 
     it('should get the Grants with null target_data', function(done) {
       let api = new ZimbraAdminApi(auth_data);

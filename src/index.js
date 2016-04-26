@@ -6,16 +6,16 @@ import Dictionary from './utils/dictionary.js';
 
 class Error {
   constructor(err) {
-    this.status = err.status;
-    this.title = err.statusText;
-    this.extra = this.getErrorInfo(err.responseJSON);
+    this.code = err.Fault.Code.Value;
+    this.extra = this.getErrorInfo(err.Fault);
   }
 
-  getErrorInfo(responseJSON) {
-    if (responseJSON && responseJSON.Body) {
+  getErrorInfo(fault) {
+    if (fault && fault.Detail) {
       return {
-        'code': responseJSON.Body.Fault.Detail.Error.Code,
-        'reason': responseJSON.Body.Fault.Reason.Text
+        'code': fault.Detail.Error.Code,
+        'reason': fault.Reason.Text,
+        'trace': fault.Detail.Error.Trace
       }
     } else {
       return {};
