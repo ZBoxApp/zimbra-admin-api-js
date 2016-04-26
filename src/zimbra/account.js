@@ -34,7 +34,8 @@ export default class Account extends Zimbra {
     getMailboxSize(callback) {
       this.getMailbox(function(e,d){
         if (e) return callback(e);
-        return callback(null, d.size);
+        const size = ( d.size === undefined || d.size === null) ? 0 : d.size;
+        return callback(null, size);
       });
     }
 

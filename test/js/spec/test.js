@@ -282,7 +282,7 @@
 
     it('Should Get The Account Mailbox', function(done){
       let api = new ZimbraAdminApi(auth_data);
-      api.getAccount('pbruna@itlinux.cl', function(err, data){
+      api.getAccount('cos_basic_14@customer.dev', function(err, data){
         let account = data;
         account.getMailbox(function(err, data){
           if (err) return console.log(err);
@@ -294,7 +294,7 @@
 
     it('Should Get The Account Mailbox Size', function(done){
       let api = new ZimbraAdminApi(auth_data);
-      api.getAccount('pbruna@itlinux.cl', function(err, data){
+      api.getAccount('cos_basic_14@customer.dev', function(err, data){
         let account = data;
         account.getMailboxSize(function(err, data){
           if (err) return console.log(err);
