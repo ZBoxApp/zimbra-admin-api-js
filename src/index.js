@@ -177,7 +177,7 @@ export default class ZimbraAdminApi {
     const response_name = that.dictionary.resourceResponseName(resource);
     const response_object = data.get()[request_data.response_name][response_name][0];
     const result = that.dictionary.classFactory(resource, response_object, that);
-    return callback(true, result);
+    return callback(null, result);
   }
 
   // For requests that returns empty Object when Success

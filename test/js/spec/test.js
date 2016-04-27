@@ -50,7 +50,6 @@
       let api = new ZimbraAdminApi(auth_data);
       let callback = function(err, response) {
         if (err) return console.error(err);
-        console.log(api.client);
         expect(api.client.token).to.exist;
         done();
       };
@@ -134,6 +133,7 @@
       let callback = function(err, data){
         let domain_id = data.id;
         api.getDomain(domain_id, function(err, data){
+          if (err) return console.error(err);
           expect(data.name).to.equal('zboxapp.dev');
           done();
         });
