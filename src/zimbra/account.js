@@ -6,6 +6,7 @@ import Zimbra from './zimbra.js';
 export default class Account extends Zimbra {
     constructor(account_obj, zimbra_api_client) {
       super(account_obj, zimbra_api_client);
+      this.domain = this.name.split(/@/)[1];
     }
 
     addAccountAlias(alias, callback) {
