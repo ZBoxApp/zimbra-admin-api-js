@@ -177,7 +177,7 @@ export default class ZimbraAdminApi {
     const response_name = that.dictionary.resourceResponseName(resource);
     const response_object = data.get()[request_data.response_name][response_name][0];
     const result = that.dictionary.classFactory(resource, response_object, that);
-    return callback(null, result);
+    return callback(true, result);
   }
 
   // For requests that returns empty Object when Success
@@ -368,13 +368,14 @@ export default class ZimbraAdminApi {
   //  type: (account|cos|dl|domain),
   //  identifier: (name or zimbraId)
   // }
-  getGrants(target_data, grantee_data, callback) {
+  getGrants(target_data, grantee_data, callback, forBatch = false) {
     const [target, grantee] = this.dictionary.buildTargetGrantee(target_data, grantee_data);
     const request_data = this.buildRequestData('GetGrants', callback);
     request_data.resource = 'Grant';
     request_data.parse_response = this.parseAllResponse;
     request_data.params.params.grantee = grantee;
     request_data.params.params.target = target;
+    if (forBatch) return request_data;
     this.performRequest(request_data);
   }
 
