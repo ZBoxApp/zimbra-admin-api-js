@@ -34,10 +34,12 @@ export default class Zimbra {
 
   parseACL(acls) {
     const elements = [].concat.apply([], [acls]);
-    const grantees = {};
-    elements.forEach((el) => {
-      grantee_data = el.split(/ /);
-      grantees[grantee_data[0]] = {type: grantee_data[1], right: grantee_data[2]};
+    const grantees = [];
+    // Filter to remove undefined
+    // http://stackoverflow.com/questions/28607451/removing-undefined-values-from-array
+    elements.filter(Boolean).forEach((el) => {
+      const grantee_data = el.split(/ /);
+      grantees.push({id: grantee_data[0], type: grantee_data[1], right: grantee_data[2]});
     });
     return grantees;
   }

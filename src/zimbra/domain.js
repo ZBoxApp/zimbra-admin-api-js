@@ -13,47 +13,33 @@ export default class Domain extends Zimbra {
   addAdmin(account_id, callback) {
     const request_data = {};
     const grantee_data = { 'type': 'usr', 'identifier': account_id };
-    let modifyAccountRequest = this.api.modifyAccount(account_id, { zimbraIsDelegatedAdminAccount: 'TRUE' }, callback, true);
-    const grantRightRequest = this.grantRight(grantee_data, this.domainAdminRights, callback, true);
+    const modifyAccountRequest = this.api.modifyAccount(account_id, { zimbraIsDelegatedAdminAccount: 'TRUE' });
+    const grantRightRequest = this.grantRight(grantee_data, this.domainAdminRights);
     request_data.requests = [modifyAccountRequest, grantRightRequest];
+    request_data.batch = true;
     request_data.callback = function(err, data) {
       if (err) return callback(err);
       callback(null, data.GrantRightResponse);
     };
-    this.api.performRequest(request_data, true);
+    this.api.performRequest(request_data);
   }
 
   // TODO: Fix this fucking ugly code
   getAdmins(callback) {
     const that = this;
-    this.getAdminsIdsFromGrants(function(e,d){
-      if (e) return callback(e);
-      if (d.length < 1) return callback(null, []);
-      let query = "(|";
-      d.forEach((id) => {
-        const zimbra_id = `(zimbraId=${id})`;
-        query += zimbra_id;
-      });
-      query += ")";
-      that.api.getAllAccounts(function(e,d){
-        if (e) return callback(e);
-        if (d.total > 0) return callback(null, d.account);
-        return callback(null, []);
-      }, {query: query});
-    });
+    const admins_ids = this.getAdminsIdsFromGrants();
+    const query = this.makeAdminIdsQuery(admins_ids);
+    return this.api.getAllAccounts(callback, {query: query});
   }
 
   // Return the ZimbraId if the grantee have the domainAdminRights right
   // Grant.right_name() == domainAdminRights
-  getAdminsIdsFromGrants(callback) {
+  getAdminsIdsFromGrants() {
     const ids = [];
-    this.getACLs(function(err, data){
-      if (err) return callback(err);
-      data.forEach((grant) => {
-        if (grant.isDomainAdminGrant()) ids.push(grant.granteeId);
-      });
-      return callback(null, ids);
+    this.parseACL(this.attrs.zimbraACE).forEach((grantee) => {
+      if (grantee.right === this.domainAdminRights) ids.push(grantee.id);
     });
+    return ids;
   }
 
   getAllDistributionLists(callback) {
@@ -74,6 +60,16 @@ export default class Domain extends Zimbra {
       });
       return callback(null, d);
     });
+  }
+
+  makeAdminIdsQuery(ids) {
+    let query = "(|";
+    ids.forEach((id) => {
+        const zimbra_id = `(zimbraId=${id})`;
+        query += zimbra_id;
+      });
+    query += ")";
+    return query;
   }
 
   maxAccountsByCos() {

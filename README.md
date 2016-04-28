@@ -163,6 +163,19 @@ zimbraApi.getAllAccounts(callback, query_object);
 ```
 
 ## Batch Request Functions
+With `BatchRequest` you can ask Zimbra to run multiple requests in just one call, and get
+the result in just one answer.
+
+Every function here works for `BatchRequest` if you do not pass a `callback`. For example:
+
+```javascript
+var allAccounts = zimbraApi.getAllAccounts();
+var allDomains = zimbraApi.getAllDomains();
+zimbraApi.makeBatchRequest([allAccounts, allDomains], callback);
+// Object {SearchDirectoryResponse: Array[2], _jsns: "urn:zimbra"}
+// SearchDirectoryResponse[0].account, SearchDirectoryResponse[1].domain
+```
+
 
 ### Count Accounts for several Domains
 Pass an array of domains ids or names and you get back an array of `countAccounts` responses

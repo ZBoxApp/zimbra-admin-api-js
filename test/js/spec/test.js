@@ -8,63 +8,9 @@
     'password':'12345678'
   };
 
-  function loadFixture(fixtureName) {
-    var req = new XMLHttpRequest();
-    req.open('GET', 'fixtures/' + fixtureName + '.json', false);
-    req.send(null);
-    if (req.status === 200) {
-      return JSON.parse(req.responseText);
-    } else {
-      return null;
-    }
-  }
-
   describe('Basic tests', function() {
     this.timeout(5000);
-    it('should return error object when timeout', function() {
-      let api = new ZimbraAdminApi({
-        'url': 'http://localhost',
-        'user': 'user',
-        'password':'pass'});
-      api.login(null, function(err){
-        let error = api.handleError(err);
-        expect(error.constructor.name).to.equal('Error');
-        expect(error.title).to.equal('timeout');
-      });
-    });
 
-    it('return error if wrong validation', function(done) {
-      var auth_data2 = JSON.parse(JSON.stringify(auth_data));
-      auth_data2.password = 'abc';
-      let api = new ZimbraAdminApi(auth_data2);
-      let callback = function(err, response) {
-        let error = api.handleError(err);
-        expect(error.constructor.name).to.equal('Error');
-        expect(error.extra.code).to.equal('account.AUTH_FAILED');
-        done();
-      };
-      api.login(callback);
-    });
-
-    it('return token if ok validation', function(done) {
-      let api = new ZimbraAdminApi(auth_data);
-      let callback = function(err, response) {
-        if (err) return console.error(err);
-        expect(api.client.token).to.exist;
-        done();
-      };
-      api.login(callback);
-    });
-
-    it('should delete the password after authentication', function(done) {
-      let api = new ZimbraAdminApi(auth_data);
-      let callback = function(err, response) {
-        expect(api.secret).not.to.exist;
-        expect(api.password).not.to.exist;
-        done();
-      }
-      api.login(callback);
-    });
 
     it('should get all domains', function(done) {
       let api = new ZimbraAdminApi(auth_data);
@@ -471,8 +417,9 @@
         if (err) console.error(err);
         let domain = data;
         domain.getAdmins(function(e, d){
-          expect(d.length).to.be.above(1);
-          expect(d[0].constructor.name).to.be.equal('Account');
+          if (e) return console.error(e);
+          expect(d.account.length).to.be.above(1);
+          expect(d.account[0].constructor.name).to.be.equal('Account');
           done();
         });
       });
