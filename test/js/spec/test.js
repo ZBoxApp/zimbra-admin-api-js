@@ -172,6 +172,21 @@
       });
     });
 
+    it('Should create Account with an array attributes', function(done){
+      let account_name = Date.now() + '@big.com';
+      let account_password = Date.now();
+      let account_attributes = { 'sn': 'Bruna', 'givenName': 'Patricio' };
+      account_attributes.amavisBlacklistSender = ['1.com', '2.com', '3.com'];
+      let api = new ZimbraAdminApi(auth_data);
+      api.createAccount(account_name, account_password, account_attributes, function(err, data){
+        if (err) return console.log(err);
+        expect(data.attrs.sn).to.equal('Bruna');
+        expect(data.attrs.givenName).to.equal('Patricio');
+        console.log(data);
+        done();
+      });
+    });
+
     it('should modify Account attributes', function(done){
       let api = new ZimbraAdminApi(auth_data);
       let description = Date.now().toString();

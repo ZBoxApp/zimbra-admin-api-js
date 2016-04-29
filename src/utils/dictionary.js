@@ -32,7 +32,13 @@ export default class Dictionary {
     const result = [];
     const map = new Map(Object.entries(attributes));
     map.forEach((key, value) => {
-      result.push({ 'n': value, '_content': key });
+      if (this.checkIfArray(key)) {
+        key.forEach((e) => {
+          result.push({ 'n': value, '_content': e });
+        });
+      } else {
+        result.push({ 'n': value, '_content': key });
+      }
     });
     return result;
   }
@@ -43,7 +49,7 @@ export default class Dictionary {
       'type': target_data.type,
       'by': this.byIdOrName(target_data.identifier),
       '_content': target_data.identifier
-    }
+    };
     if (grantee_data) grantee =
     {
       'type': grantee_data.type,
@@ -67,6 +73,14 @@ export default class Dictionary {
   classFactory (resource, object, client) {
     const class_name = this.resourceToClass(resource.toLowerCase());
     return new class_name(object, client);
+  }
+
+  checkIfArray(object) {
+    let result = false;
+    if( Object.prototype.toString.call(object) === '[object Array]' ) {
+      result = true;
+    }
+    return result;
   }
 
   // This return a string or array of objects
