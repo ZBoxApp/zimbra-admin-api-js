@@ -89,7 +89,7 @@ export default class Domain extends Zimbra {
     const grantee_data = {
       'type': 'usr',
       'identifier': account_id
-    }
+    };
     this.revokeRight(grantee_data, this.domainAdminRights, callback);
   }
 
