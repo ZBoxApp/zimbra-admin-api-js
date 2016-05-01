@@ -70,5 +70,9 @@ export default class DistributionList extends Zimbra {
     this.revokeRight(grantee_data, this.ownerRights, callback);
   }
 
+  rename(new_name, callback) {
+    this.api.renameDistributionList(this.id, new_name, callback);
+  }
+
 
 }

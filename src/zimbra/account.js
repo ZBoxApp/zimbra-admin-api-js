@@ -44,4 +44,8 @@ export default class Account extends Zimbra {
       this.api.removeAccountAlias(this.id, alias, callback);
     }
 
+    rename(new_name, callback) {
+      this.api.renameAccount(this.id, new_name, callback);
+    }
+
 }

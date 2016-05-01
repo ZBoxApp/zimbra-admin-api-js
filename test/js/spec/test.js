@@ -309,6 +309,24 @@
       });
     });
 
+    it('Should rename the account', function(done){
+      let account_name = Date.now() + '@big.com';
+      let new_name = Date.now() + '1' + '@big.com';
+      let account_password = Date.now();
+      let account_attributes = {};
+      let api = new ZimbraAdminApi(auth_data);
+      api.createAccount(account_name, account_password, account_attributes, function(err, account){
+        if (err) return console.log(err);
+        const account_id = account.id;
+        account.rename(new_name, function(err, data){
+          if (err) return console.log(err);
+          expect(data.id).to.equal(account_id);
+          expect(data.name).to.equal(new_name);
+          done();
+        });
+      });
+
+    });
 
 
   });
@@ -621,6 +639,25 @@
         });
       });
     });
+
+    it('Should rename the DL', function(done){
+      let dl_name = Date.now() + '@big.com';
+      let new_name = Date.now() + '1' + '@big.com';
+      let dl_attrs = {};
+      let api = new ZimbraAdminApi(auth_data);
+      api.createDistributionList(dl_name, dl_attrs, function(err, dl){
+        if (err) return console.log(err);
+        const dl_id = dl.id;
+        dl.rename(new_name, function(err, data){
+          if (err) return console.log(err);
+          expect(data.id).to.equal(dl_id);
+          expect(data.name).to.equal(new_name);
+          done();
+        });
+      });
+    });
+
+
 
   });
 

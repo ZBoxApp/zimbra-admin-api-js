@@ -311,6 +311,13 @@ account.getMailboxSize(callback);
 //
 ```
 
+### Rename
+
+```javascript
+account.rename('new_name@example.com', callback);
+// account Object
+```
+
 ### Account Alias
 The `alias` **must** be an email with `Domain` in Zimbra.
 
@@ -406,6 +413,13 @@ domain.getAllDistributionLists(callback);
 ```
 
 ## Distribution Lists
+
+### Rename
+
+```javascript
+dl.rename('new_name@example.com', callback);
+// dl Object
+```
 
 ### Add / Remove Members
 

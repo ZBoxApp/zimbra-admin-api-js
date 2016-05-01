@@ -235,6 +235,14 @@ export default class ZimbraAdminApi {
     return this.performRequest(request_data);
   }
 
+  rename(resource, resource_data, callback) {
+    const request_data = this.buildRequestData(`Rename${resource}`, callback);
+    request_data.resource = resource;
+    request_data.parse_response = this.parseResponse;
+    request_data.params.params = resource_data;
+    return this.performRequest(request_data);
+  }
+
 
   modify(resource, resource_data, callback){
     const request_data = this.buildRequestData(`Modify${resource}`, callback);
@@ -449,6 +457,22 @@ export default class ZimbraAdminApi {
     request_data.parse_response = this.parseEmptyResponse;
     request_data.params.params = { id: dl_id, dlm: this.dictionary.convertToZimbraArray(members) };
     return this.performRequest(request_data);
+  }
+
+  renameAccount(zimbra_id, new_name, callback) {
+    let resource_data = {
+      id: zimbra_id,
+      newName: new_name
+    };
+    return this.rename('Account', resource_data, callback);
+  }
+
+  renameDistributionList(zimbra_id, new_name, callback) {
+    let resource_data = {
+      id: zimbra_id,
+      newName: new_name
+    };
+    return this.rename('DistributionList', resource_data, callback);
   }
 
   revokeRight(target_data, grantee_data, right_name, callback) {
