@@ -21,6 +21,7 @@ export default class ZimbraAdminApi {
     // TODO: Eliminar dependencia de client que se pasa a todos lados
     request_data.client = this;
     request_data.params = this.requestParams();
+    request_data.params.params = {};
     request_data.request_name = request_name;
     request_data.params.name = `${request_data.request_name}Request`;
     request_data.response_name = `${request_data.request_name}Response`;
@@ -216,6 +217,33 @@ export default class ZimbraAdminApi {
     const request_data = this.buildRequestData('AddDistributionListMember', callback);
     request_data.parse_response = ResponseParser.emptyResponse;
     request_data.params.params = { id: dl_id, dlm: this.dictionary.convertToZimbraArray(members) };
+    return this.performRequest(request_data);
+  }
+
+  // Enable Archiving for an Account
+  // options = {create: (0|1), name: 'archive_account_name', cos: _cos_id, password:}
+  // Docs: https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraAdmin/EnableArchive.html
+  enableArchive(account_id, options, callback) {
+    const request_data = this.buildRequestData('EnableArchive', callback);
+    request_data.parse_response = ResponseParser.emptyResponse;
+    const account = { by: this.dictionary.byIdOrName(account_id), _content: account_id };
+    const archive = {
+      create: (options.archive || 1),
+      name: { '_content': options.name },
+      cos: { by: this.dictionary.byIdOrName(options.cos_id), '_content': options.cos_id },
+      password: { '_content': options.password },
+      a: this.dictionary.attributesToArray(options.attributes)
+    };
+    request_data.params.params.account = account;
+    request_data.params.params.archive = archive;
+    return this.performRequest(request_data);
+  }
+
+  disableArchive(account_id, callback) {
+    const request_data = this.buildRequestData('DisableArchive', callback);
+    request_data.parse_response = ResponseParser.emptyResponse;
+    const account = { by: this.dictionary.byIdOrName(account_id), _content: account_id };
+    request_data.params.params.account = account;
     return this.performRequest(request_data);
   }
 

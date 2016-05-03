@@ -24,6 +24,14 @@ export default class Account extends Zimbra {
       }
     }
 
+    enableArchive(options, callback) {
+      return this.api.enableArchive(this.id, options, callback);
+    }
+
+    disableArchive(callback) {
+      return this.api.disableArchive(this.id, callback);
+    }
+
     setPassword(password, callback) {
       this.api.setPassword(this.id, password, callback);
     }
