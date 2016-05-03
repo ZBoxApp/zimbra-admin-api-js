@@ -182,7 +182,6 @@
         if (err) return console.log(err);
         expect(data.attrs.sn).to.equal('Bruna');
         expect(data.attrs.givenName).to.equal('Patricio');
-        console.log(data);
         done();
       });
     });
