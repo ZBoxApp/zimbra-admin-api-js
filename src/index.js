@@ -21,6 +21,10 @@ export default class ZimbraAdminApi {
     return pjson.version;
   }
 
+  version() {
+    return ZimbraAdminApi.version();
+  }
+
   buildRequestData (request_name, callback) {
     const request_data = { };
     // TODO: Eliminar dependencia de client que se pasa a todos lados
