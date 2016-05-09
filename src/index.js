@@ -2,6 +2,7 @@
 // See LICENSE.txt for license information.
 
 var jszimbra = require('js-zimbra');
+var pjson = require('../package.json');
 import Dictionary from './utils/dictionary.js';
 import ResponseParser from './utils/response_parser.js';
 import Error from './zimbra/error.js';
@@ -14,6 +15,10 @@ export default class ZimbraAdminApi {
     this.password = auth_object.password;
     this._client = new jszimbra.Communication({url: auth_object.url});
     this.dictionary = new Dictionary();
+  }
+
+  static version() {
+    return pjson.version;
   }
 
   buildRequestData (request_name, callback) {
@@ -81,8 +86,9 @@ export default class ZimbraAdminApi {
 
   buildRequest(options = {}) {
     let request = null;
+    const that = this;
     this.client.getRequest(options, (err, req) => {
-      if (err) return error(err);
+      if (err) return console.error(err);
       request = req;
     });
     return request;

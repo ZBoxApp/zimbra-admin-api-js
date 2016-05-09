@@ -33,6 +33,9 @@ var callback = function(err, data) {
 };
 
 zimbraApi.getAllDomains(callback);
+
+ZimbraAdminApi.version();
+// "version"
 ```
 
 ## Install
