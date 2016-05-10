@@ -177,6 +177,9 @@ var allDomains = zimbraApi.getAllDomains();
 zimbraApi.makeBatchRequest([allAccounts, allDomains], callback);
 // Object {SearchDirectoryResponse: Array[2], _jsns: "urn:zimbra"}
 // SearchDirectoryResponse[0].account, SearchDirectoryResponse[1].domain
+
+zimbraApi.makeBatchRequest([allAccounts, allDomains], callback, {onError: 'continue'});
+// By default is {onError: 'stop'}
 ```
 
 
