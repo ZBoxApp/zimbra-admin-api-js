@@ -125,10 +125,8 @@
       api.client.options.timeout = 5000;
       let callback = function(err, data) {
         if (err) return console.error(err);
-        expect(data.options.response.BatchResponse).to.exist;
-        expect(data.options.response.BatchResponse.GetAllAccountsResponse).to.exist;
-        expect(data.options.response.BatchResponse.GetAllDomainsResponse).to.exist;
-        expect(data.isBatch).to.be.true;
+        expect(data.GetAllAccountsResponse).to.exist;
+        expect(data.GetAllDomainsResponse).to.exist;
         done();
       }
       const getAllAccounts = api.buildRequestData('GetAllAccounts', callback);

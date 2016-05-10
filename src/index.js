@@ -98,10 +98,11 @@ export default class ZimbraAdminApi {
     return request;
   }
 
-  makeBatchRequest(request_data_array, callback) {
+  makeBatchRequest(request_data_array, callback, batchOnError = 'continue') {
     const that = this;
+    const onError = batchOnError;
     if (request_data_array.length === 0) return;
-    let request_object = this.buildRequest({isBatch: true});
+    let request_object = this.buildRequest({isBatch: true, batchOnError: onError});
     request_data_array.forEach((request_data) => {
       request_object.addRequest(request_data.params, function(err, reqid){
         if (err) return that.handleError(err);
