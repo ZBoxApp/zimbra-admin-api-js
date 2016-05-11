@@ -33,6 +33,15 @@ export default class ResponseParser {
     return callback(null, result);
   }
 
+  static delegateAuthResponse(data, _, callback) {
+    const response_object = data.get().DelegateAuthResponse;
+    const result = {
+      authToken: response_object.authToken[0]._content,
+      lifetime: response_object.lifetime
+    };
+    return callback(null, result);
+  }
+
   // For requests that returns empty Object when Success
   static emptyResponse(data, request_data, callback){
     const response_object = data.get()[request_data.response_name];

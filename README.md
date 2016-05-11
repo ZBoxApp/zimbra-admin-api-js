@@ -355,6 +355,15 @@ account.removeAccountAlias(alias, callback);
 // Empty {} if everything goes Ok
 ```
 
+### View Mail Path
+This return an `URL PATH` to access the account Webmail as an administrator.
+The first parameter is the `lifetime` of the Token in seconds.
+
+```javascript
+account.viewMailPath(3600, callback);
+// /service/preauth?authtoken=0_8c671f3146....&isredirect=1&adminPreAuth=1
+```
+
 ### Cos Name
 The account only has the Id of the Cos, `zimbraCOSId`, but not the name. To get the name you call `zimbraCosName` on the Account:
 

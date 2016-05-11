@@ -230,6 +230,18 @@ export default class ZimbraAdminApi {
     return this.performRequest(request_data);
   }
 
+  // Return a token for access an account
+  // {authToken: _TOKEN_, lifetime: _miliseconds_ }
+  delegateAuth(account_id, lifetime_seconds, callback) {
+    const lifetime = lifetime_seconds || 3600;
+    const request_data = this.buildRequestData('DelegateAuth', callback);
+    const account = { by: this.dictionary.byIdOrName(account_id), _content: account_id };
+    request_data.params.params.account = account;
+    request_data.params.params.duration = lifetime.toString();
+    request_data.parse_response = ResponseParser.delegateAuthResponse;
+    return this.performRequest(request_data);
+  }
+
   // Enable Archiving for an Account
   // options = {create: (0|1), name: 'archive_account_name', cos: _cos_id, password:}
   // Docs: https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraAdmin/EnableArchive.html

@@ -13,6 +13,15 @@ export default class Account extends Zimbra {
       this.api.addAccountAlias(this.id, alias, callback);
     }
 
+    viewMailPath(lifetime_seconds, callback) {
+      this.api.delegateAuth(this.id, lifetime_seconds, function(err, data){
+        if (err) return callback(e);
+        const token = data.authToken;
+        const path = `/service/preauth?authtoken=${token}&isredirect=1&adminPreAuth=1`
+        return callback(null, path);
+      });
+    }
+
     cosName(callback) {
       if (this.attrs.zimbraCOSId) {
         this.api.getCos(this.attrs.zimbraCOSId, function(e,d){

@@ -12,6 +12,16 @@
     this.timeout(5000);
 
 
+    it('should return the Delegated Token', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.delegateAuth('admin', 3672, function(err, data) {
+        if (err) console.error(err);
+        expect(data.authToken).to.exist;
+        expect(data.lifetime).to.equal(3672000);
+        done();
+      });
+    });
+
     it('should get all domains', function(done) {
       let api = new ZimbraAdminApi(auth_data);
       api.getAllDomains(function(err, data){
@@ -319,6 +329,18 @@
           if (err) return console.log(err);
           expect(data.id).to.equal(account_id);
           expect(data.name).to.equal(new_name);
+          done();
+        });
+      });
+    });
+
+    it('Should return the viewMailPath', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.getAccount('admin@zboxapp.dev', function(err, account){
+        if (err) return console.error(err);
+        account.viewMailPath(null, function(err, data){
+          if (err) return console.log(err);
+          expect(data).to.match(/adminPreAuth=1$/);
           done();
         });
       });
