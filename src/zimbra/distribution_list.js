@@ -39,6 +39,10 @@ export default class DistributionList extends Zimbra {
       obj.dlm.forEach((m) => {
         members.push(m._content);
       });
+    } else if (this.attrs.zimbraMailForwardingAddress) {
+      this.attrs.zimbraMailForwardingAddress.forEach((m) => {
+        members.push(m);
+      });
     }
     return members;
   }
