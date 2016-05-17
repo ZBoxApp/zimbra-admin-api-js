@@ -421,11 +421,13 @@ If the `Domain` is empty, no 'Accounts', the result will be a `{}`.
 
 ### Add / Remove Admin
 
+To add or remove a `Domain Admin` you **must** use the `account.id`.
+
 ```javascript
-domain.addAdmin('new_member@example.com', callback);
+domain.addAdmin(account.id, callback);
 // {} if Success
 
-domain.removeAdmin('new_member@example.com', callback);
+domain.removeAdmin(account.id, callback);
 // {} if Success
 ```
 

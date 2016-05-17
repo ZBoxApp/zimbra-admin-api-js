@@ -624,7 +624,7 @@
       });
     });
 
-    it('addOwner should add Owner', function(done){
+    it('addOwner to DL should add Owner', function(done){
       let api = new ZimbraAdminApi(auth_data);
       let owner_email = 'domain_admin@customer.dev';
       let resource_name = Date.now() + '@customer.dev';
