@@ -164,6 +164,23 @@
       api.login(getCallback);
     });
 
+    it('Should return errors for BatchRequest', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.client.options.timeout = 5000;
+      const getAllAccounts = api.directorySearch({types: 'account'});
+      const deleteAccount = api.removeAccount('pollotron@example.com');
+      const getAllDomains = api.directorySearch({types: 'domains'});
+      api.login(function(err, data){
+        api.makeBatchRequest([deleteAccount, getAllDomains, getAllAccounts], function(err, data){
+          expect(data.errors.length).to.be.above(1);
+          expect(data.errors[0].constructor.name).to.equal('Error');
+          expect(data.errors[0].extra.code).to.exist;
+          expect(data.errors[1].extra.reason).to.exist;
+          done();
+        }, {onError: 'continue'});
+      });
+    });
+
   });
 
   describe('Account tests', function() {

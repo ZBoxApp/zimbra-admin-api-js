@@ -14,6 +14,12 @@ export default class Error {
         'reason': err.Fault.Reason.Text,
         'trace': err.Fault.Detail.Error.Trace
       };
+    } else if (err && err.Detail) {
+      return {
+        'code': err.Detail.Error.Code,
+        'reason': err.Reason.Text,
+        'trace': err.Detail.Error.Trace
+      }
     } else {
       return { 'code': err.status, 'reason': err.statusText };
     }

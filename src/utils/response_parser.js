@@ -24,6 +24,13 @@ export default class ResponseParser {
 
   static batchResponse(data, callback) {
     const response_object = data.options.response.BatchResponse;
+    if(response_object.Fault && response_object.Fault.length >= 1 ) {
+      const errors = [];
+      response_object.Fault.forEach((e) =>{
+        errors.push(new Error(e));
+      });
+      response_object.errors = errors;
+    }
     return callback(null, response_object);
   }
 
