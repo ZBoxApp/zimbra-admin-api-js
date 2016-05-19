@@ -82,7 +82,7 @@ export default class ZimbraAdminApi {
     this.client.auth(auth_object, function(err, response){
       that.secret = null;
       that.password = null;
-      if (err) return (callback || that.handleError)(err);
+      if (err) return callback(that.handleError(err));
       return (callback || that.handleResponse)(null, response);
     });
   }

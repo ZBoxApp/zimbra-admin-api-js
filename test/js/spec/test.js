@@ -110,6 +110,20 @@
       api.login(callback);
     });
 
+    it('should return Error with wrong Login', function(done){
+      let auth_obj = {
+        'url': 'http://zimbra.zboxapp.dev:8000/service/admin/soap',
+        'user': 'admin@zboxapp.dev',
+        'password':'12345678910'
+      }
+      let api = new ZimbraAdminApi(auth_obj);
+      api.login(function(err, data){
+        expect(err.extra.code).to.be.equal("account.AUTH_FAILED");
+        expect(err.extra.reason).to.match(/authentication failed/);
+        done();
+      });
+    });
+
     it('should return directorySearch with total info', function(done){
       let api = new ZimbraAdminApi(auth_data);
       let query_object = {limit: 10, domain: 'customer.dev', types: "accounts"};
