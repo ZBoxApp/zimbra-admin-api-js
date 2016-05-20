@@ -40,7 +40,8 @@ export default class DistributionList extends Zimbra {
         members.push(m._content);
       });
     } else if (this.attrs.zimbraMailForwardingAddress) {
-      this.attrs.zimbraMailForwardingAddress.forEach((m) => {
+      const fwd_address = [].concat.apply([], [this.attrs.zimbraMailForwardingAddress]);
+      fwd_address.forEach((m) => {
         members.push(m);
       });
     }
