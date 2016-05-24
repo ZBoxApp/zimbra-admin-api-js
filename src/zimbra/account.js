@@ -15,7 +15,7 @@ export default class Account extends Zimbra {
 
     viewMailPath(lifetime_seconds, callback) {
       this.api.delegateAuth(this.id, lifetime_seconds, function(err, data){
-        if (err) return callback(e);
+        if (err) return callback(err);
         const token = data.authToken;
         const path = `/service/preauth?authtoken=${token}&isredirect=1&adminPreAuth=1`
         return callback(null, path);
