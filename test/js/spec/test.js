@@ -3,7 +3,7 @@
   'use strict';
 
   var auth_data = {
-    'url': 'http://zimbra.zboxapp.dev:8000/service/admin/soap',
+    'url': 'http://zimbra.zboxapp.dev:9000/service/admin/soap',
     'user': 'admin@zboxapp.dev',
     'password':'12345678'
   };
@@ -112,7 +112,7 @@
 
     it('should return Error with wrong Login', function(done){
       let auth_obj = {
-        'url': 'http://zimbra.zboxapp.dev:8000/service/admin/soap',
+        'url': 'http://zimbra.zboxapp.dev:9000/service/admin/soap',
         'user': 'admin@zboxapp.dev',
         'password':'12345678910'
       }

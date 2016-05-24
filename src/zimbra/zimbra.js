@@ -10,6 +10,7 @@ export default class Zimbra {
   }
 
   buildAttrsMap(obj_ary) {
+    if (!obj_ary) return {};
     const attrs = {};
     obj_ary.forEach((r) => {
       if (attrs[r.n]) {

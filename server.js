@@ -6,7 +6,7 @@ var http = require("http"),
     proxy = httpProxy.createProxyServer({})
     prefix = '/service'
     staticDir = './'
-    port = process.argv[2] || 8000;
+    port = process.argv[2] || 9000;
 
 http.createServer(function(request, response) {
 
