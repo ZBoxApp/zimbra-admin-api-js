@@ -51,6 +51,10 @@ export default class Domain extends Zimbra {
     }, query_object);
   }
 
+  checkMxRecord(callback) {
+    return this.api.checkDomainMxRecord(this.id, callback);
+  }
+
   countAccounts(callback) {
     const maxAccountsByCos = this.maxAccountsByCos();
     this.api.countAccounts(this.id, function(e,d){

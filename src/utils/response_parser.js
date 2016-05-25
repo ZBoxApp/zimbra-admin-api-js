@@ -34,6 +34,16 @@ export default class ResponseParser {
     return callback(null, response_object);
   }
 
+  static checkDomainMxRecordResponse(data, request_data, callback) {
+    const response = data.get().CheckDomainMXRecordResponse;
+    const result = {
+      entry: response.entry[0] ? response.entry[0]._content : null,
+      code: response.code[0] ? response.code[0]._content : null,
+      message: response.message[0] ? response.message[0]._content : null,
+    };
+    return callback(null, result);
+  }
+
   static countAccountResponse(data, request_data, callback) {
     const coses = data.get().CountAccountResponse.cos;
     const result = ResponseParser.dictionary().cosesToCountAccountObject(coses);

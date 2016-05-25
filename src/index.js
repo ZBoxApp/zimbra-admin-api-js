@@ -144,6 +144,16 @@ export default class ZimbraAdminApi {
     }
   }
 
+  checkDomainMxRecord(domain, callback) {
+    const request_data = this.buildRequestData('CheckDomainMXRecord', callback);
+    request_data.parse_response = ResponseParser.checkDomainMxRecordResponse;
+    request_data.params.params.domain = {
+      'by': this.dictionary.byIdOrName(domain),
+      '_content': domain
+    };
+    return this.performRequest(request_data);
+  }
+
   create(resource, resource_data, callback){
     const request_data = this.buildRequestData(`Create${resource}`, callback);
     request_data.resource = resource;

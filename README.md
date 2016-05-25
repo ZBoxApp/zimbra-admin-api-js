@@ -419,6 +419,14 @@ domain.countAccounts(callback);
 
 If the `Domain` is empty, no 'Accounts', the result will be a `{}`.
 
+### CheckDomainMXRecord
+
+```javascript
+domain.checkMxRecord(callback);
+// Object {entry: "5 mailcleaner.zboxapp.com.", code: "Failed",
+// message: "Domain is configured to use SMTP host: zimbra.zboxapp.dev. None of the MX records match this name."}
+```
+
 ### Add / Remove Admin
 
 To add or remove a `Domain Admin` you **must** use the `account.id`.

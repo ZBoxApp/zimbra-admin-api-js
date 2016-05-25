@@ -752,7 +752,6 @@
       let api = new ZimbraAdminApi(auth_data);
       api.client.options.timeout = 100;
       api.getAllAccounts(function(err, data){
-        console.log(err);
         expect(err).to.exist;
         done();
       });
