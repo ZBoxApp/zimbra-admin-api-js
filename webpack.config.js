@@ -2,7 +2,7 @@
 
 var webpack = require('webpack');
 var path = require('path');
-var libraryName = 'zimbra-admin-api-js';
+var libraryName = 'zimbra-admin-api';
 var outputFile = libraryName + '.js';
 var DEV = false;
 
