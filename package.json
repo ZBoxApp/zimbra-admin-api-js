@@ -6,7 +6,6 @@
   "dependencies": {
     "crypto-browserify": "^3.11.0",
     "jquery": "^2.2.3",
-    "js-powerdns": "github:zboxapp/js-powerdns",
     "js-zimbra": "github:zboxapp/js-zimbra#super-agent",
     "merge": "^1.2.0",
     "options-api": "^1.1.0",
