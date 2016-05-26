@@ -1,14 +1,16 @@
 // Copyright (c) 2016 ZBox, Spa. All Rights Reserved.
 // See LICENSE.txt for license information.
 
+'use strict';
+
 var jszimbra = require('js-zimbra');
 var pjson = require('../package.json');
-import Dictionary from './utils/dictionary.js';
-import ResponseParser from './utils/response_parser.js';
-import Error from './zimbra/error.js';
+var Dictionary = require('./utils/dictionary.js');
+var ResponseParser = require('./utils/response_parser.js');
+var ErrorBuilder = require('./zimbra/error.js');
 
 // TODO: To many parseResponse types
-export default class ZimbraAdminApi {
+class ZimbraAdminApi {
   constructor(auth_object) {
     this.url = auth_object.url;
     this.user = auth_object.user;
@@ -66,7 +68,7 @@ export default class ZimbraAdminApi {
   }
 
   handleError(err) {
-    return new Error(err);
+    return new ErrorBuilder(err);
   }
 
   handleResponse(_, response) {
@@ -88,7 +90,8 @@ export default class ZimbraAdminApi {
   }
 
 
-  buildRequest(options = {}) {
+  buildRequest(options) {
+    options = options || {};
     let request = null;
     const that = this;
     this.client.getRequest(options, (err, req) => {
@@ -98,7 +101,8 @@ export default class ZimbraAdminApi {
     return request;
   }
 
-  makeBatchRequest(request_data_array, callback, error = {onError: 'stop'}) {
+  makeBatchRequest(request_data_array, callback, error) {
+    error = error || {onError: 'stop'}
     const that = this;
     if (request_data_array.length === 0) return;
     let request_object = this.buildRequest({isBatch: true, batchOnError: error.onError});
@@ -214,7 +218,9 @@ export default class ZimbraAdminApi {
   // }
   grantRight(target_data, grantee_data, right_name, callback) {
     const request_data = this.buildRequestData('GrantRight', callback);
-    const [target, grantee] = this.dictionary.buildTargetGrantee(target_data, grantee_data);
+    const target_grantee = this.dictionary.buildTargetGrantee(target_data, grantee_data);
+    const target = target_grantee[0];
+    const grantee = target_grantee[1];
     request_data.parse_response = ResponseParser.emptyResponse;
     request_data.params.params.grantee = grantee;
     request_data.params.params.target = target;
@@ -308,22 +314,26 @@ export default class ZimbraAdminApi {
     return this.create('DistributionList', resource_data, callback);
   }
 
-  getAllDomains(callback, query_object = {}) {
+  getAllDomains(callback, query_object) {
+    query_object = query_object || {};
     query_object.types = 'domains';
     return this.directorySearch(query_object, callback);
   }
 
-  getAllAccounts(callback, query_object = {}) {
+  getAllAccounts(callback, query_object) {
+    query_object = query_object || {};
     query_object.types = 'accounts';
     return this.directorySearch(query_object, callback);
   }
 
-  getAllDistributionLists(callback, query_object = {}) {
+  getAllDistributionLists(callback, query_object) {
+    query_object = query_object || {};
     query_object.types = 'distributionlists';
     return this.directorySearch(query_object, callback);
   }
 
-  getAllAliases(callback, query_object = {}) {
+  getAllAliases(callback, query_object) {
+    query_object = query_object || {};
     query_object.types = 'aliases';
     return this.directorySearch(query_object, callback);
   }
@@ -350,7 +360,9 @@ export default class ZimbraAdminApi {
   //  identifier: (name or zimbraId)
   // }
   getGrants(target_data, grantee_data, callback) {
-    const [target, grantee] = this.dictionary.buildTargetGrantee(target_data, grantee_data);
+    const target_grantee = this.dictionary.buildTargetGrantee(target_data, grantee_data);
+    const target = target_grantee[0];
+    const grantee = target_grantee[1];
     const request_data = this.buildRequestData('GetGrants', callback);
     request_data.resource = 'Grant';
     request_data.parse_response = ResponseParser.allResponse;
@@ -443,7 +455,9 @@ export default class ZimbraAdminApi {
   }
 
   revokeRight(target_data, grantee_data, right_name, callback) {
-    const [target, grantee] = this.dictionary.buildTargetGrantee(target_data, grantee_data);
+    const target_grantee = this.dictionary.buildTargetGrantee(target_data, grantee_data);
+    const target = target_grantee[0];
+    const grantee = target_grantee[1];
     const request_data = this.buildRequestData('RevokeRight', callback);
     request_data.parse_response = ResponseParser.emptyResponse;
     request_data.params.params.grantee = grantee;
@@ -530,5 +544,5 @@ export default class ZimbraAdminApi {
 if (typeof module === 'object' && typeof module.exports === 'object') {
   module.exports = ZimbraAdminApi;
 } else {
-  global.window.ZimbraAdminApi = ZimbraAdminApi;
+  window.ZimbraAdminApi = ZimbraAdminApi;
 }

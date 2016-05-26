@@ -1,7 +1,9 @@
 // Copyright (c) 2016 ZBox, Spa. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-export default class Zimbra {
+'use strict';
+
+class Zimbra {
   constructor(resource_obj, zimbra_api_client) {
     this.name = resource_obj.name;
     this.id = resource_obj.id;
@@ -56,12 +58,16 @@ export default class Zimbra {
     });
   }
 
-  grantRight(grantee_data, right_name, callback, forBatch = false){
+  grantRight(grantee_data, right_name, callback, forBatch){
+    forBatch = forBatch || false;
     return this.api.grantRight(this.buildRighTargetData(), grantee_data, right_name, callback, forBatch);
   }
 
-  revokeRight(grantee_data, right_name, callback, forBatch = false){
+  revokeRight(grantee_data, right_name, callback, forBatch){
+    forBatch = forBatch || false;
     return this.api.revokeRight(this.buildRighTargetData(), grantee_data, right_name, callback, forBatch);
   }
 
 }
+
+module.exports = Zimbra;

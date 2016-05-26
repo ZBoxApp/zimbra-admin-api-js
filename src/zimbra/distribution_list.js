@@ -1,9 +1,11 @@
 // Copyright (c) 2016 ZBox, Spa. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import Zimbra from './zimbra.js';
+'use strict';
 
-export default class DistributionList extends Zimbra {
+var Zimbra = require('./zimbra.js');
+
+class DistributionList extends Zimbra {
   constructor(dl_obj, zimbra_api_client) {
     super(dl_obj, zimbra_api_client);
     this.members = this.parseMembers(dl_obj);
@@ -81,3 +83,5 @@ export default class DistributionList extends Zimbra {
 
 
 }
+
+module.exports = DistributionList;

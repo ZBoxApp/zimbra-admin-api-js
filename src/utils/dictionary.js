@@ -1,14 +1,16 @@
 // Copyright (c) 2016 ZBox, Spa. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import Domain from './../zimbra/domain.js';
-import Account from './../zimbra/account.js';
-import Alias from './../zimbra/alias.js';
-import Cos from './../zimbra/cos.js';
-import Grant from './../zimbra/grant.js';
-import DistributionList from './../zimbra/distribution_list.js';
+'use strict';
 
-export default class Dictionary {
+var Domain = require('./../zimbra/domain.js');
+var Account = require('./../zimbra/account.js');
+var Alias = require('./../zimbra/alias.js');
+var Cos = require('./../zimbra/cos.js');
+var Grant = require('./../zimbra/grant.js');
+var DistributionList = require('./../zimbra/distribution_list.js');
+
+class Dictionary {
   constructor() {
     this.zimbra_resources = this.ZimbraResources();
   }
@@ -176,3 +178,5 @@ export default class Dictionary {
   }
 
 }
+
+module.exports = Dictionary;

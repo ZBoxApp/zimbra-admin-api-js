@@ -1,7 +1,9 @@
 // Copyright (c) 2016 ZBox, Spa. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-export default class Error {
+'use strict';
+
+class Error {
   constructor(err) {
     this.code = err.Fault ? err.Fault.Code.Value : err.status;
     this.extra = this.getErrorInfo(err);
@@ -25,3 +27,5 @@ export default class Error {
     }
   }
 }
+
+module.exports = Error;

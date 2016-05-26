@@ -1,10 +1,12 @@
 // Copyright (c) 2016 ZBox, Spa. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import Dictionary from './dictionary.js';
-import Error from '../zimbra/error.js';
+'use strict';
 
-export default class ResponseParser {
+var Dictionary = require('./dictionary.js');
+var ErrorBuilder = require('../zimbra/error.js');
+
+class ResponseParser {
 
   static dictionary() {
     return new Dictionary();
@@ -27,7 +29,7 @@ export default class ResponseParser {
     if(response_object.Fault && response_object.Fault.length >= 1 ) {
       const errors = [];
       response_object.Fault.forEach((e) =>{
-        errors.push(new Error(e));
+        errors.push(new ErrorBuilder(e));
       });
       response_object.errors = errors;
     }
@@ -114,10 +116,12 @@ export default class ResponseParser {
         statusText: response_object.message[0]._content,
         responseJSON: {}
       };
-      return callback(new Error(err));
+      return callback(new ErrorBuilder(err));
     } else {
       return callback(null, {});
     }
   }
 
 }
+
+module.exports = ResponseParser;
