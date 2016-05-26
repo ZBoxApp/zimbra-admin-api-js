@@ -48,11 +48,7 @@ var config = {
       },
       {
         test: /(node_modules)\/.+\.(js|jsx)$/,
-        loader: 'imports',
-        query: {
-                 $: 'jquery',
-                 jQuery: 'jquery'
-        }
+        loader: 'imports'
       }
     ]
   },

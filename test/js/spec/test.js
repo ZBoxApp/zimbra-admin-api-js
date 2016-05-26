@@ -745,17 +745,4 @@
     });
   });
 
-  describe('Timeout Error tests', function() {
-    this.timeout(5000);
-
-    it('should create and return an account', function(done){
-      let api = new ZimbraAdminApi(auth_data);
-      api.client.options.timeout = 100;
-      api.getAllAccounts(function(err, data){
-        expect(err).to.exist;
-        done();
-      });
-    });
-  });
-
 })();
