@@ -12,18 +12,41 @@ class Domain extends Zimbra {
   }
 
   // TODO: Too ugly code
-  addAdmin(account_id, callback) {
+  addAdmin(account_id, coses = [], callback) {
     const request_data = {};
     const grantee_data = { 'type': 'usr', 'identifier': account_id };
     const modifyAccountRequest = this.api.modifyAccount(account_id, { zimbraIsDelegatedAdminAccount: 'TRUE' });
     const grantRightRequest = this.grantRight(grantee_data, this.domainAdminRights);
+    const cosesRights = this.buildCosesGrantsRequest(coses, grantee_data);
     request_data.requests = [modifyAccountRequest, grantRightRequest];
+    request_data.requests = request_data.requests.concat(cosesRights);
     request_data.batch = true;
     request_data.callback = function(err, data) {
       if (err) return callback(err);
       callback(null, data.GrantRightResponse);
     };
     this.api.performRequest(request_data);
+  }
+
+  buildCosesGrantsRequest(coses = [], grantee_data) {
+    const requests = [];
+    coses.forEach((c) => {
+      const target_data = { type: 'cos', identifier: c };
+      const grants = this.buildCosGrantByAcl(target_data, grantee_data);
+      requests.push(grants);
+    });
+    return [].concat.apply([], requests);
+  }
+
+  // Return an array with all the rights
+  // needed 'assignCos', 'listCos', 'getCos'
+  buildCosGrantByAcl(target_data, grantee_data) {
+    const grants = [];
+    ['assignCos', 'listCos', 'getCos'].forEach((right) => {
+      const request = this.api.grantRight(target_data, grantee_data, right);
+      grants.push(request);
+    });
+    return grants;
   }
 
   // TODO: Fix this fucking ugly code

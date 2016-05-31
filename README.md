@@ -430,9 +430,11 @@ domain.checkMxRecord(callback);
 ### Add / Remove Admin
 
 To add or remove a `Domain Admin` you **must** use the `account.id`.
+You should also specify the `coses` the `Domain Admin` can assign to the accounts of his domains.
 
 ```javascript
-domain.addAdmin(account.id, callback);
+const coses = ['default', 'test', 'professional'];
+domain.addAdmin(account.id, coses, callback);
 // {} if Success
 
 domain.removeAdmin(account.id, callback);

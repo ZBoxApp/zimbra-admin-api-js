@@ -528,7 +528,8 @@
         api.createDomain(resource_name, {}, function(err, data){
           if (err) console.error(err);
           let domain = data;
-          domain.addAdmin(account.id, function(e, d){
+          const coses = ['basic', 'premium'];
+          domain.addAdmin(account.id, coses,  function(e, d){
             if (e) return console.error(e);
             expect(err).to.be.null;
             domain.getACLs(function(e, d){
@@ -546,7 +547,7 @@
       let domain_admin = 'domain_admin@customer.dev';
       let resource_name = Date.now() + '.dev';
       api.createDomain(resource_name, {}, function(err, domain){
-        domain.addAdmin(domain_admin, function(e, d){
+        domain.addAdmin(domain_admin, [], function(e, d){
           domain.removeAdmin(domain_admin, function(e, d){
             domain.getACLs(function(e, d){
               if (e) return console.error(e);
