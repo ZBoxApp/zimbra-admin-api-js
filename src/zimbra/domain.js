@@ -13,24 +13,28 @@ class Domain extends Zimbra {
 
   // TODO: Too ugly code
   addAdmin(account_id, coses = [], callback) {
-    const request_data = {};
-    const grantee_data = { 'type': 'usr', 'identifier': account_id };
-    const modifyAccountRequest = this.api.modifyAccount(account_id, { zimbraIsDelegatedAdminAccount: 'TRUE' });
-    const grantRightRequest = this.grantRight(grantee_data, this.domainAdminRights);
-    request_data.requests = [modifyAccountRequest, grantRightRequest];
-    request_data.batch = true;
-    request_data.callback = (err, data) => {
+    const grantee_data = { 'type': 'usr', 'identifier': account_id };   
+    this.addDelegatedAttributeToAccount(account_id, (err,data) => {
       if (err) return callback(err);
-      this.assignCosRights(grantee_data, coses, callback);
-    };
-    this.api.performRequest(request_data);
+      this.grantRight(grantee_data, this.domainAdminRights, (err, data) => {
+        if (err) return callback(err);
+        return this.assignCosRights(grantee_data, coses, callback);
+      });
+    });
+  }
+  
+  addDelegatedAttributeToAccount(account_id, callback) {
+    this.api.modifyAccount(account_id, { zimbraIsDelegatedAdminAccount: 'TRUE' }, (err, data) => {
+      if (err) return callback(err);
+      return callback(null, data);
+    });
   }
   
   // This functions add the rights to the domain admin
   // to be able to change the accounts cos
-  assignCosRights(grantee_data, coses, callback) {
+  assignCosRights(grantee_data, coses, callback, revoke = false) {
     const request_data = {};
-    request_data.requests = this.buildCosesGrantsRequest(coses, grantee_data);
+    request_data.requests = this.buildCosesGrantsRequest(coses, grantee_data, revoke);
     request_data.batch = true;
     request_data.callback = (err, data) => {
       if (err) return callback(err);
@@ -39,25 +43,19 @@ class Domain extends Zimbra {
     this.api.performRequest(request_data);
   }
 
-  buildCosesGrantsRequest(coses = [], grantee_data) {
+  buildCosesGrantsRequest(coses = [], grantee_data, revoke = false) {
     const requests = [];
     coses.forEach((c) => {
       const target_data = { type: 'cos', identifier: c };
-      const grants = this.buildCosGrantByAcl(target_data, grantee_data);
-      requests.push(grants);
+      let grant = null;
+      if (revoke) {
+       grant = this.api.revokeRight(target_data, grantee_data, 'assignCos'); 
+      } else {
+        grant = this.api.grantRight(target_data, grantee_data, 'assignCos');
+      }
+      requests.push(grant);
     });
-    return [].concat.apply([], requests);
-  }
-
-  // Return an array with all the rights
-  // needed 'assignCos', 'listCos', 'getCos'
-  buildCosGrantByAcl(target_data, grantee_data) {
-    const grants = [];
-    ['assignCos', 'listCos', 'getCos'].forEach((right) => {
-      const request = this.api.grantRight(target_data, grantee_data, right);
-      grants.push(request);
-    });
-    return grants;
+    return requests;
   }
 
   // TODO: Fix this fucking ugly code
@@ -130,7 +128,10 @@ class Domain extends Zimbra {
       'type': 'usr',
       'identifier': account_id
     };
-    this.revokeRight(grantee_data, this.domainAdminRights, callback);
+    this.revokeRight(grantee_data, this.domainAdminRights, (err, data) => {
+      if (err) return callback(err);
+      this.assignCosRights(grantee_data, coses, callback, true);
+    });
   }
 
 }

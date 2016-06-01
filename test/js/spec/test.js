@@ -523,9 +523,9 @@
 
     it('addAdmin should add Admin', function(done){
       let api = new ZimbraAdminApi(auth_data);
-      let domain_admin = 'domain_admin@customer.dev';
+      let domain_admin = Date.now() + '@customer.dev';
       let resource_name = Date.now() + '.dev';
-      api.getAccount(domain_admin, function(err, account){
+      api.createAccount(domain_admin, '12dda.222', {},  function(err, account){
         api.createDomain(resource_name, {}, function(err, data){
           if (err) console.error(err);
           let domain = data;
