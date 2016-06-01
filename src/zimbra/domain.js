@@ -17,13 +17,24 @@ class Domain extends Zimbra {
     const grantee_data = { 'type': 'usr', 'identifier': account_id };
     const modifyAccountRequest = this.api.modifyAccount(account_id, { zimbraIsDelegatedAdminAccount: 'TRUE' });
     const grantRightRequest = this.grantRight(grantee_data, this.domainAdminRights);
-    const cosesRights = this.buildCosesGrantsRequest(coses, grantee_data);
     request_data.requests = [modifyAccountRequest, grantRightRequest];
-    request_data.requests = request_data.requests.concat(cosesRights);
     request_data.batch = true;
-    request_data.callback = function(err, data) {
+    request_data.callback = (err, data) => {
       if (err) return callback(err);
-      callback(null, data.GrantRightResponse);
+      this.assignCosRights(grantee_data, coses, callback);
+    };
+    this.api.performRequest(request_data);
+  }
+  
+  // This functions add the rights to the domain admin
+  // to be able to change the accounts cos
+  assignCosRights(grantee_data, coses, callback) {
+    const request_data = {};
+    request_data.requests = this.buildCosesGrantsRequest(coses, grantee_data);
+    request_data.batch = true;
+    request_data.callback = (err, data) => {
+      if (err) return callback(err);
+      return callback(null, data);
     };
     this.api.performRequest(request_data);
   }
