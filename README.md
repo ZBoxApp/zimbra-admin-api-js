@@ -451,7 +451,7 @@ const coses = ['default', 'test', 'professional'];
 domain.addAdmin(account.id, coses, callback);
 // {} if Success
 
-domain.removeAdmin(account.id, callback);
+domain.removeAdmin(account.id, coses, callback);
 // {} if Success
 ```
 
