@@ -61,8 +61,8 @@ class Domain extends Zimbra {
 
   checkAliasDomain() {
     this.isAliasDomain = this.attrs.zimbraDomainType === 'alias' ? true : false;
-    if (this.isAliasDomain) {
-      const masterDomain = this.attrs.zimbraMailCatchAllForwardingAddress;
+    const masterDomain = this.attrs.zimbraMailCatchAllForwardingAddress;
+    if (this.isAliasDomain && masterDomain) {
       this.masterDomainName = masterDomain.split(/@/)[1];
     }
     return true;
