@@ -9,11 +9,12 @@ class Domain extends Zimbra {
   constructor(domain_obj, zimbra_api_client) {
     super(domain_obj, zimbra_api_client);
     this.domainAdminRights = 'domainAdminRights';
+    this.checkAliasDomain();
   }
 
   // TODO: Too ugly code
   addAdmin(account_id, coses = [], callback) {
-    const grantee_data = { 'type': 'usr', 'identifier': account_id };   
+    const grantee_data = { 'type': 'usr', 'identifier': account_id };
     this.addDelegatedAttributeToAccount(account_id, (err,data) => {
       if (err) return callback(err);
       this.grantRight(grantee_data, this.domainAdminRights, (err, data) => {
@@ -22,14 +23,14 @@ class Domain extends Zimbra {
       });
     });
   }
-  
+
   addDelegatedAttributeToAccount(account_id, callback) {
     this.api.modifyAccount(account_id, { zimbraIsDelegatedAdminAccount: 'TRUE' }, (err, data) => {
       if (err) return callback(err);
       return callback(null, data);
     });
   }
-  
+
   // This functions add the rights to the domain admin
   // to be able to change the accounts cos
   assignCosRights(grantee_data, coses, callback, revoke = false) {
@@ -49,13 +50,22 @@ class Domain extends Zimbra {
       const target_data = { type: 'cos', identifier: c };
       let grant = null;
       if (revoke) {
-       grant = this.api.revokeRight(target_data, grantee_data, 'assignCos'); 
+       grant = this.api.revokeRight(target_data, grantee_data, 'assignCos');
       } else {
         grant = this.api.grantRight(target_data, grantee_data, 'assignCos');
       }
       requests.push(grant);
     });
     return requests;
+  }
+
+  checkAliasDomain() {
+    this.isAliasDomain = this.attrs.zimbraDomainType === 'alias' ? true : false;
+    if (this.isAliasDomain) {
+      const masterDomain = this.attrs.zimbraMailCatchAllForwardingAddress;
+      this.masterDomainName = masterDomain.split(/@/)[1];
+    }
+    return true;
   }
 
   // TODO: Fix this fucking ugly code

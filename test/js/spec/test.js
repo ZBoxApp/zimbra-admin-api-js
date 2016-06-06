@@ -384,6 +384,26 @@
   describe('Domain tests', function() {
     this.timeout(5000);
 
+    it('Should return if the domain is an alias Domain', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.getDomain('reseller.alias', function(err, data){
+        if (err) return console.log(err);
+        expect(data.isAliasDomain).to.be.true;
+        expect(data.masterDomainName).to.be.equal('reseller.dev');
+        done();
+      });
+    });
+
+    it('Should return false if the domain is not an alias Domain', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.getDomain('reseller.dev', function(err, data){
+        if (err) return console.log(err);
+        expect(data.isAliasDomain).to.be.false;
+        expect(data.masterDomainName).to.be.undefined;
+        done();
+      });
+    });
+
     it('should create and return Domain', function(done){
       let resource_name = Date.now() + '.dev';
       let resource_attributes = {};
@@ -523,7 +543,6 @@
 
     it('addAdmin should add Admin', function(done){
       let api = new ZimbraAdminApi(auth_data);
-      
       let domain_admin = Date.now() + '@customer.dev';
       let resource_name = Date.now() + '.dev';
       api.createAccount(domain_admin, '12dda.222', {},  function(err, account){

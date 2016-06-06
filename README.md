@@ -389,6 +389,20 @@ zimbraApi.getAllCos(callback);
 ## Domains
 This are functions especifics to `Domains`.
 
+### isAliasDomain & masterDomainName
+These are `properties`, **not functions**.
+
+* `isAliasDomain`, return if a Domain is an Alias Domain.
+* `masterDomainName`, return the name of the master domain.
+
+```
+domain.isAliasDomain
+// true || false
+
+domain.masterDomainName
+// example.com
+```
+
 ### Count Accounts
 Count number of accounts by `CoS` in a domain.
 
