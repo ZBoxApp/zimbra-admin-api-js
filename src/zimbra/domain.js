@@ -133,7 +133,7 @@ class Domain extends Zimbra {
     return results;
   }
 
-  removeAdmin(account_id, callback) {
+  removeAdmin(account_id, coses, callback) {
     const grantee_data = {
       'type': 'usr',
       'identifier': account_id

@@ -569,7 +569,7 @@
       let resource_name = Date.now() + '.dev';
       api.createDomain(resource_name, {}, function(err, domain){
         domain.addAdmin(domain_admin, [], function(e, d){
-          domain.removeAdmin(domain_admin, function(e, d){
+          domain.removeAdmin(domain_admin, [], function(e, d){
             domain.getACLs(function(e, d){
               if (e) return console.error(e);
               expect(d.length).to.be.equal(0);
