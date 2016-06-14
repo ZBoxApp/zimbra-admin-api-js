@@ -6,6 +6,8 @@
     'url': 'http://zimbra.zboxapp.dev:9000/service/admin/soap',
     'user': 'admin@zboxapp.dev',
     'password':'12345678'
+    // 'user': 'superadmin2@zboxtest.com',
+    // 'password':'zboxapp2016'
   };
 
   describe('Basic tests', function() {
@@ -185,7 +187,7 @@
   });
 
   describe('Account tests', function() {
-    this.timeout(5000);
+    this.timeout(10000);
 
     it('should create and return an account', function(done){
       let account_name = Date.now() + '@big.com';
@@ -377,6 +379,39 @@
         });
       });
     });
+
+    // it('Should enable the account Archiving', function(done){
+    //   let account_name = Date.now() + '@zboxtest.com';
+    //   let account_password = Date.now();
+    //   let api = new ZimbraAdminApi(auth_data);
+    //   api.createAccount(account_name, account_password, {}, function(err, account){
+    //     if (err) return console.log(err);
+    //     account.enableArchiving('default', function(err, account){
+    //       if (err) return console.log(err);
+    //       expect(account.archiveEnabled).to.be.true;
+    //       expect(account.attrs.zimbraArchiveAccount).to.match(/com\.archive$/);
+    //       done();
+    //     });
+    //   });
+    // });
+    //
+    // it('Should disable the account Archiving', function(done){
+    //   let account_name = Date.now() + '@zboxtest.com';
+    //   let account_password = Date.now();
+    //   let api = new ZimbraAdminApi(auth_data);
+    //   api.createAccount(account_name, account_password, {}, function(err, account){
+    //     if (err) return console.log(err);
+    //     account.enableArchiving('default', function(err, account){
+    //       if (err) return console.log(err);
+    //       account.disableArchiving(function(err, account){
+    //         if (err) return console.log(err);
+    //         expect(account.archiveEnabled).to.be.false;
+    //         expect(account.attrs.zimbraArchiveAccount).to.match(/com\.archive$/);
+    //         done();
+    //       });
+    //     });
+    //   });
+    // });
 
 
   });

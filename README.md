@@ -306,21 +306,16 @@ account.setPassword(password, callback);
 ### Enable and Disable Archive
 **Only Zimbra Network Edition**
 
-`Enable` can take the following options:
-
-* **create**: `(0|1)` if the archive mailbox should be created. Default its 1, create.
-* **name**: Name of the archive mailbox, if empty the template will be used.
-* **cos_id**: Name or ID of the COS to assign to the archive mailbox.
-* **password**: password of the archive mailbox.
-* **attributes**.
-
+You **must** pass a `COS Name` or `CosID` as firt params
 
 ```javascript
-account.enableArchive({ cos_id: 'default' }, callback);
-// {}
+account.enableArchiving('default', callback);
+// Account {}
+// account.archiveEnabled === true;
 
-account.disableArchive(callback);
-// {}
+account.disableArchiving(callback);
+// Account {}
+// account.archiveEnabled === false;
 ```
 
 ### Get Mailbox

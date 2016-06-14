@@ -267,11 +267,11 @@ class ZimbraAdminApi {
     const account = { by: this.dictionary.byIdOrName(account_id), _content: account_id };
     const archive = {
       create: (options.archive || 1),
-      name: { '_content': options.name },
-      cos: { by: this.dictionary.byIdOrName(options.cos_id), '_content': options.cos_id },
-      password: { '_content': options.password },
-      a: this.dictionary.attributesToArray(options.attributes)
+      cos: { by: this.dictionary.byIdOrName(options.cos), '_content': options.cos }
     };
+    if (options.name) archive.name = { '_content': options.name };
+    if (options.password) archive.password = { '_content': options.password };
+    if (options.attributes) archive.a = this.dictionary.attributesToArray(options.attributes || {});
     request_data.params.params.account = account;
     request_data.params.params.archive = archive;
     return this.performRequest(request_data);

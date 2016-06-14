@@ -9,6 +9,7 @@ class Account extends Zimbra {
     constructor(account_obj, zimbra_api_client) {
       super(account_obj, zimbra_api_client);
       this.domain = this.name.split(/@/)[1];
+      this.archiveEnabled = this.attrs.zimbraArchiveEnabled === 'TRUE';
     }
 
     addAccountAlias(alias, callback) {
@@ -35,12 +36,21 @@ class Account extends Zimbra {
       }
     }
 
-    enableArchive(options, callback) {
-      return this.api.enableArchive(this.id, options, callback);
+    enableArchiving(cos, callback) {
+      const that = this;
+      const options = { cos: cos };
+      return this.api.enableArchive(this.id, options, function(err, data){
+        if (err) return callback(err);
+        return that.api.getAccount(that.id, callback);
+      });
     }
 
-    disableArchive(callback) {
-      return this.api.disableArchive(this.id, callback);
+    disableArchiving(callback) {
+      const that = this;
+      return this.api.disableArchive(this.id, function(err, data){
+        if (err) return callback(err);
+        return that.api.getAccount(that.id, callback);
+      });
     }
 
     setPassword(password, callback) {
