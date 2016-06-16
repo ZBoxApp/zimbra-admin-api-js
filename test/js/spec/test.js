@@ -588,13 +588,17 @@
           domain.addAdmin(account.id, coses,  function(e, d){
             if (e) return console.error(e);
             expect(err).to.be.null;
-            domain.getACLs(function(e, d){
+            d.getACLs(function(e, acls){
               if (e) return console.error(e);
               const expectedGrants = ["domainAdminRights", "set.dl.zimbraACE", "set.domain.amavisBlacklistSender", "set.domain.amavisWhitelistSender"];
-              const actualGrants = d.map(function(d){return d.rightName}).sort()
+              const actualGrants = acls.map(function(acl){return acl.rightName}).sort()
               expect(expectedGrants[0]).to.be.equal(actualGrants[0]);
               expect(expectedGrants[2]).to.be.equal(actualGrants[2]);
-              done();
+              d.getAdmins(function(e, admins){
+                if (e) return console.error(e);
+                expect(admins.account[0].name).to.be.equal(domain_admin);
+                done();
+              })
             });
           });
         });

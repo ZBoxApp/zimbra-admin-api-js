@@ -86,17 +86,18 @@ class Domain extends Zimbra {
   // TODO: Fix this fucking ugly code
   getAdmins(callback) {
     const that = this;
-    const admins_ids = this.getAdminsIdsFromGrants();
+    const admins_ids = this.getAdminsIdsFromGrants(this.attrs.zimbraACE);
     const query = this.makeAdminIdsQuery(admins_ids);
     return this.api.getAllAccounts(callback, {query: query});
   }
 
   // Return the ZimbraId if the grantee have the domainAdminRights right
   // Grant.right_name() == domainAdminRights
-  getAdminsIdsFromGrants() {
+  getAdminsIdsFromGrants(zimbraACES) {
     const ids = [];
-    this.parseACL(this.attrs.zimbraACE).forEach((grantee) => {
-      if (grantee.right === this.domainAdminRights) ids.push(grantee.id);
+    const regex = new RegExp(`${this.domainAdminRights}$`);
+    this.parseACL(zimbraACES).forEach((grantee) => {
+      if (regex.test(this.domainAdminRights)) ids.push(grantee.id);
     });
     return ids;
   }
