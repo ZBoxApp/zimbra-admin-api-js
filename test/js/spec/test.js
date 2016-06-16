@@ -287,7 +287,7 @@
 
     it('Should Get The Account Mailbox', function(done){
       let api = new ZimbraAdminApi(auth_data);
-      api.getAccount('cos_basic_14@customer.dev', function(err, data){
+      api.getAccount('cos_basic_13@customer.dev', function(err, data){
         let account = data;
         account.getMailbox(function(err, data){
           if (err) return console.log(err);
@@ -299,7 +299,7 @@
 
     it('Should Get The Account Mailbox Size', function(done){
       let api = new ZimbraAdminApi(auth_data);
-      api.getAccount('cos_basic_14@customer.dev', function(err, data){
+      api.getAccount('cos_basic_13@customer.dev', function(err, data){
         let account = data;
         account.getMailboxSize(function(err, data){
           if (err) return console.log(err);
@@ -590,7 +590,10 @@
             expect(err).to.be.null;
             domain.getACLs(function(e, d){
               if (e) return console.error(e);
-              expect(d[0].grantee.name).to.be.equal(account.name);
+              const expectedGrants = ["domainAdminRights", "set.dl.zimbraACE", "set.domain.amavisBlacklistSender", "set.domain.amavisWhitelistSender"];
+              const actualGrants = d.map(function(d){return d.rightName}).sort()
+              expect(expectedGrants[0]).to.be.equal(actualGrants[0]);
+              expect(expectedGrants[2]).to.be.equal(actualGrants[2]);
               done();
             });
           });

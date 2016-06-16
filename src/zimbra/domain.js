@@ -15,13 +15,30 @@ class Domain extends Zimbra {
   // TODO: Too ugly code
   addAdmin(account_id, coses = [], callback) {
     const grantee_data = { 'type': 'usr', 'identifier': account_id };
+    const specialRighsReqs = this.grantSpecialDomainRights(grantee_data);
+    const cosRights = this.assignCosRights(grantee_data, coses, null);
+    const rightReqs = specialRighsReqs.concat(cosRights.requests);
     this.addDelegatedAttributeToAccount(account_id, (err,data) => {
       if (err) return callback(err);
-      this.grantRight(grantee_data, this.domainAdminRights, (err, data) => {
+      this.api.makeBatchRequest(rightReqs, (err, data) => {
         if (err) return callback(err);
-        return this.assignCosRights(grantee_data, coses, callback);
+        return this.api.getDomain(this.id, callback);
       });
     });
+  }
+
+  // This function grants several rights needed to manage the domain, as:
+  // * access to modify DLs owners,
+  // * access to modify domain Amavis Lists
+  // * access to add other domain admins
+  // * access to modify account cos
+  grantSpecialDomainRights(grantee_data) {
+    const requests = [];
+    requests.push(this.grantRight(grantee_data, {'_content': this.domainAdminRights, canDelegate: 1}));
+    requests.push(this.grantRight(grantee_data, {'_content': 'set.dl.zimbraACE', canDelegate: 1}));
+    requests.push(this.grantRight(grantee_data, {'_content': 'set.domain.amavisWhitelistSender', canDelegate: 1}));
+    requests.push(this.grantRight(grantee_data, {'_content': 'set.domain.amavisBlacklistSender', canDelegate: 1}));
+    return requests;
   }
 
   addDelegatedAttributeToAccount(account_id, callback) {
@@ -37,22 +54,20 @@ class Domain extends Zimbra {
     const request_data = {};
     request_data.requests = this.buildCosesGrantsRequest(coses, grantee_data, revoke);
     request_data.batch = true;
-    request_data.callback = (err, data) => {
-      if (err) return callback(err);
-      return callback(null, data);
-    };
-    this.api.performRequest(request_data);
+    request_data.callback = callback;
+    return this.api.performRequest(request_data);
   }
 
   buildCosesGrantsRequest(coses = [], grantee_data, revoke = false) {
     const requests = [];
+    const right = {'_content': 'assignCos'};
     coses.forEach((c) => {
       const target_data = { type: 'cos', identifier: c };
       let grant = null;
       if (revoke) {
        grant = this.api.revokeRight(target_data, grantee_data, 'assignCos');
       } else {
-        grant = this.api.grantRight(target_data, grantee_data, 'assignCos');
+        grant = this.api.grantRight(target_data, grantee_data, right);
       }
       requests.push(grant);
     });

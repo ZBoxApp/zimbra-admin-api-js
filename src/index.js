@@ -216,7 +216,15 @@ class ZimbraAdminApi {
   //  type: (account|cos|dl|domain),
   //  identifier: (name or zimbraId)
   // }
-  grantRight(target_data, grantee_data, right_name, callback) {
+  // Right {
+  //  deny: 0|1,
+  //  canDelegate: 0|1,
+  //  disinheritSubGroups: 0|1,
+  //  subDomain: 0|1,
+  //  _content: <RightName>
+  // }
+
+  grantRight(target_data, grantee_data, right, callback) {
     const request_data = this.buildRequestData('GrantRight', callback);
     const target_grantee = this.dictionary.buildTargetGrantee(target_data, grantee_data);
     const target = target_grantee[0];
@@ -224,7 +232,7 @@ class ZimbraAdminApi {
     request_data.parse_response = ResponseParser.emptyResponse;
     request_data.params.params.grantee = grantee;
     request_data.params.params.target = target;
-    request_data.params.params.right = { '_content': right_name };
+    request_data.params.params.right = right;
     return this.performRequest(request_data);
   }
 
@@ -266,7 +274,7 @@ class ZimbraAdminApi {
     request_data.parse_response = ResponseParser.emptyResponse;
     const account = { by: this.dictionary.byIdOrName(account_id), _content: account_id };
     const archive = {
-      create: (options.archive || 1),
+      create: (options.create || 1),
       cos: { by: this.dictionary.byIdOrName(options.cos), '_content': options.cos }
     };
     if (options.name) archive.name = { '_content': options.name };

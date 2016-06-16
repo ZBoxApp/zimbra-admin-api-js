@@ -1,6 +1,6 @@
 {
   "name": "zimbra-admin-api-js",
-  "version": "0.2.13",
+  "version": "0.2.14",
   "main": "lib/zimbra-admin-api.js",
   "dependencies": {
     "crypto-browserify": "^3.11.0",

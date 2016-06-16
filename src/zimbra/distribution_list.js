@@ -25,7 +25,7 @@ class DistributionList extends Zimbra {
   //   this.grantRight(grantee_data, this.ownerRights, callback);
   // }
   addOwner(account_id, callback) {
-    const zimbraACES = this.attrs.zimbraACE || [];
+    const zimbraACES = this.attrs.zimbraACE ? [].concat.apply([], [this.attrs.zimbraACE]) : [];
     this.api.getAccount(account_id, (err, data) => {
       if (err) return callback(err);
       const account = data;
@@ -92,11 +92,12 @@ class DistributionList extends Zimbra {
     const zimbraACES = [].concat.apply([], [this.attrs.zimbraACE]);
     this.api.getAccount(account_id, (err, account) => {
       if (err) return callback(err);
-      const newACES = zimbraACES.map((ace) =>{
+      const newACES = zimbraACES.filter((ace) =>{
         const granteeId = ace.split(/ /)[0];
-        if (account.id !== granteeId) return ace;
+        if (account.id !== granteeId) return true;
+        return false;
       });
-      const attrs = {zimbraACE: newACES};
+      const attrs = (newACES.length > 0) ? {zimbraACE: newACES} : {zimbraACE: ''};
       return this.api.modifyDistributionList(this.id, attrs, callback);
     });
   }
