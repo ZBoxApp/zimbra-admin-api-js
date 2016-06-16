@@ -17,12 +17,23 @@ class DistributionList extends Zimbra {
     this.api.addDistributionListMember(this.id, members, callback);
   }
 
+  // addOwner(account_id, callback) {
+  //   const grantee_data = {
+  //     'type': 'usr',
+  //     'identifier': account_id
+  //   }
+  //   this.grantRight(grantee_data, this.ownerRights, callback);
+  // }
   addOwner(account_id, callback) {
-    const grantee_data = {
-      'type': 'usr',
-      'identifier': account_id
-    }
-    this.grantRight(grantee_data, this.ownerRights, callback);
+    const zimbraACES = this.attrs.zimbraACE || [];
+    this.api.getAccount(account_id, (err, data) => {
+      if (err) return callback(err);
+      const account = data;
+      const newZimbraACE = `${account.id} usr sendToDistList`;
+      zimbraACES.push(newZimbraACE);
+      const attrs = {zimbraACE: zimbraACES};
+      return this.api.modifyDistributionList(this.id, attrs, callback);
+    });
   }
 
   // return the ID of the owner
@@ -69,12 +80,25 @@ class DistributionList extends Zimbra {
     this.api.removeDistributionListMember(this.id, members, callback);
   }
 
+  // removeOwner(account_id, callback) {
+  //   const grantee_data = {
+  //     'type': 'usr',
+  //     'identifier': account_id
+  //   }
+  //   this.revokeRight(grantee_data, this.ownerRights, callback);
+  // }
   removeOwner(account_id, callback) {
-    const grantee_data = {
-      'type': 'usr',
-      'identifier': account_id
-    }
-    this.revokeRight(grantee_data, this.ownerRights, callback);
+    if (!this.attrs.zimbraACE) return this;
+    const zimbraACES = [].concat.apply([], [this.attrs.zimbraACE]);
+    this.api.getAccount(account_id, (err, account) => {
+      if (err) return callback(err);
+      const newACES = zimbraACES.map((ace) =>{
+        const granteeId = ace.split(/ /)[0];
+        if (account.id !== granteeId) return ace;
+      });
+      const attrs = {zimbraACE: newACES};
+      return this.api.modifyDistributionList(this.id, attrs, callback);
+    });
   }
 
   rename(new_name, callback) {

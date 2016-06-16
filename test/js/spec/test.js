@@ -717,7 +717,7 @@
       let owner_email = 'domain_admin@customer.dev';
       let resource_name = Date.now() + '@customer.dev';
       api.createDistributionList(resource_name, {}, function(err, dl){
-        dl.addOwner(owner_email, function(e, d){
+        dl.addOwner(owner_email, function(e, dl){
           if (e) return console.error(e);
           expect(err).to.be.null;
           dl.getACLs(function(e, d){
@@ -735,8 +735,8 @@
       let resource_name = Date.now() + '@customer.dev';
       api.createDistributionList(resource_name, {}, function(err, dl){
         dl.addOwner(owner_email, function(e, d){
-          dl.removeOwner(owner_email, function(e, d){
-            dl.getACLs(function(e, d){
+          d.removeOwner(owner_email, function(e, d){
+            d.getACLs(function(e, d){
               if (e) return console.error(e);
               expect(d.length).to.be.equal(0);
               done();
