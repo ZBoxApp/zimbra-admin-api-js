@@ -23,7 +23,7 @@ class Domain extends Zimbra {
       this.api.makeBatchRequest(rightReqs, (err, data) => {
         if (err) return callback(err);
         return this.api.getDomain(this.id, callback);
-      });
+      }, {onError: 'continue'});
     });
   }
 
