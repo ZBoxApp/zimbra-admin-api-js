@@ -12,7 +12,7 @@ class Domain extends Zimbra {
   }
 
   // TODO: Too ugly code
-  addAdmin(account_id, coses = [], callback) {
+  addAdmin(account_id, coses, callback) {
     const request_data = {};
     const grantee_data = { 'type': 'usr', 'identifier': account_id };
     const modifyAccountRequest = this.api.modifyAccount(account_id, { zimbraIsDelegatedAdminAccount: 'TRUE' });
@@ -28,7 +28,7 @@ class Domain extends Zimbra {
     this.api.performRequest(request_data);
   }
 
-  buildCosesGrantsRequest(coses = [], grantee_data) {
+  buildCosesGrantsRequest(coses, grantee_data) {
     const requests = [];
     coses.forEach((c) => {
       const target_data = { type: 'cos', identifier: c };

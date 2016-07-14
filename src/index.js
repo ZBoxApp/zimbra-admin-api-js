@@ -290,7 +290,7 @@ class ZimbraAdminApi {
   //   allServers: 0|1,
   //   entry: Name or Id of the object, should be relevant to type
   // }
-  flushCache(flushData = {}, callback) {
+  flushCache(flushData, callback) {
     const request_data = this.buildRequestData('FlushCache', callback);
     request_data.parse_response = ResponseParser.emptyResponse;
     request_data.params.params = {
