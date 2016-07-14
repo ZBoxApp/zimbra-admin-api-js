@@ -285,6 +285,28 @@ class ZimbraAdminApi {
     return this.performRequest(request_data);
   }
 
+  // flushData = {
+  //   type: Comma separated list of cache types. e.g. from skin|locale|account|cos|domain|server|zimlet,
+  //   allServers: 0|1,
+  //   entry: Name or Id of the object, should be relevant to type
+  // }
+  flushCache(flushData = {}, callback) {
+    const request_data = this.buildRequestData('FlushCache', callback);
+    request_data.parse_response = ResponseParser.emptyResponse;
+    request_data.params.params = {
+      cache: {
+        type: flushData.type,
+        allServers: (flushData.allServers || 0),
+        '_content': { entry: { } }
+      }
+    };
+    if (flushData.entry) request_data.params.params.cache._content.entry = {
+      'by': this.dictionary.byIdOrName(flushData.entry),
+      '_content': flushData.entry
+    }
+    return this.performRequest(request_data);
+  }
+
   getAccount(identifier, callback) {
     return this.get('Account', identifier, callback);
   }
