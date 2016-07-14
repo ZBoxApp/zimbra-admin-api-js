@@ -24,6 +24,16 @@
       });
     });
 
+    it('Should Flush the Cache', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      const flush_data = {type: 'domain', allServers: 1, entry: 'zboxapp.dev'};
+      api.flushCache(flush_data, function(err, data){
+        if (err) console.log(err);
+        expect(err).to.not.exist;
+        done();
+      })
+    });
+
     it('should get all domains', function(done) {
       let api = new ZimbraAdminApi(auth_data);
       api.getAllDomains(function(err, data){
