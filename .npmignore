@@ -6,7 +6,7 @@ test/
 bower.json
 Makefile
 server.js
-lib/*
+src/
 TODOS.md
 .*
 
