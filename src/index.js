@@ -216,7 +216,15 @@ class ZimbraAdminApi {
   //  type: (account|cos|dl|domain),
   //  identifier: (name or zimbraId)
   // }
-  grantRight(target_data, grantee_data, right_name, callback) {
+  // Right {
+  //  deny: 0|1,
+  //  canDelegate: 0|1,
+  //  disinheritSubGroups: 0|1,
+  //  subDomain: 0|1,
+  //  _content: <RightName>
+  // }
+
+  grantRight(target_data, grantee_data, right, callback) {
     const request_data = this.buildRequestData('GrantRight', callback);
     const target_grantee = this.dictionary.buildTargetGrantee(target_data, grantee_data);
     const target = target_grantee[0];
@@ -224,7 +232,7 @@ class ZimbraAdminApi {
     request_data.parse_response = ResponseParser.emptyResponse;
     request_data.params.params.grantee = grantee;
     request_data.params.params.target = target;
-    request_data.params.params.right = { '_content': right_name };
+    request_data.params.params.right = right;
     return this.performRequest(request_data);
   }
 
@@ -266,12 +274,12 @@ class ZimbraAdminApi {
     request_data.parse_response = ResponseParser.emptyResponse;
     const account = { by: this.dictionary.byIdOrName(account_id), _content: account_id };
     const archive = {
-      create: (options.archive || 1),
-      name: { '_content': options.name },
-      cos: { by: this.dictionary.byIdOrName(options.cos_id), '_content': options.cos_id },
-      password: { '_content': options.password },
-      a: this.dictionary.attributesToArray(options.attributes)
+      create: (options.create || 1),
+      cos: { by: this.dictionary.byIdOrName(options.cos), '_content': options.cos }
     };
+    if (options.name) archive.name = { '_content': options.name };
+    if (options.password) archive.password = { '_content': options.password };
+    if (options.attributes) archive.a = this.dictionary.attributesToArray(options.attributes || {});
     request_data.params.params.account = account;
     request_data.params.params.archive = archive;
     return this.performRequest(request_data);
@@ -334,6 +342,28 @@ class ZimbraAdminApi {
   createDistributionList(name, attributes, callback) {
     const resource_data = this.buildResourceData(name, attributes);
     return this.create('DistributionList', resource_data, callback);
+  }
+
+  // flushData = {
+  //   type: Comma separated list of cache types. e.g. from skin|locale|account|cos|domain|server|zimlet,
+  //   allServers: 0|1,
+  //   entry: Name or Id of the object, should be relevant to type
+  // }
+  flushCache(flushData = {}, callback) {
+    const request_data = this.buildRequestData('FlushCache', callback);
+    request_data.parse_response = ResponseParser.emptyResponse;
+    request_data.params.params = {
+      cache: {
+        type: flushData.type,
+        allServers: (flushData.allServers || 0),
+        '_content': { entry: { } }
+      }
+    };
+    if (flushData.entry) request_data.params.params.cache._content.entry = {
+      'by': this.dictionary.byIdOrName(flushData.entry),
+      '_content': flushData.entry
+    }
+    return this.performRequest(request_data);
   }
 
   getAllDomains(callback, query_object) {

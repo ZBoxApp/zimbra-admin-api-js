@@ -9,60 +9,104 @@ class Domain extends Zimbra {
   constructor(domain_obj, zimbra_api_client) {
     super(domain_obj, zimbra_api_client);
     this.domainAdminRights = 'domainAdminRights';
+    this.checkAliasDomain();
   }
 
   // TODO: Too ugly code
+<<<<<<< HEAD
   addAdmin(account_id, coses, callback) {
     const request_data = {};
+=======
+  addAdmin(account_id, coses = [], callback) {
+>>>>>>> manager
     const grantee_data = { 'type': 'usr', 'identifier': account_id };
-    const modifyAccountRequest = this.api.modifyAccount(account_id, { zimbraIsDelegatedAdminAccount: 'TRUE' });
-    const grantRightRequest = this.grantRight(grantee_data, this.domainAdminRights);
-    const cosesRights = this.buildCosesGrantsRequest(coses, grantee_data);
-    request_data.requests = [modifyAccountRequest, grantRightRequest];
-    request_data.requests = request_data.requests.concat(cosesRights);
-    request_data.batch = true;
-    request_data.callback = function(err, data) {
+    const specialRighsReqs = this.grantSpecialDomainRights(grantee_data);
+    const cosRights = this.assignCosRights(grantee_data, coses, null);
+    const rightReqs = specialRighsReqs.concat(cosRights.requests);
+    this.addDelegatedAttributeToAccount(account_id, (err,data) => {
       if (err) return callback(err);
-      callback(null, data.GrantRightResponse);
-    };
-    this.api.performRequest(request_data);
+      this.api.makeBatchRequest(rightReqs, (err, data) => {
+        if (err) return callback(err);
+        return this.api.getDomain(this.id, callback);
+      }, {onError: 'continue'});
+    });
   }
 
-  buildCosesGrantsRequest(coses, grantee_data) {
+  // This function grants several rights needed to manage the domain, as:
+  // * access to modify DLs owners,
+  // * access to modify domain Amavis Lists
+  // * access to add other domain admins
+  // * access to modify account cos
+  grantSpecialDomainRights(grantee_data) {
     const requests = [];
+    requests.push(this.grantRight(grantee_data, {'_content': this.domainAdminRights, canDelegate: 1}));
+    requests.push(this.grantRight(grantee_data, {'_content': 'set.dl.zimbraACE', canDelegate: 1}));
+    requests.push(this.grantRight(grantee_data, {'_content': 'set.domain.amavisWhitelistSender', canDelegate: 1}));
+    requests.push(this.grantRight(grantee_data, {'_content': 'set.domain.amavisBlacklistSender', canDelegate: 1}));
+    return requests;
+  }
+
+  addDelegatedAttributeToAccount(account_id, callback) {
+    this.api.modifyAccount(account_id, { zimbraIsDelegatedAdminAccount: 'TRUE' }, (err, data) => {
+      if (err) return callback(err);
+      return callback(null, data);
+    });
+  }
+
+<<<<<<< HEAD
+  buildCosesGrantsRequest(coses, grantee_data) {
+=======
+  // This functions add the rights to the domain admin
+  // to be able to change the accounts cos
+  assignCosRights(grantee_data, coses, callback, revoke = false) {
+    const request_data = {};
+    request_data.requests = this.buildCosesGrantsRequest(coses, grantee_data, revoke);
+    request_data.batch = true;
+    request_data.callback = callback;
+    return this.api.performRequest(request_data);
+  }
+
+  buildCosesGrantsRequest(coses = [], grantee_data, revoke = false) {
+>>>>>>> manager
+    const requests = [];
+    const right = {'_content': 'assignCos'};
     coses.forEach((c) => {
       const target_data = { type: 'cos', identifier: c };
-      const grants = this.buildCosGrantByAcl(target_data, grantee_data);
-      requests.push(grants);
+      let grant = null;
+      if (revoke) {
+       grant = this.api.revokeRight(target_data, grantee_data, 'assignCos');
+      } else {
+        grant = this.api.grantRight(target_data, grantee_data, right);
+      }
+      requests.push(grant);
     });
-    return [].concat.apply([], requests);
+    return requests;
   }
 
-  // Return an array with all the rights
-  // needed 'assignCos', 'listCos', 'getCos'
-  buildCosGrantByAcl(target_data, grantee_data) {
-    const grants = [];
-    ['assignCos', 'listCos', 'getCos'].forEach((right) => {
-      const request = this.api.grantRight(target_data, grantee_data, right);
-      grants.push(request);
-    });
-    return grants;
+  checkAliasDomain() {
+    this.isAliasDomain = this.attrs.zimbraDomainType === 'alias' ? true : false;
+    const masterDomain = this.attrs.zimbraMailCatchAllForwardingAddress;
+    if (this.isAliasDomain && masterDomain) {
+      this.masterDomainName = masterDomain.split(/@/)[1];
+    }
+    return true;
   }
 
   // TODO: Fix this fucking ugly code
   getAdmins(callback) {
     const that = this;
-    const admins_ids = this.getAdminsIdsFromGrants();
+    const admins_ids = this.getAdminsIdsFromGrants(this.attrs.zimbraACE);
     const query = this.makeAdminIdsQuery(admins_ids);
     return this.api.getAllAccounts(callback, {query: query});
   }
 
   // Return the ZimbraId if the grantee have the domainAdminRights right
   // Grant.right_name() == domainAdminRights
-  getAdminsIdsFromGrants() {
+  getAdminsIdsFromGrants(zimbraACES) {
     const ids = [];
-    this.parseACL(this.attrs.zimbraACE).forEach((grantee) => {
-      if (grantee.right === this.domainAdminRights) ids.push(grantee.id);
+    const regex = new RegExp(`${this.domainAdminRights}$`);
+    this.parseACL(zimbraACES).forEach((grantee) => {
+      if (regex.test(this.domainAdminRights)) ids.push(grantee.id);
     });
     return ids;
   }
@@ -114,12 +158,15 @@ class Domain extends Zimbra {
     return results;
   }
 
-  removeAdmin(account_id, callback) {
+  removeAdmin(account_id, coses, callback) {
     const grantee_data = {
       'type': 'usr',
       'identifier': account_id
     };
-    this.revokeRight(grantee_data, this.domainAdminRights, callback);
+    this.revokeRight(grantee_data, this.domainAdminRights, (err, data) => {
+      if (err) return callback(err);
+      this.assignCosRights(grantee_data, coses, callback, true);
+    });
   }
 
 }

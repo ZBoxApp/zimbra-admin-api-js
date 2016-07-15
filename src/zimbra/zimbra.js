@@ -58,14 +58,12 @@ class Zimbra {
     });
   }
 
-  grantRight(grantee_data, right_name, callback, forBatch){
-    forBatch = forBatch || false;
-    return this.api.grantRight(this.buildRighTargetData(), grantee_data, right_name, callback, forBatch);
+  grantRight(grantee_data, right, callback = null){
+    return this.api.grantRight(this.buildRighTargetData(), grantee_data, right, callback);
   }
 
-  revokeRight(grantee_data, right_name, callback, forBatch){
-    forBatch = forBatch || false;
-    return this.api.revokeRight(this.buildRighTargetData(), grantee_data, right_name, callback, forBatch);
+  revokeRight(grantee_data, right_name, callback = null){
+    return this.api.revokeRight(this.buildRighTargetData(), grantee_data, right_name, callback);
   }
 
 }

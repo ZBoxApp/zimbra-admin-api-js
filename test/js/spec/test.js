@@ -6,6 +6,8 @@
     'url': 'http://zimbra.zboxapp.dev:9000/service/admin/soap',
     'user': 'admin@zboxapp.dev',
     'password':'12345678'
+    // 'user': 'superadmin2@zboxtest.com',
+    // 'password':'zboxapp2016'
   };
 
   describe('Basic tests', function() {
@@ -20,6 +22,16 @@
         expect(data.lifetime).to.equal(3672000);
         done();
       });
+    });
+
+    it('Should Flush the Cache', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      const flush_data = {type: 'domain', allServers: 1, entry: 'zboxapp.dev'};
+      api.flushCache(flush_data, function(err, data){
+        if (err) console.log(err);
+        expect(err).to.not.exist;
+        done();
+      })
     });
 
     it('should get all domains', function(done) {
@@ -172,6 +184,7 @@
       const getAllDomains = api.directorySearch({types: 'domains'});
       api.login(function(err, data){
         api.makeBatchRequest([deleteAccount, getAllDomains, getAllAccounts], function(err, data){
+          console.log(data);
           expect(data.errors.length).to.be.above(1);
           expect(data.errors[0].constructor.name).to.equal('Error');
           expect(data.errors[0].extra.code).to.exist;
@@ -184,7 +197,7 @@
   });
 
   describe('Account tests', function() {
-    this.timeout(5000);
+    this.timeout(10000);
 
     it('should create and return an account', function(done){
       let account_name = Date.now() + '@big.com';
@@ -284,7 +297,7 @@
 
     it('Should Get The Account Mailbox', function(done){
       let api = new ZimbraAdminApi(auth_data);
-      api.getAccount('cos_basic_14@customer.dev', function(err, data){
+      api.getAccount('cos_basic_13@customer.dev', function(err, data){
         let account = data;
         account.getMailbox(function(err, data){
           if (err) return console.log(err);
@@ -296,7 +309,7 @@
 
     it('Should Get The Account Mailbox Size', function(done){
       let api = new ZimbraAdminApi(auth_data);
-      api.getAccount('cos_basic_14@customer.dev', function(err, data){
+      api.getAccount('cos_basic_13@customer.dev', function(err, data){
         let account = data;
         account.getMailboxSize(function(err, data){
           if (err) return console.log(err);
@@ -377,11 +390,64 @@
       });
     });
 
+    // it('Should enable the account Archiving', function(done){
+    //   let account_name = Date.now() + '@zboxtest.com';
+    //   let account_password = Date.now();
+    //   let api = new ZimbraAdminApi(auth_data);
+    //   api.createAccount(account_name, account_password, {}, function(err, account){
+    //     if (err) return console.log(err);
+    //     account.enableArchiving('default', function(err, account){
+    //       if (err) return console.log(err);
+    //       expect(account.archiveEnabled).to.be.true;
+    //       expect(account.attrs.zimbraArchiveAccount).to.match(/com\.archive$/);
+    //       done();
+    //     });
+    //   });
+    // });
+    //
+    // it('Should disable the account Archiving', function(done){
+    //   let account_name = Date.now() + '@zboxtest.com';
+    //   let account_password = Date.now();
+    //   let api = new ZimbraAdminApi(auth_data);
+    //   api.createAccount(account_name, account_password, {}, function(err, account){
+    //     if (err) return console.log(err);
+    //     account.enableArchiving('default', function(err, account){
+    //       if (err) return console.log(err);
+    //       account.disableArchiving(function(err, account){
+    //         if (err) return console.log(err);
+    //         expect(account.archiveEnabled).to.be.false;
+    //         expect(account.attrs.zimbraArchiveAccount).to.match(/com\.archive$/);
+    //         done();
+    //       });
+    //     });
+    //   });
+    // });
+
 
   });
 
   describe('Domain tests', function() {
     this.timeout(5000);
+
+    it('Should return if the domain is an alias Domain', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.getDomain('reseller.alias', function(err, data){
+        if (err) return console.log(err);
+        expect(data.isAliasDomain).to.be.true;
+        expect(data.masterDomainName).to.be.equal('reseller.dev');
+        done();
+      });
+    });
+
+    it('Should return false if the domain is not an alias Domain', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.getDomain('reseller.dev', function(err, data){
+        if (err) return console.log(err);
+        expect(data.isAliasDomain).to.be.false;
+        expect(data.masterDomainName).to.be.undefined;
+        done();
+      });
+    });
 
     it('should create and return Domain', function(done){
       let resource_name = Date.now() + '.dev';
@@ -522,9 +588,9 @@
 
     it('addAdmin should add Admin', function(done){
       let api = new ZimbraAdminApi(auth_data);
-      let domain_admin = 'domain_admin@customer.dev';
+      let domain_admin = Date.now() + '@customer.dev';
       let resource_name = Date.now() + '.dev';
-      api.getAccount(domain_admin, function(err, account){
+      api.createAccount(domain_admin, '12dda.222', {},  function(err, account){
         api.createDomain(resource_name, {}, function(err, data){
           if (err) console.error(err);
           let domain = data;
@@ -532,10 +598,17 @@
           domain.addAdmin(account.id, coses,  function(e, d){
             if (e) return console.error(e);
             expect(err).to.be.null;
-            domain.getACLs(function(e, d){
+            d.getACLs(function(e, acls){
               if (e) return console.error(e);
-              expect(d[0].grantee.name).to.be.equal(account.name);
-              done();
+              const expectedGrants = ["domainAdminRights", "set.dl.zimbraACE", "set.domain.amavisBlacklistSender", "set.domain.amavisWhitelistSender"];
+              const actualGrants = acls.map(function(acl){return acl.rightName}).sort()
+              expect(expectedGrants[0]).to.be.equal(actualGrants[0]);
+              expect(expectedGrants[2]).to.be.equal(actualGrants[2]);
+              d.getAdmins(function(e, admins){
+                if (e) return console.error(e);
+                expect(admins.account[0].name).to.be.equal(domain_admin);
+                done();
+              })
             });
           });
         });
@@ -548,7 +621,7 @@
       let resource_name = Date.now() + '.dev';
       api.createDomain(resource_name, {}, function(err, domain){
         domain.addAdmin(domain_admin, [], function(e, d){
-          domain.removeAdmin(domain_admin, function(e, d){
+          domain.removeAdmin(domain_admin, [], function(e, d){
             domain.getACLs(function(e, d){
               if (e) return console.error(e);
               expect(d.length).to.be.equal(0);
@@ -661,7 +734,7 @@
       let owner_email = 'domain_admin@customer.dev';
       let resource_name = Date.now() + '@customer.dev';
       api.createDistributionList(resource_name, {}, function(err, dl){
-        dl.addOwner(owner_email, function(e, d){
+        dl.addOwner(owner_email, function(e, dl){
           if (e) return console.error(e);
           expect(err).to.be.null;
           dl.getACLs(function(e, d){
@@ -679,8 +752,8 @@
       let resource_name = Date.now() + '@customer.dev';
       api.createDistributionList(resource_name, {}, function(err, dl){
         dl.addOwner(owner_email, function(e, d){
-          dl.removeOwner(owner_email, function(e, d){
-            dl.getACLs(function(e, d){
+          d.removeOwner(owner_email, function(e, d){
+            d.getACLs(function(e, d){
               if (e) return console.error(e);
               expect(d.length).to.be.equal(0);
               done();
