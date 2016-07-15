@@ -13,12 +13,9 @@ class Domain extends Zimbra {
   }
 
   // TODO: Too ugly code
-<<<<<<< HEAD
   addAdmin(account_id, coses, callback) {
+    if (!coses) coses = [];
     const request_data = {};
-=======
-  addAdmin(account_id, coses = [], callback) {
->>>>>>> manager
     const grantee_data = { 'type': 'usr', 'identifier': account_id };
     const specialRighsReqs = this.grantSpecialDomainRights(grantee_data);
     const cosRights = this.assignCosRights(grantee_data, coses, null);
@@ -53,9 +50,6 @@ class Domain extends Zimbra {
     });
   }
 
-<<<<<<< HEAD
-  buildCosesGrantsRequest(coses, grantee_data) {
-=======
   // This functions add the rights to the domain admin
   // to be able to change the accounts cos
   assignCosRights(grantee_data, coses, callback, revoke = false) {
@@ -66,8 +60,8 @@ class Domain extends Zimbra {
     return this.api.performRequest(request_data);
   }
 
-  buildCosesGrantsRequest(coses = [], grantee_data, revoke = false) {
->>>>>>> manager
+  buildCosesGrantsRequest(coses, grantee_data, revoke = false) {
+    if (!coses) coses = [];
     const requests = [];
     const right = {'_content': 'assignCos'};
     coses.forEach((c) => {

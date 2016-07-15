@@ -1,10 +1,6 @@
 {
   "name": "zimbra-admin-api-js",
-<<<<<<< HEAD
-  "version": "0.2.9",
-=======
-  "version": "0.2.10",
->>>>>>> manager
+  "version": "0.2.11",
   "main": "src/index.js",
   "dependencies": {
     "crypto-browserify": "^3.11.0",
