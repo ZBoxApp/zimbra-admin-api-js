@@ -6,8 +6,7 @@ test/
 bower.json
 Makefile
 server.js
-webpack.config.js
-lib/
+lib/*
 TODOS.md
 .*
 
