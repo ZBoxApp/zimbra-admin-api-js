@@ -199,6 +199,40 @@
   describe('Account tests', function() {
     this.timeout(10000);
 
+    it('should return the account membership', function(done){
+      const account = 'admin@zboxapp.dev';
+      let api = new ZimbraAdminApi(auth_data);
+      api.getAccountMembership(account, function(err, data){
+        if (err) return console.log(err);
+        expect(data[0].constructor.name).to.be.equal('DistributionList');
+        done();
+      });
+    });
+
+    it('should return the account membership when used as account method', function(done){
+      const account = 'admin@zboxapp.dev';
+      let api = new ZimbraAdminApi(auth_data);
+      api.getAccount(account, function(err, account){
+        if (err) return console.log(err);
+        account.getAccountMembership(function(err, data){
+          if (err) return console.log(err);
+          expect(data[0].constructor.name).to.be.equal('DistributionList');
+          done();
+        });
+      })
+    });
+
+    it('should return OK if the account membership is empty', function(done){
+      const account = 'pbruna@itlinux.cl';
+      let api = new ZimbraAdminApi(auth_data);
+      api.getAccountMembership(account, function(err, data){
+        if (err) return console.log(err);
+        console.log(data);
+        expect(data.length).to.be.equal(0);
+        done();
+      });
+    });
+
     it('should create and return an account', function(done){
       let account_name = Date.now() + '@big.com';
       let account_password = Date.now();

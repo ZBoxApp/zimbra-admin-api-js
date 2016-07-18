@@ -423,6 +423,17 @@ class ZimbraAdminApi {
     return this.performRequest(request_data);
   }
 
+  getAccountMembership(account, callback) {
+    const request_data = this.buildRequestData('GetAccountMembership', callback);
+    request_data.resource = 'dl';
+    request_data.parse_response = ResponseParser.allResponse;
+    request_data.params.params.account = {
+      'by': this.dictionary.byIdOrName(account),
+      '_content': account
+    };
+    return this.performRequest(request_data);
+  };
+
   // Get current logged account information
   getInfo(callback) {
     const request_data = this.buildRequestData('GetInfo', callback);

@@ -318,6 +318,18 @@ account.disableArchiving(callback);
 // account.archiveEnabled === false;
 ```
 
+### Get Account Membership
+Get distribution lists an account is a member of.
+
+```javascript
+api.getAccountMembership(account, callback);
+// [DistributionList, DistributionList, ...]
+
+// Or as a method of the account
+account.getAccountMembership(callback);
+// [DistributionList, DistributionList, ...]
+```
+
 ### Get Mailbox
 ```javascript
 account.getMailbox(callback);

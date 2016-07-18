@@ -69,6 +69,10 @@ class Account extends Zimbra {
       });
     }
 
+    getAccountMembership(callback) {
+      return this.api.getAccountMembership(this.id, callback);
+    }
+
     removeAccountAlias(alias, callback) {
       this.api.removeAccountAlias(this.id, alias, callback);
     }
