@@ -17,6 +17,8 @@ class ZimbraAdminApi {
     this.password = auth_object.password;
     this._client = new jszimbra.Communication({url: auth_object.url});
     this.dictionary = new Dictionary();
+    this.arrayAsObject = auth_object.arrayAsObject || false;
+    this.arrayAsObjectKey = auth_object.arrayAsObjectKey || 'id';
   }
 
   static version() {

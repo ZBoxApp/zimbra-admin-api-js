@@ -11,7 +11,7 @@
   };
 
   describe('Basic tests', function() {
-    this.timeout(5000);
+    this.timeout(10000);
 
 
     it('should return the Delegated Token', function(done){
@@ -43,13 +43,35 @@
       });
     });
 
+    it('should get all domains as an Object', function(done) {
+      let auth_data_tmp = Object.assign({}, auth_data)
+      auth_data_tmp.arrayAsObject = true;
+      auth_data_tmp.arrayAsObjectKey = 'name';
+      let api = new ZimbraAdminApi(auth_data_tmp);
+      api.getAllDomains(function(err, data){
+        if (err) console.log(err);
+        expect(data.domain['customer.dev']).to.exist;
+        done();
+      });
+    });
+
     it('should get all accounts', function(done) {
       // var callback = sinon.spy();
       let api = new ZimbraAdminApi(auth_data);
-      // var proxy = api.getAllAccounts(callback);
       api.getAllAccounts(function(err, data){
         if (err) console.log(err);
         expect(data.account[0].constructor.name).to.equal('Account');
+        done();
+      });
+    });
+
+    it('should get all accounts as an Object', function(done) {
+      let auth_data_tmp2 = Object.assign({}, auth_data)
+      auth_data_tmp2.arrayAsObject = true;
+      let api = new ZimbraAdminApi(auth_data_tmp2);
+      api.getAllAccounts(function(err, data){
+        if (err) console.log(err);
+        expect(Object.keys(data.account)[0]).to.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
         done();
       });
     });
@@ -184,7 +206,6 @@
       const getAllDomains = api.directorySearch({types: 'domains'});
       api.login(function(err, data){
         api.makeBatchRequest([deleteAccount, getAllDomains, getAllAccounts], function(err, data){
-          console.log(data);
           expect(data.errors.length).to.be.above(1);
           expect(data.errors[0].constructor.name).to.equal('Error');
           expect(data.errors[0].extra.code).to.exist;
@@ -625,6 +646,7 @@
       let domain_admin = Date.now() + '@customer.dev';
       let resource_name = Date.now() + '.dev';
       api.createAccount(domain_admin, '12dda.222', {},  function(err, account){
+        if (err) return console.error(err);
         api.createDomain(resource_name, {}, function(err, data){
           if (err) console.error(err);
           let domain = data;

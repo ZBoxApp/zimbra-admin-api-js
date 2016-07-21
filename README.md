@@ -125,6 +125,29 @@ returning an `account.TOO_MANY_SEARCH_RESULTS` error.,
 * `countOnly`: Whether response should be count only. Default is 0 (false),
 * `attrs`: Comma separated list of attributes to ask for
 
+
+### Result as Object
+If you need to get the result as an Object with the resource `id` or `name` as the Key
+of the object you need to initialize the Api like this:
+
+```javascript
+var zimbraApi = new ZimbraAdminApi({
+  'url': 'http://zimbra.zboxapp.dev:8000/service/admin/soap',
+  'user': 'admin@zboxapp.dev',
+  'password':'12345678',
+  'arrayAsObject': true,
+  'arrayAsObjectKey': 'name' // By default is 'id';
+});
+
+var callback = function(err, data) {
+  if (err) return console.log(err);
+  console.log(data);
+};
+
+zimbraApi.getAllDomains(callback);
+// Object {total: 261, more: false, domain: Object} <== Object!!
+```
+
 #### Examples
 
 ##### 1. Get All Accounts without a query_object

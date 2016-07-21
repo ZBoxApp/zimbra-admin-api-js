@@ -13,15 +13,39 @@ class ResponseParser {
   }
 
   static allResponse(data, request_data, callback){
+    let result = null;
     const resource = request_data.resource.toLowerCase();
     const response_name = ResponseParser.dictionary().resourceResponseName(resource);
     const response_object = data.get()[request_data.response_name][response_name];
-    const response_array = [];
+    const apiClient = request_data.client;
+    if (apiClient.arrayAsObject) {
+      result = ResponseParser.allResponseAsObject(response_object, resource, apiClient);
+    } else {
+      result = ResponseParser.allResponseAsArray(response_object, resource, apiClient);
+    }
+    return callback(null, result);
+  }
+
+  static allResponseAsArray(response_object, resource, apiClient) {
+    const result = [];
     if (response_object) response_object.forEach((r) => {
-      let element = ResponseParser.dictionary().classFactory(resource, r, request_data.client);
-      response_array.push(element);
+      let element = ResponseParser.dictionary().classFactory(resource, r, apiClient);
+      result.push(element);
     });
-    return callback(null, response_array);
+    return result;
+  }
+
+  static allResponseAsObject(response_object, resource, apiClient) {
+    const result = {};
+    if (response_object) response_object.forEach((r) => {
+      const element = ResponseParser.dictionary().classFactory(resource, r, apiClient);
+      if (apiClient.client.arrayAsObjectKey === 'name') {
+        result[element.name] = element;
+      } else {
+        result[element.id] = element;
+      }
+    });
+    return result;
   }
 
   static batchResponse(data, callback) {
@@ -92,17 +116,23 @@ class ResponseParser {
   }
 
   static searchResponse(data, request_data, callback) {
-    const response_types = ResponseParser.dictionary().searchResponseTypes();
+    const resource_types = ResponseParser.dictionary().searchResponseTypes();
     const response_object = data.get()[request_data.response_name];
     const result = { total: response_object.searchTotal, more: response_object.more };
-    response_types.forEach((type) => {
-      const resources = [];
-      if (typeof response_object[type] !== 'undefined') {
-        response_object[type].forEach((resource) => {
-          const object = ResponseParser.dictionary().classFactory(type, resource, request_data.client);
-          resources.push(object);
-        });
-        result[type] = resources;
+    resource_types.forEach((resource) => {
+      if (typeof response_object[resource] !== 'undefined') {
+        let resources = null;
+        if (request_data.client.arrayAsObject) {
+          resources = ResponseParser.allResponseAsObject(response_object[resource], resource, request_data, callback);
+        } else {
+          resources = ResponseParser.allResponseAsArray(response_object[resource], resource, request_data, callback);
+        }
+        // const resources = [];
+        // response_object[type].forEach((resource) => {
+        //   const object = ResponseParser.dictionary().classFactory(type, resource, request_data.client);
+        //   resources.push(object);
+        // });
+        result[resource] = resources;
       }
     });
     return callback(null, result);
