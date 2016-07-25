@@ -368,25 +368,41 @@ class ZimbraAdminApi {
     return this.performRequest(request_data);
   }
 
-  getAllDomains(callback, query_object) {
+  getAllDomains(query_object, callback) {
+    if (arguments.length === 1) {
+      callback = query_object;
+      query_object = null;
+    }
     query_object = query_object || {};
     query_object.types = 'domains';
     return this.directorySearch(query_object, callback);
   }
 
-  getAllAccounts(callback, query_object) {
+  getAllAccounts(query_object, callback) {
+    if (arguments.length === 1) {
+      callback = query_object;
+      query_object = null;
+    }
     query_object = query_object || {};
     query_object.types = 'accounts';
     return this.directorySearch(query_object, callback);
   }
 
-  getAllDistributionLists(callback, query_object) {
+  getAllDistributionLists(query_object, callback) {
+    if (arguments.length === 1) {
+      callback = query_object;
+      query_object = null;
+    }
     query_object = query_object || {};
     query_object.types = 'distributionlists';
     return this.directorySearch(query_object, callback);
   }
 
-  getAllAliases(callback, query_object) {
+  getAllAliases(query_object, callback) {
+    if (arguments.length === 1) {
+      callback = query_object;
+      query_object = null;
+    }
     query_object = query_object || {};
     query_object.types = 'aliases';
     return this.directorySearch(query_object, callback);

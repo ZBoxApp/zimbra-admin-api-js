@@ -108,9 +108,9 @@ A successful response will always return a `Object` named after the `Resource` y
 ### GetAll and Search
 You have the following functions:
 
-* `getAllAccounts(callback, query_object)`,
-* `getAllDomains(callback, query_object)`,
-* `getAllDistributionLists(callback, query_object)`,
+* `getAllAccounts(query_object, callback)`,
+* `getAllDomains(query_object, callback)`,
+* `getAllDistributionLists(query_object, callback)`,
 
 `query_object` is an **optional** `Object` that accept the following attributes:
 
@@ -176,7 +176,7 @@ zimbraApi.getAllAccounts(callback);
 
 ```javascript
 var query_object = { domain: 'example.com' }
-zimbraApi.getAllDistributionLists(callback, query_object);
+zimbraApi.getAllDistributionLists(query_object, callback);
 // Object {total: 6, more: false, dl: Array[6]}
 ```
 
@@ -184,7 +184,7 @@ zimbraApi.getAllDistributionLists(callback, query_object);
 
 ```javascript
 var query_object = { query: 'mail=*basic*' }
-zimbraApi.getAllAccounts(callback, query_object);
+zimbraApi.getAllAccounts(query_object, callback);
 // Object {total: 29, more: false, account: Array[29]}
 ```
 

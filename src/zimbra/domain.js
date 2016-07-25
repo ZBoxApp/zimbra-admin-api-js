@@ -91,7 +91,7 @@ class Domain extends Zimbra {
     const that = this;
     const admins_ids = this.getAdminsIdsFromGrants(this.attrs.zimbraACE);
     const query = this.makeAdminIdsQuery(admins_ids);
-    return this.api.getAllAccounts(callback, {query: query});
+    return this.api.getAllAccounts({query: query}, callback);
   }
 
   // Return the ZimbraId if the grantee have the domainAdminRights right
@@ -107,11 +107,11 @@ class Domain extends Zimbra {
 
   getAllDistributionLists(callback) {
     let query_object = { domain: this.name };
-    this.api.getAllDistributionLists(function(e,d){
+    this.api.getAllDistributionLists(query_object, function(e,d){
       if (e) return callback(e);
       if (d.total === 0) return callback(null, []);
       return callback(null, d.dl);
-    }, query_object);
+    });
   }
 
   checkMxRecord(callback) {
