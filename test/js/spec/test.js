@@ -14,6 +14,51 @@
     this.timeout(10000);
 
 
+    it('getDistributionListOwners should return the DL owners', function(done) {
+      let api = new ZimbraAdminApi(auth_data);
+      api.getDistributionListOwners('restringida@customer.dev', function(err, data){
+        if (err) console.log(err);
+        expect(data[0].type).to.be.exist;
+        done();
+      });
+    });
+
+    it('addDistributionListOwner to DL should add Owner', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let owner_email = 'domain_admin@customer.dev';
+      let resource_name = Date.now() + '@customer.dev';
+      api.createDistributionList(resource_name, {}, function(err, dl){
+        if (err) return console.error(err);
+        api.addDistributionListOwner(dl.name, owner_email, function(e, dl){
+          if (e) return console.error(e);
+          expect(e).to.be.null;
+          api.getDistributionListOwners(resource_name, function(err, data){
+            if (err) return console.error(err);
+            expect(data[0].name).to.be.equal(owner_email);
+            done();
+          })
+        });
+      });
+    });
+
+    it('removeDistributionListOwner should remove the Owner', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let owner_email = 'domain_admin@customer.dev';
+      let resource_name = Date.now() + '@customer.dev';
+      api.createDistributionList(resource_name, {}, function(err, dl){
+        dl.addOwner(owner_email, function(e, d){
+          api.removeDistributionListOwner(dl.name, owner_email, function(err, data){
+            if (err) return console.error(err);
+            api.getDistributionListOwners(resource_name, function(err, data){
+              if (err) return console.error(err);
+              expect(data).to.be.empty;
+              done();
+            });
+          })
+        });
+      });
+    });
+
     it('should return the Delegated Token', function(done){
       let api = new ZimbraAdminApi(auth_data);
       api.delegateAuth('admin', 3672, function(err, data) {

@@ -256,6 +256,13 @@ class ZimbraAdminApi {
     return this.performRequest(request_data);
   }
 
+  addDistributionListOwner(distributionList, ownerId, callback) {
+    this.getDistributionList(distributionList, (err, dl) => {
+      if (err) return callback(err);
+      return dl.addOwner(ownerId, callback);
+    });
+  }
+
   // Return a token for access an account
   // {authToken: _TOKEN_, lifetime: _miliseconds_ }
   delegateAuth(account_id, lifetime_seconds, callback) {
@@ -319,6 +326,13 @@ class ZimbraAdminApi {
 
   getAccount(identifier, callback) {
     return this.get('Account', identifier, callback);
+  }
+
+  getDistributionListOwners(distributionList, callback) {
+    this.getDistributionList(distributionList, (err, dl) => {
+      if (err) return callback(err);
+      return dl.getOwners(callback);
+    });
   }
 
   // attributes debe ser un arreglo de objetos:
@@ -523,6 +537,13 @@ class ZimbraAdminApi {
     request_data.parse_response = ResponseParser.emptyResponse;
     request_data.params.params = { id: dl_id, dlm: this.dictionary.convertToZimbraArray(members) };
     return this.performRequest(request_data);
+  }
+
+  removeDistributionListOwner(distributionList, ownerId, callback) {
+    this.getDistributionList(distributionList, (err, dl) => {
+      if (err) return callback(err);
+      return dl.removeOwner(ownerId, callback);
+    });
   }
 
   renameAccount(zimbra_id, new_name, callback) {

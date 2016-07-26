@@ -21,7 +21,7 @@
 
 First, instantiate the wrapper.
 ```javascript
-var zimbraApi = new ZimbraAdminApi({
+var client = new ZimbraAdminApi({
   'url': 'http://zimbra.zboxapp.dev:8000/service/admin/soap',
   'user': 'admin@zboxapp.dev',
   'password':'12345678'
@@ -32,7 +32,7 @@ var callback = function(err, data) {
   console.log(data);
 };
 
-zimbraApi.getAllDomains(callback);
+client.getAllDomains(callback);
 
 ZimbraAdminApi.version();
 // "version"
@@ -61,7 +61,7 @@ If Zimbra returns an Error, the library returns an `Error` Object with the Zimbr
 information. For example, if you look for a non existing `Domain`:
 
 ```javascript
-api.getDomain('example.com', callback);
+client.getDomain('example.com', callback);
 
 // Error: {status: 500, title: "Internal Server Error", extra: Object}
 // Error.extra: {
@@ -88,17 +88,17 @@ for brevity:
 You can use the resource `name` or `zimbraId`:
 
 ```javascript
-zimbraApi.getAccount('account@domain.com', callback);
+client.getAccount('account@domain.com', callback);
 // Account {name: "admin@domain.com", id: "eda93f93-ba26-4344-8ae0-1d03964b612a", attrs: Object}
 
-zimbraApi.getAccount('eda93f93-ba26-4344-8ae0-1d03964b612a', callback);
+client.getAccount('eda93f93-ba26-4344-8ae0-1d03964b612a', callback);
 // Account {name: "admin@domain.com", id: "eda93f93-ba26-4344-8ae0-1d03964b612a", attrs: Object}
 
 
-zimbraApi.getDomain('domain.com', callback);
+client.getDomain('domain.com', callback);
 // Domain {name: "domain.com", id: "cc0fd82b-7833-4de2-8954-88eb97fb81e9", attrs: Object}
 
-zimbraApi.getDistributionList('list@domain.com', callback);
+client.getDistributionList('list@domain.com', callback);
 // DistributionList {name: "list@domain.com", id: "747972ab-a410-4f17-8d5e-db7be21d75e9", attrs: Object, members: Array[4]}
 ```
 
@@ -131,7 +131,7 @@ If you need to get the result as an Object with the resource `id` or `name` as t
 of the object you need to initialize the Api like this:
 
 ```javascript
-var zimbraApi = new ZimbraAdminApi({
+var client = new ZimbraAdminApi({
   'url': 'http://zimbra.zboxapp.dev:8000/service/admin/soap',
   'user': 'admin@zboxapp.dev',
   'password':'12345678',
@@ -144,7 +144,7 @@ var callback = function(err, data) {
   console.log(data);
 };
 
-zimbraApi.getAllDomains(callback);
+client.getAllDomains(callback);
 // Object {total: 261, more: false, domain: Object} <== Object!!
 ```
 
@@ -153,7 +153,7 @@ zimbraApi.getAllDomains(callback);
 ##### 1. Get All Accounts without a query_object
 
 ```javascript
-zimbraApi.getAllAccounts(callback);
+client.getAllAccounts(callback);
 // Object {total: 261, more: false, account: Array[261]}
 ```
 
@@ -168,7 +168,7 @@ This is useful if you are doing pagination.
 
 ```javascript
 var query_object = { limit: 10, offset: 2 }
-zimbraApi.getAllAccounts(callback);
+client.getAllAccounts(callback);
 // Object {total: 261, more: true, account: Array[10]}
 ```
 
@@ -176,7 +176,7 @@ zimbraApi.getAllAccounts(callback);
 
 ```javascript
 var query_object = { domain: 'example.com' }
-zimbraApi.getAllDistributionLists(query_object, callback);
+client.getAllDistributionLists(query_object, callback);
 // Object {total: 6, more: false, dl: Array[6]}
 ```
 
@@ -184,7 +184,7 @@ zimbraApi.getAllDistributionLists(query_object, callback);
 
 ```javascript
 var query_object = { query: 'mail=*basic*' }
-zimbraApi.getAllAccounts(query_object, callback);
+client.getAllAccounts(query_object, callback);
 // Object {total: 29, more: false, account: Array[29]}
 ```
 
@@ -195,13 +195,13 @@ the result in just one answer.
 Every function here works for `BatchRequest` if you do not pass a `callback`. For example:
 
 ```javascript
-var allAccounts = zimbraApi.getAllAccounts();
-var allDomains = zimbraApi.getAllDomains();
-zimbraApi.makeBatchRequest([allAccounts, allDomains], callback);
+var allAccounts = client.getAllAccounts();
+var allDomains = client.getAllDomains();
+client.makeBatchRequest([allAccounts, allDomains], callback);
 // Object {SearchDirectoryResponse: Array[2], _jsns: "urn:zimbra"}
 // SearchDirectoryResponse[0].account, SearchDirectoryResponse[1].domain
 
-zimbraApi.makeBatchRequest([allAccounts, allDomains], callback, {onError: 'continue'});
+client.makeBatchRequest([allAccounts, allDomains], callback, {onError: 'continue'});
 // By default is {onError: 'stop'}
 ```
 
@@ -212,7 +212,7 @@ objects. The response arrays has the same order of the request array:
 
 ```javascript
 var domains = ['zboxapp.com', 'example.com', 'zboxnow.com'];
-zimbraApi.batchCountAccounts(domains, callback);
+client.batchCountAccounts(domains, callback);
 // [Object, Object];
 ```
 
@@ -231,7 +231,7 @@ Always have to pass an `email_address` and a `password`:
 
 ```javascript
 var zimbra_attributes = {};
-zimbraApi.createAccount('user1@example.com', 'SuP3rS3cur3P4ss', zimbra_attributes, callback);
+client.createAccount('user1@example.com', 'SuP3rS3cur3P4ss', zimbra_attributes, callback);
 // Account {name: "user1@example.com", id: "1919c856-08cc-43c9-b927-0c4cf88f50c7", attrs: Object}
 ```
 
@@ -243,7 +243,7 @@ Check the *space* between `user` and `1@example.com`
 
 ```javascript
 var zimbra_attributes = {};
-zimbraApi.createAccount('user 1@example.com', 'SuP3rS3cur3P4ss', zimbra_attributes, callback);
+client.createAccount('user 1@example.com', 'SuP3rS3cur3P4ss', zimbra_attributes, callback);
 // Error {status: 500, title: "Internal Server Error", extra: Object}
 // Error.extra {
 //  code: "service.INVALID_REQUEST",
@@ -269,7 +269,7 @@ var zimbra_attributes = {
   sn: 'Smith',
   zimbraMailQuota: 53687091200
 }
-zimbraApi.createAccount('user@example.com', 'SuP3rS3cur3P4ss', zimbra_attributes, callback);
+client.createAccount('user@example.com', 'SuP3rS3cur3P4ss', zimbra_attributes, callback);
 // Account {name: "user@example.com", id: "1919c856-08cc-43c9-b927-0c4cf88f50c7", attrs: Object}
 ```
 
@@ -292,7 +292,7 @@ var zimbra_attributes = {
 // user@example.com
 var zimbraId = "1919c856-08cc-43c9-b927-0c4cf88f50c7";
 
-zimbraApi.modifyAccount(zimbraId, zimbra_attributes, callback);
+client.modifyAccount(zimbraId, zimbra_attributes, callback);
 // Account {name: "user@example.com", id: "1919c856-08cc-43c9-b927-0c4cf88f50c7", attrs: Object}
 // attrs.sn = 'Hanks'
 // attrs.givenName = 'Tom'
@@ -310,7 +310,7 @@ For example:
 ```javascript
 // user@example.com
 var zimbraId = "1919c856-08cc-43c9-b927-0c4cf88f50c7";
-zimbraApi.removeAccount(zimbraId, callback);
+client.removeAccount(zimbraId, callback);
 ```
 
 * If everything goes OK you receive **nothing** as result.
@@ -345,7 +345,7 @@ account.disableArchiving(callback);
 Get distribution lists an account is a member of.
 
 ```javascript
-api.getAccountMembership(account, callback);
+client.getAccountMembership(account, callback);
 // [DistributionList, DistributionList, ...]
 
 // Or as a method of the account
@@ -398,7 +398,7 @@ account.viewMailPath(3600, callback);
 The account only has the Id of the Cos, `zimbraCOSId`, but not the name. To get the name you call `zimbraCosName` on the Account:
 
 ```javascript
-// account is a Account, you got it from zimbraApi.getAccount....
+// account is a Account, you got it from client.getAccount....
 account.cosName(callback);
 // professional
 
@@ -413,7 +413,7 @@ This are functions especifics to `Cos`.
 ### Get All Cos
 
 ```javascript
-zimbraApi.getAllCos(callback);
+client.getAllCos(callback);
 ```
 
 ## Domains
@@ -437,7 +437,7 @@ domain.masterDomainName
 Count number of accounts by `CoS` in a domain.
 
 ```javascript
-zimbraApi.countAccounts('example.com', callback);
+client.countAccounts('example.com', callback);
 
 // Object { premium: Object, professional: Object}
 // premium: {
@@ -450,7 +450,7 @@ zimbraApi.countAccounts('example.com', callback);
 If you have a `Domain` you can call `countAccounts(callback)` on it and it will returns the **Limit of Accounts** for the `Domain`:
 
 ```javascript
-// domain is a Domain, you got it from zimbraApi.getDomain....
+// domain is a Domain, you got it from client.getDomain....
 domain.countAccounts(callback);
 // Object { premium: Object, professional: Object}
 // premium: {
@@ -489,7 +489,7 @@ domain.removeAdmin(account.id, coses, callback);
 Return an Array of the Domain Admins `Accounts`.
 
 ```javascript
-// domain is a Domain, you got it from zimbraApi.getDomain....
+// domain is a Domain, you got it from client.getDomain....
 domain.getAdmins(callback);
 // [Account, Account]
 ```
@@ -498,7 +498,7 @@ domain.getAdmins(callback);
 Return an Array of the Domain `DistributionList`s.
 
 ```javascript
-// domain is a Domain, you got it from zimbraApi.getDomain....
+// domain is a Domain, you got it from client.getDomain....
 domain.getAllDistributionLists(callback);
 // [DistributionList, DistributionList]
 ```
@@ -530,9 +530,13 @@ dl.removeMembers(['1@example.com', '2@example.com'], callback);
 ### Add / Remove Owner
 
 ```javascript
+client.addDistributionListOwner(dl.name, 'new_member@example.com', callback);
+// OR
 dl.addOwner('new_member@example.com', callback);
 // {} if Success
 
+client.removeDistributionListOwner(dl.name, 'new_member@example.com', callback);
+// OR
 dl.removeOwner('new_member@example.com', callback);
 // {} if Success
 ```
@@ -542,6 +546,8 @@ Owners are the Zimbra emails addresses that are allowed to send emails to the `D
 If a `DL` has at least one `Owener` is a **Private DL**.
 
 ```javascript
+client.getDistributionListOwners(dl.name, callback);
+// OR
 dl.getOwners(callback);
 // Array of Objects
 // {name: 'email_address', id: 'ZimbraId', type: 'usr|grp'}
