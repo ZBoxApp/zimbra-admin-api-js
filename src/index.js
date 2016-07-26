@@ -263,6 +263,13 @@ class ZimbraAdminApi {
     });
   }
 
+  addDomainAdmin(domain, account_id, coses, callback) {
+    this.getDomain(domain, (err, domain) => {
+      if (err) return callback(err);
+      return domain.addAdmin(account_id, coses, callback);
+    });
+  }
+
   // Return a token for access an account
   // {authToken: _TOKEN_, lifetime: _miliseconds_ }
   delegateAuth(account_id, lifetime_seconds, callback) {
@@ -444,6 +451,20 @@ class ZimbraAdminApi {
     return this.get('Domain', identifier, callback);
   }
 
+  getDomainAdmins(identifier, callback) {
+    this.getDomain(identifier, (err, domain) => {
+      if (err) return callback(err);
+      return domain.getAdmins(callback);
+    });
+  }
+
+  getDomainMaxAccountByCos(identifier, callback) {
+    this.getDomain(identifier, (err, domain) => {
+      if (err) return callback(err);
+      return callback(null, domain.maxAccountsByCos());
+    });
+  }
+
   // Returns all grants on the specified target entry, or all grants granted to the specified grantee entry.
   // target_data  and grantee_data are both objects like:
   // {
@@ -525,10 +546,17 @@ class ZimbraAdminApi {
     return this.performRequest(request_data);
   }
 
-  // Remove Account
+  // Remove Domain
   removeDomain(zimbra_id, callback) {
     let resource_data = { id: zimbra_id };
     return this.remove('Domain', resource_data, callback);
+  }
+
+  removeDomainAdmin(domain, account_id, coses, callback) {
+    this.getDomain(domain, (err, domain) => {
+      if (err) return callback(err);
+      return domain.removeAdmin(account_id, coses, callback);
+    });
   }
 
   // Remove DL

@@ -468,6 +468,8 @@ If the `Domain` is empty, no 'Accounts', the result will be a `{}`.
 ### CheckDomainMXRecord
 
 ```javascript
+client.checkDomainMxRecord(domain.name, callback);
+// OR
 domain.checkMxRecord(callback);
 // Object {entry: "5 mailcleaner.zboxapp.com.", code: "Failed",
 // message: "Domain is configured to use SMTP host: zimbra.zboxapp.dev. None of the MX records match this name."}
@@ -480,9 +482,13 @@ You should also specify the `coses` the `Domain Admin` can assign to the account
 
 ```javascript
 const coses = ['default', 'test', 'professional'];
+api.addDomainAdmin(domain.name, account.id, coses, callback);
+// OR
 domain.addAdmin(account.id, coses, callback);
 // {} if Success
 
+api.removeDomainAdmin(domain.name, account.id, coses, callback);
+// OR
 domain.removeAdmin(account.id, coses, callback);
 // {} if Success
 ```
@@ -492,6 +498,8 @@ Return an Array of the Domain Admins `Accounts`.
 
 ```javascript
 // domain is a Domain, you got it from client.getDomain....
+api.getDomainAdmins(domain.name, callback);
+// OR
 domain.getAdmins(callback);
 // [Account, Account]
 ```

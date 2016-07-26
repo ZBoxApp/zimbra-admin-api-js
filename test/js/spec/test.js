@@ -14,6 +14,63 @@
     this.timeout(10000);
 
 
+    it('domain.getAdmins() should return the domain admins', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.getDomainAdmins('customer.dev', function(err, data){
+        if (err) console.error(err);
+        expect(data.account.length).to.be.above(1);
+        expect(data.account[0].constructor.name).to.be.equal('Account');
+        done();
+      });
+    });
+
+    it('addAdmin should add Admin', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let domain_admin = Date.now() + '@customer.dev';
+      let resource_name = Date.now() + '.dev';
+      api.createAccount(domain_admin, '12dda.222', {},  function(err, account){
+        if (err) return console.error(err);
+        api.createDomain(resource_name, {}, function(err, data){
+          if (err) console.error(err);
+          let domain = data;
+          const coses = ['basic', 'premium'];
+          api.addDomainAdmin(domain.name, account.id, coses,  function(e, d){
+            if (e) return console.error(e);
+            expect(err).to.be.null;
+            d.getACLs(function(e, acls){
+              if (e) return console.error(e);
+              const expectedGrants = ["domainAdminRights", "set.dl.zimbraACE", "set.domain.amavisBlacklistSender", "set.domain.amavisWhitelistSender"];
+              const actualGrants = acls.map(function(acl){return acl.rightName}).sort()
+              expect(expectedGrants[0]).to.be.equal(actualGrants[0]);
+              expect(expectedGrants[2]).to.be.equal(actualGrants[2]);
+              d.getAdmins(function(e, admins){
+                if (e) return console.error(e);
+                expect(admins.account[0].name).to.be.equal(domain_admin);
+                done();
+              })
+            });
+          });
+        });
+      });
+    });
+
+    it('removeAdmin should remove the Admin', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let domain_admin = 'domain_admin@customer.dev';
+      let resource_name = Date.now() + '.dev';
+      api.createDomain(resource_name, {}, function(err, domain){
+        domain.addAdmin(domain_admin, [], function(e, d){
+          api.removeDomainAdmin(domain.name, domain_admin, [], function(e, d){
+            domain.getACLs(function(e, d){
+              if (e) return console.error(e);
+              expect(d.length).to.be.equal(0);
+              done();
+            });
+          });
+        });
+      });
+    });
+
     it('Should return the viewMailPath', function(done){
       let api = new ZimbraAdminApi(auth_data);
       api.getAccountViewMailPath('admin@zboxapp.dev', null, function(err, account){
