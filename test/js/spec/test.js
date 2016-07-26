@@ -14,6 +14,15 @@
     this.timeout(10000);
 
 
+    it('Should return the viewMailPath', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.getAccountViewMailPath('admin@zboxapp.dev', null, function(err, account){
+        if (err) return console.error(err);
+        expect(account).to.match(/adminPreAuth=1$/);
+        done();
+      });
+    });
+
     it('getDistributionListOwners should return the DL owners', function(done) {
       let api = new ZimbraAdminApi(auth_data);
       api.getDistributionListOwners('restringida@customer.dev', function(err, data){

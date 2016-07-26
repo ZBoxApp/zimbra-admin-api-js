@@ -328,6 +328,13 @@ class ZimbraAdminApi {
     return this.get('Account', identifier, callback);
   }
 
+  getAccountViewMailPath(account, lifetime_seconds, callback) {
+    this.getAccount(account, (err, account) => {
+      if (err) return callback(err);
+      return account.viewMailPath(lifetime_seconds, callback);
+    });
+  }
+
   getDistributionListOwners(distributionList, callback) {
     this.getDistributionList(distributionList, (err, dl) => {
       if (err) return callback(err);

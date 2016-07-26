@@ -390,6 +390,8 @@ This return an `URL PATH` to access the account Webmail as an administrator.
 The first parameter is the `lifetime` of the Token in seconds.
 
 ```javascript
+client.getAccountViewMailPath(account.name, 3600, callback);
+// OR
 account.viewMailPath(3600, callback);
 // /service/preauth?authtoken=0_8c671f3146....&isredirect=1&adminPreAuth=1
 ```
