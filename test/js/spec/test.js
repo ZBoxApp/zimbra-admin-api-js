@@ -13,6 +13,13 @@
   describe('Basic tests', function() {
     this.timeout(10000);
 
+    it('Should remove the token', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.login(function(err, data){
+        if (err) console.error(err);
+        done();
+      });
+    });
 
     it('domain.getAdmins() should return the domain admins', function(done){
       let api = new ZimbraAdminApi(auth_data);
@@ -20,6 +27,7 @@
         if (err) console.error(err);
         expect(data.account.length).to.be.above(1);
         expect(data.account[0].constructor.name).to.be.equal('Account');
+        console.log(api);
         done();
       });
     });
