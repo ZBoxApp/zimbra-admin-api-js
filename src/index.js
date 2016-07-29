@@ -78,7 +78,7 @@ class ZimbraAdminApi {
   }
 
   login(callback) {
-    this.client.token = null;
+    this._client.token = null;
     let auth_object = {
       'username': this.user, 'secret': this.password,
       'isPassword': true, 'isAdmin': true
