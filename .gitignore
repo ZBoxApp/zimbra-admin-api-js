@@ -56,3 +56,4 @@ sftp-config.json
 
 .idea
 lib/zimbra-admin-api.js.map
+vagrant/provision/filter_plugins/ipaddress.pyc
