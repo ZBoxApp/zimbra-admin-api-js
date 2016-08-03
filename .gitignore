@@ -6,6 +6,7 @@ node_modules
 .npminstall
 ncp-debug.log
 npm-debug.log
+.vagrant
 
 ### OSX template
 .DS_Store
