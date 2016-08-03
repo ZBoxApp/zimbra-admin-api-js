@@ -739,11 +739,13 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
           const cosMax = {"zimbraDomainCOSMaxAccounts": `${cos.id}:200`};
           api.modifyDomain(domain.id, cosMax, function(err, data){
             if (err) console.error(err);
-            domain.countAccounts(function(err, d){
-              if (err) console.error(err);
-              expect(d.basic.limit).to.be.above(1);
-              done();
-            });
+            api.getDomain('customer.dev', function(err, domain){
+              domain.countAccounts(function(err, d){
+                if (err) console.error(err);
+                expect(d.basic.limit).to.be.above(1);
+                done();
+              });
+            })
           })
         })
 
