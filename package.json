@@ -2,10 +2,14 @@
   "name": "zimbra-admin-api-js",
   "version": "0.3.6",
   "main": "src/index.js",
+  "engines": {
+    "node": ">=6.2"
+  },
   "dependencies": {
     "crypto-browserify": "^3.11.0",
     "js-zimbra": "github:zboxapp/js-zimbra",
     "merge": "^1.2.0",
+    "object.entries": "^1.0.3",
     "options-api": "^1.1.0",
     "sprintf-js": "^1.0.3",
     "superagent": "^1.8.3",
@@ -35,7 +39,7 @@
     "webpack": "1.12.9"
   },
   "scripts": {
-    "test": "grunt mocha",
+    "test": "mocha",
     "build": "webpack",
     "dev": "WEBPACK_ENV=dev webpack --progress --colors --watch",
     "run": "webpack --progress --watch",

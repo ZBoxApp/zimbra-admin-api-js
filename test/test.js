@@ -1,29 +1,36 @@
 'use strict';
 
+// For node SSL Access
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 var requireHelper = require('./require_helper'),
     ZimbraAdminApi = requireHelper('index.js'),
     expect = require('chai').expect,
     superagent = require('superagent');
 
+var zimbraURL = process.env.ZIMBRA_URL || 'https://localhost:7071/service/admin/soap';
+var zimbraAdminUser = process.env.ZIMBRA_USER || 'admin@zboxapp.dev';
+var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
+
 (function() {
+  'use strict';
 
   var auth_data = {
-    'url': 'https://localhost:7071/service/admin/soap',
-    'user': 'admin@zboxapp.dev',
-    'password':'12345678'
+    'url': zimbraURL,
+    'user': zimbraAdminUser,
+    'password': zimbraAdminPassword
   };
 
   describe('Basic tests', function() {
     this.timeout(10000);
 
-    it('Should remove the token', function(done){
-      console.log("HOLA------------")
-      let api = new ZimbraAdminApi(auth_data);
-      api.login(function(err, data){
-        if (err) console.error(err);
-        done();
-      });
-    });
+    // it('Should remove the token', function(done){
+    //   let api = new ZimbraAdminApi(auth_data);
+    //   api.login(function(err, data){
+    //     if (err) console.error(err);
+    //     done();
+    //   });
+    // });
 
     it('domain.getAdmins() should return the domain admins', function(done){
       let api = new ZimbraAdminApi(auth_data);
@@ -31,7 +38,6 @@ var requireHelper = require('./require_helper'),
         if (err) console.error(err);
         expect(data.account.length).to.be.above(1);
         expect(data.account[0].constructor.name).to.be.equal('Account');
-        console.log(api);
         done();
       });
     });
@@ -51,7 +57,7 @@ var requireHelper = require('./require_helper'),
             expect(err).to.be.null;
             d.getACLs(function(e, acls){
               if (e) return console.error(e);
-              const expectedGrants = ["domainAdminRights", "set.dl.zimbraACE", "set.domain.amavisBlacklistSender", "set.domain.amavisWhitelistSender"];
+              const expectedGrants = ["domainAdminRights", "set.dl.zimbraACE"];
               const actualGrants = acls.map(function(acl){return acl.rightName}).sort()
               expect(expectedGrants[0]).to.be.equal(actualGrants[0]);
               expect(expectedGrants[2]).to.be.equal(actualGrants[2]);
@@ -269,7 +275,7 @@ var requireHelper = require('./require_helper'),
 
     it('should return Error with wrong Login', function(done){
       let auth_obj = {
-        'url': 'http://zimbra.zboxapp.dev:9000/service/admin/soap',
+        'url': zimbraURL,
         'user': 'admin@zboxapp.dev',
         'password':'12345678910'
       }
@@ -294,7 +300,7 @@ var requireHelper = require('./require_helper'),
 
     it('countAccounts hould return {} for empty Domain', function(done){
       let api = new ZimbraAdminApi(auth_data);
-      api.countAccounts('juanitalapoderosa.com', function(err, data){
+      api.countAccounts('empty.com', function(err, data){
         if (err) console.error(err);
         expect(data).to.be.empty;
         done();
@@ -316,7 +322,6 @@ var requireHelper = require('./require_helper'),
       let getCallback = function(err, response){
         if (err) return this.handleError(err);
         api.makeBatchRequest([getAllAccounts, getAllDomains], callback);
-        done();
       };
       api.login(getCallback);
     });
@@ -727,13 +732,21 @@ var requireHelper = require('./require_helper'),
 
     it('domain.countAccounts() should return the account Limits', function(done){
       let api = new ZimbraAdminApi(auth_data);
-      api.getDomain('customer.dev', function(err, data){
+      api.getDomain('customer.dev', function(err, domain){
         if (err) console.error(err);
-        let domain = data;
-        domain.countAccounts(function(e, d){
-          expect(d.basic.limit).to.be.above(1);
-          done();
-        });
+        api.getCos("basic", function(err, cos){
+          if (err) console.error(err);
+          const cosMax = {"zimbraDomainCOSMaxAccounts": `${cos.id}:200`};
+          api.modifyDomain(domain.id, cosMax, function(err, data){
+            if (err) console.error(err);
+            domain.countAccounts(function(err, d){
+              if (err) console.error(err);
+              expect(d.basic.limit).to.be.above(1);
+              done();
+            });
+          })
+        })
+
       });
     });
 
@@ -779,7 +792,7 @@ var requireHelper = require('./require_helper'),
             expect(err).to.be.null;
             d.getACLs(function(e, acls){
               if (e) return console.error(e);
-              const expectedGrants = ["domainAdminRights", "set.dl.zimbraACE", "set.domain.amavisBlacklistSender", "set.domain.amavisWhitelistSender"];
+              const expectedGrants = ["domainAdminRights", "set.dl.zimbraACE"];
               const actualGrants = acls.map(function(acl){return acl.rightName}).sort()
               expect(expectedGrants[0]).to.be.equal(actualGrants[0]);
               expect(expectedGrants[2]).to.be.equal(actualGrants[2]);

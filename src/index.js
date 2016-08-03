@@ -8,6 +8,12 @@ var pjson = require('../package.json');
 var Dictionary = require('./utils/dictionary.js');
 var ResponseParser = require('./utils/response_parser.js');
 var ErrorBuilder = require('./zimbra/error.js');
+var entries = require ('object.entries');
+
+// Hack Para que Object tenga entries
+if (!Object.entries) {
+    entries.shim();
+}
 
 // TODO: To many parseResponse types
 class ZimbraAdminApi {
@@ -678,8 +684,5 @@ class ZimbraAdminApi {
 
 }
 
-if (typeof module === 'object' && typeof module.exports === 'object') {
-  module.exports = ZimbraAdminApi;
-} else {
-  window.ZimbraAdminApi = ZimbraAdminApi;
-}
+
+module.exports = ZimbraAdminApi;
