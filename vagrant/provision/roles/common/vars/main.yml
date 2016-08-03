@@ -1,6 +1,7 @@
 ---
 # vars file for cartertdte.mta
 system_packages:
+  - epel-release
   - screen
   - wget
   - curl
@@ -18,6 +19,7 @@ system_packages:
   - bind-utils
   - tcpdump
   - tzdata
+  - tzdata-java
   - zsh
   - vim
   - dos2unix
@@ -25,3 +27,5 @@ system_packages:
   - python-pycurl
   - mailx
   - unzip
+  - git
+  - deltarpm

@@ -59,6 +59,14 @@ zimbra_domains:
   - name: 'zboxapp.com'
     bcategory: '76424135-5'
 
+  - name: 'big.com'
+    bcategory: '76424135-5'
+
+  - name: 'itlinux.cl'
+    bcategory: '13834853-9'
+    accounts:
+      - name: 'pbruna@itlinux.cl'
+      
   - name: 'customer.dev.archive'
     bcategory: '13834853-9'
     accounts:
