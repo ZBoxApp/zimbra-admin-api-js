@@ -6,8 +6,6 @@
     'url': 'http://zimbra.zboxapp.dev:9000/service/admin/soap',
     'user': 'admin@zboxapp.dev',
     'password':'12345678'
-    // 'user': 'superadmin2@zboxtest.com',
-    // 'password':'zboxapp2016'
   };
 
   describe('Basic tests', function() {

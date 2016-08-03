@@ -1,0 +1,4 @@
+{
+ "port": 30000,
+ "zimbra_url": "https://localhost:7071/service/admin/soap"
+}

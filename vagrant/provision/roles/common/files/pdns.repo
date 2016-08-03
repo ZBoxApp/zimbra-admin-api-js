@@ -1,0 +1,5 @@
+[pdns-MIND]
+name=PowerDNS server packages for RHEL6 and friends.
+baseurl=https://www.monshouwer.eu/download/3rd_party/pdns/el6/$basearch/
+gpgcheck=0
+enabled=1

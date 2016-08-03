@@ -1,0 +1,28 @@
+# roles/bind/tasks/main.yml
+---
+
+- name: Install BIND
+  yum:
+    pkg: "{{ item }}"
+    state: installed
+  with_items: bind_packages
+  tags: bind
+
+- name: Create serial
+  command: date +%y%m%d%H
+  register: timestamp
+  tags: bind
+
+- include: master.yml
+  when: ansible_all_ipv4_addresses|last == bind_zone_master_server_ip
+
+- include: slave.yml
+  when: not ansible_all_ipv4_addresses|last == bind_zone_master_server_ip
+
+- name: Start BIND service
+  service:
+    name: named
+    state: started
+    enabled: yes
+  tags: bind
+

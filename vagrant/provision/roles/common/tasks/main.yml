@@ -1,0 +1,57 @@
+---
+# tasks file for cartertdte.mta
+- name: RH Install epel-release
+  yum: name=epel-release update_cache=yes
+
+- name: Deshabilita SELINUX
+  lineinfile: dest=/etc/sysconfig/selinux regexp=^SELINUX= line=SELINUX=disabled
+
+- name: Instala paquetes Base
+  yum: name={{ item }} state=present
+  with_items:
+    - "{{ system_packages }}"
+
+- name: Copia resolv.conf
+  copy: src=resolv.conf dest=/etc/resolv.conf
+
+- name: Copia pdns.repo
+  copy: src=pdns.repo dest=/etc/yum.repos.d/pdns.repo
+
+- name: Copia mongo.repo
+  copy: src=mongo.repo dest=/etc/yum.repos.d/mongo.repo
+
+- name: "Copia NGinx FS"
+  copy: src=nginx-filesystem-1.10.0-8.p5.0.29.el6.noarch.rpm dest=/tmp/nginx-filesystem-1.10.0-8.p5.0.29.el6.noarch.rpm
+
+
+- name: Copia repo de Nodejs
+  copy: src=node.repo dest=/etc/yum.repos.d/nodesource-el.repo
+
+- name: Desactiva SELINUX
+  selinux: state=disabled
+
+
+- name: Instala todos los Fucking paquetes
+  yum: name={{ item }} state=present disable_gpg_check=yes
+  with_items:
+    - nodejs
+    - curl-devel
+    - GeoIP
+    - gd
+    - gperftools
+    - pcre
+    - libev
+    - git
+
+- name: Copia hosts
+  template:
+    src: hosts.j2
+    dest: /etc/hosts
+    owner: root
+    mode: '0644'
+
+- name: Desahbilita postfix
+  service: name=postfix state=stopped enabled=no
+
+- name: Desahbilita iptables
+  service: name=firewalld state=stopped enabled=no

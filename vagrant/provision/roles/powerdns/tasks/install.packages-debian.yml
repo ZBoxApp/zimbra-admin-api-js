@@ -1,0 +1,89 @@
+---
+- name: Check pdns_repo_provider
+  fail: msg="pdns_repo_provider is neither 'powerdns' nor 'os'"
+  when: pdns_repo_provider not in ["os", "powerdns"]
+
+# XXX: Is this handy to check ( I guess... no)
+- name: Check pdns_repo_branch
+  fail: msg="pdns_repo_branch isn't set to a known branch"
+  when: pdns_repo_provider == "powerdns" and pdns_repo_branch not in ["master"]
+
+- name: Add the PowerDNS repository key
+  apt_key: url=http://repo.powerdns.com/CBC8B383-pub.asc id=D47975F8DAE32700A563E64FFF389421CBC8B383
+  when: pdns_repo_provider == "powerdns" and pdns_repo_branch == "master"
+
+- name: apt-pin the PowerDNS packages to the PowerDNS repo
+  copy: dest='/etc/apt/preferences.d/pdns' src=pdns.pin owner=root group=root mode=0644
+  when: pdns_repo_provider == "powerdns"
+
+# XXX: These repo's don't exist yet
+#- name: Add the PowerDNS repository key
+#  apt_key: url=http://repo.powerdns.com/FD380FBB-pub.asc id=9FAAA5577E8FCF62093D036C1B0C6205FD380FBB
+#  when: pdns_repo_provider == "powerdns" pdns_repo_branch in ["4", "stable"]
+
+- name: Add the PowerDNS repository
+  apt_repository: repo="deb http://repo.powerdns.com/{{ansible_distribution | lower}} {{ansible_distribution_release|lower}}-auth-{{pdns_repo_branch}} main"
+  when: pdns_repo_provider == "powerdns"
+
+- name: Install the main PowerDNS package
+  apt: name=pdns-server state=present update_cache=yes
+
+- name: Install Geo module package
+  apt: pkg=pdns-backend-geo state=installed
+  when: item.startswith('geo') and not item.startswith('geoip')
+  with_items: pdns_backends.keys()
+
+- name: Install GeoIP module package
+  apt: pkg=pdns-backend-geoip state=installed
+  when: item.startswith('geoip')
+  with_items: pdns_backends.keys()
+
+- name: Install MySQL module package
+  apt: pkg=pdns-backend-mysql state=installed
+  when: item.startswith('gmysql')
+  with_items: pdns_backends.keys()
+
+- name: Install Postgresql module package
+  apt: pkg=pdns-backend-pgsql state=installed
+  when: item.startswith('gpgsql')
+  with_items: pdns_backends.keys()
+
+- name: Install gsqlite3 module package
+  apt: pkg=pdns-backend-sqlite3 state=installed
+  when: item.startswith('gsqlite3')
+  with_items: pdns_backends.keys()
+
+- name: Install ldap module package
+  apt: pkg=pdns-backend-ldap state=installed
+  when: item.startswith('ldap')
+  with_items: pdns_backends.keys()
+
+- name: Install lmdb module package
+  apt: pkg=pdns-backend-lmdb state=installed
+  when: item.startswith('lmdb')
+  with_items: pdns_backends.keys()
+
+- name: Install lua module package
+  apt: pkg=pdns-backend-lua state=installed
+  when: item.startswith('lua')
+  with_items: pdns_backends.keys()
+
+- name: Install mydns module package
+  apt: pkg=pdns-backend-mydns state=installed
+  when: item.startswith('mydns')
+  with_items: pdns_backends.keys()
+
+- name: Install pipe module package
+  apt: pkg=pdns-backend-pipe state=installed
+  when: item.startswith('pipe')
+  with_items: pdns_backends.keys()
+
+- name: Install remote module package
+  apt: pkg=pdns-backend-remote state=installed
+  when: item.startswith('remote')
+  with_items: pdns_backends.keys()
+
+- name: Install tinydns module package
+  apt: pkg=pdns-backend-tinydns state=installed
+  when: item.startswith('tinydns')
+  with_items: pdns_backends.keys()

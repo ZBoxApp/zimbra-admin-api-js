@@ -1,0 +1,36 @@
+config-dir={{pdns_config_dir}}
+setuid={{ pdns_user }}
+setgid={{ pdns_group }}
+{% for config_item in pdns_config.keys() | sort %}
+{% endfor %}
+
+daemon=yes
+disable-axfr=no
+guardian=yes
+log-dns-details=yes
+log-dns-queries=yes
+master=yes
+slave=no
+local-port=51
+send-root-referral=lean
+
+launch=
+
+{% for backend in pdns_backends -%}
+launch+={{backend}}
+{% for backend_item in pdns_backends[backend] -%}
+{{backend | replace(':', '-')}}-{{backend_item}}={{pdns_backends[backend][backend_item]}}
+{% endfor %}
+
+{%- endfor -%}
+gmysql-dnssec
+
+version-string="DNS IT Linux"
+allow-axfr-ips={{ pdns_slaves }}
+
+experimental-api-key=otto
+experimental-json-interface=yes
+webserver-address=0.0.0.0
+webserver-allow-from=0.0.0.0/0
+webserver-port=8091
+webserver=yes

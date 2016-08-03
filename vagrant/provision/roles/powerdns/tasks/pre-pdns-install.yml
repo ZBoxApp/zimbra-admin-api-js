@@ -1,0 +1,30 @@
+---
+- name: Instala MySQL-python
+  yum: name=MySQL-python state=present
+
+- name: Instala MariaDBL Server
+  yum: name={{ item }} state=present
+  with_items:
+    - mysql 
+    - mysql-server
+    - mysql-libs
+  ignore_errors: yes
+
+- name: Habilita MySQL
+  service: name=mysqld state=started enabled=yes
+
+- name: Crea DB PowerDNS MySQL
+  mysql_db: name=powerdnsdb state=present
+  ignore_errors: true
+
+- name: Crea usuario MySQL
+  mysql_user: name=powerdns password=12345678 priv=*.*:ALL,GRANT state=present
+  ignore_errors: true
+
+- name: Copia pdns.sql
+  copy: src=pdns.sql dest=/tmp/pdns.sql owner=root group=root backup=yes
+
+- name: Crea tablas PowerDNS
+  mysql_db: state=import name=powerdnsdb login_user=powerdns login_password=12345678 target=/tmp/pdns.sql
+  ignore_errors: true
+

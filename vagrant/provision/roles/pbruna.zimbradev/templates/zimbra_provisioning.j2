@@ -1,0 +1,68 @@
+{% if zimbra_cos is defined %}
+{% for cos_name in zimbra_cos %}
+cc {{ cos_name }}
+{% endfor %}
+{% endif %}
+
+{% if zimbra_domains is defined %}
+{% for domain in  zimbra_domains %}
+cd {{ domain.name }}
+md {{ domain.name }} businessCategory {{ domain.bcategory | default('--')}}
+
+{% if domain.attrs is defined %}
+{% for attr in domain.attrs %}
+md {{ domain.name }} {{ attr }}
+{% endfor %}
+{% endif %}
+
+
+{% if domain.alias is defined %}
+{% for alias in domain.alias %}
+createAliasDomain {{ alias }} {{ domain.name }} zimbraMailCatchAllForwardingAddress @{{ domain.name }} businessCategory {{ domain.bcategory | default('--')}}
+{% endfor %}
+{% endif %}
+
+{% if domain.accounts is defined %}
+{% for account in domain.accounts %}
+ca {{ account.name }} {{ account.password | default(12345678)}} zimbraIsAdminAccount {{ account.zimbra_is_admin_account | default('FALSE')}} zimbraAccountStatus {{ account.account_status | default('active') }}
+{% if account.extra is defined %}
+ma {{ account.name }} {{ account.extra }}
+{% endif %}
+{% if account.delegated_admin_account is defined %}
+ma {{ account.name }} zimbraIsDelegatedAdminAccount TRUE
+grr domain {{ domain.name }} usr {{ account.name }} domainAdminRights
+{% endif %}
+{% if account.cos_name is defined %}
+sac {{ account.name }} {{ account.cos_name }}
+{% endif %}
+
+{% if domain.alias is defined %}
+createAliasDomain {{ domain.alias }} {{ domain.name }}
+{% endif %}
+
+{% endfor %}
+{% endif %}
+
+{% if domain.admins is defined %}
+{% for admin in domain.admins %}
+grr domain {{ domain.name }} usr {{ admin }} domainAdminRights
+{% endfor %}
+{% endif %}
+
+{% if domain.distribution_lists is defined %}
+{% for dl in domain.distribution_lists %}
+cdl {{ dl.name }}
+{% if dl.members is defined %}
+{% for member in dl.members %}
+adlm {{ dl.name }} {{ member }}
+{% endfor %}
+{% endif %}
+{% if dl.authorized_senders is defined %}
+{% for user in dl.authorized_senders %}
+grr dl {{ dl.name }} usr {{ user }} sendToDistList
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}

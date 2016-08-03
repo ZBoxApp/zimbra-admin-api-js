@@ -1,0 +1,27 @@
+---
+# vars file for cartertdte.mta
+system_packages:
+  - screen
+  - wget
+  - curl
+  - sysstat
+  - nc
+  - wget
+  - links
+  - perl
+  - ntp
+  - ntpdate
+  - strace
+  - telnet
+  - nmap
+  - traceroute
+  - bind-utils
+  - tcpdump
+  - tzdata
+  - zsh
+  - vim
+  - dos2unix
+  - libselinux-python
+  - python-pycurl
+  - mailx
+  - unzip

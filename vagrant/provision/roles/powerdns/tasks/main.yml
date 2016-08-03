@@ -1,0 +1,24 @@
+---
+- include: pre-pdns-install.yml
+  when: pdns_installation_type == "packages" and ansible_os_family == "RedHat" or ansible_distribution == "CentOS"
+
+#- include: install.packages-debian.yml
+#  when: pdns_installation_type == "packages" and ansible_os_family == "Debian"
+#  tags:
+#    - packages
+#    - install
+
+- include: install.packages-redhat.yml
+  when: pdns_installation_type == "packages" and ansible_os_family == "RedHat" or ansible_distribution == "CentOS"
+  tags:
+    - packages
+    - install
+
+- include: configuration.yml
+  tags:
+    - conf
+    - config
+    - configuration
+
+- name: Start and enable the PowerDNS service
+  service: name=pdns state=started enabled=true

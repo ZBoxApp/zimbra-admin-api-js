@@ -1,0 +1,41 @@
+---
+- hosts: all
+  sudo: yes
+  vars:
+    bind_listen_ipv4:
+      - 'any'
+    bind_allow_query:
+      - '192.168.0.0/16'
+      - '127.0.0.0/8'
+    bind_recursion: 'yes'
+    bind_zone_name: 'zboxapp.dev'
+    bind_zone_master_server_ip: '192.168.50.10'
+    bind_zone_name_servers:
+      - 'zimbra'
+    bind_zone_mail_servers:
+      - name: 'zimbra'
+        preference: 10
+    bind_zone_hosts:
+      - name: 'zimbra'
+        ip: '192.168.50.10'
+
+  roles:
+    - role: common
+    - role: bertvv.bind
+    - role: pbruna.zimbradev
+
+  tasks:
+    - name: Instala Mongo DB y dependencias
+      yum: name={{ item }} state=present
+      with_items:
+        - mongodb-org
+        - python-pymongo
+
+    - name: Configura mongo
+      copy: src=./roles/common/files/mongod.conf dest=/etc/mongod.conf
+
+    - name: Inicia servicio mongodb
+      service: name=mongod state=started enabled=yes
+
+    - name: Configura DB y usuario mongo
+      mongodb_user: database=manager name=manager password=manager state=present
