@@ -1,0 +1,12 @@
+language: node_js
+
+node_js:
+  - "6.2"
+
+sudo: required
+
+before_script:
+  - echo "PLACE_HOLDER"
+
+script:
+  - npm run test
