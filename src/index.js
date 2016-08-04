@@ -348,6 +348,21 @@ class ZimbraAdminApi {
     });
   }
 
+
+  // query_object takes this
+  // {limit: INT, offset: INT}
+  getDistributionListMembership(dl, query_object = {}, callback) {
+    const request_data = this.buildRequestData('GetDistributionListMembership', callback);
+    request_data.resource = 'dl';
+    request_data.parse_response = ResponseParser.allResponse;
+    // request_data.parse_response = function(data, rq, callback){ return callback(null, data.get()) };
+    request_data.params.params.dl = {
+      'by': this.dictionary.byIdOrName(dl),
+      '_content': dl
+    };
+    return this.performRequest(request_data);
+  };
+
   getDistributionListOwners(distributionList, callback) {
     this.getDistributionList(distributionList, (err, dl) => {
       if (err) return callback(err);
