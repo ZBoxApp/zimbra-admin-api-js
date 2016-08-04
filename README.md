@@ -15,6 +15,7 @@
 - [Cos](#cos)
 - [Domains](#domains)
 - [Distribution Lists](#distribution-lists)
+- [Contributing](#contributing)
 
 
 ## Example
@@ -562,3 +563,39 @@ dl.getOwners(callback);
 // Array of Objects
 // {name: 'email_address', id: 'ZimbraId', type: 'usr|grp'}
 ```
+
+
+## Contributing
+
+ 1. **Fork** the repo on GitHub
+ 2. **Clone** the project to your own machine
+ 3. **Commit** changes to your own branch
+ 4. **Push** your work back up to your fork
+ 5. Submit a **Pull request** so that we can review your changes
+ 
+NOTE: Be sure to merge the latest from "upstream" before making a pull request!
+
+### Developer Machine
+This repo include a Vagrantfile that setups a VM ready for development. This VM provision a Zimbra server with all the resources needed. So you need to install [Vagrant](https://www.vagrantup.com) if you haven't.
+
+Also you need to install [Ansible](https://www.ansible.com) because we use it to provision the VM.
+
+Once you have everything in place just run:
+
+```
+$ vagrant up
+$ vagrant provision
+```
+
+And wait for it to finish.
+
+### Test
+You must write test for every feature that you add, otherwise we wont accept your Pull Request.
+
+We are using [Mocha](https://mochajs.org) and [Chai](http://chaijs.com) for testing. To run the test just execute:
+
+```
+$ npm run test
+```
+
+Also we have Travis-CI that run the test for every Pull Request.
