@@ -831,6 +831,24 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
   describe('DistributionList tests', function() {
     this.timeout(5000);
 
+    it('Should Return the DL membership', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let dl_name = Date.now() + '@zboxapp.dev';
+      const attributes = {};
+      api.createDistributionList(dl_name, attributes, function(err, dl){
+        if (err) return console.error(err);
+        api.addDistributionListMember(dl.id, ['abierta@customer.dev'], (err, data) =>{
+          if (err) return console.error(err);
+          api.getDistributionListMembership('abierta@customer.dev', {}, function(err, dls){
+            if (err) return console.error(err);
+            expect(dls.length).to.be.above(0);
+            expect(dls[0].constructor.name).to.be.equal('DistributionList');
+            done();
+          })
+        });
+      });
+    });
+
     it('should remove DL', function(done){
       let resource_name = Date.now() + '@zboxapp.dev';
       let resource_attributes = {};
