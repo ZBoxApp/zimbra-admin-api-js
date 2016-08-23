@@ -12,10 +12,10 @@ class DistributionList extends Zimbra {
     this.ownerRights = 'sendToDistList';
   }
 
-  //add alias to DL
-  addDistributionListAlias(alias, callback) {
-    this.api.addDistributionListAlias(this.id, alias, callback);
-  }
+  // //add alias to DL
+  // addDistributionListAlias(alias, callback) {
+  //   this.api.addDistributionListAlias(this.id, alias, callback);
+  //}
 
   // Add members to DL
   addMembers(members, callback) {

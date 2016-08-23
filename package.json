@@ -1,6 +1,6 @@
 {
   "name": "zimbra-admin-api-js",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "main": "src/index.js",
   "engines": {
     "node": ">=6.2"
