@@ -253,6 +253,15 @@ class ZimbraAdminApi {
     return this.performRequest(request_data);
   }
 
+  //Add distribution list alias
+  //
+  addDistributionListAlias(dl_id, alias, callback) {
+    const request_data = this.buildRequestData('AddDistributionListAlias', callback);
+    request_data.parse_response = ResponseParser.emptyResponse;
+    request_data.params.params = { 'id': dl_id, 'alias': alias };
+    return this.performRequest(request_data);
+  }
+
   // Add New members tos distributionlists
   // members is an array of emails
   addDistributionListMember(dl_id, members, callback) {
