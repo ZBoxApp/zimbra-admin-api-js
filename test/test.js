@@ -878,6 +878,19 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
       });
     });
 
+    it('AddDistributionListAlias should add the alias', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let alias = Date.now() + '@itlinux.cl';
+      api.getDistributionList('abierta@customer.dev', function(err, data){
+        let dl = data;
+        dl.addDistributionListAlias(alias, function(err, data){
+          if (err) return console.error(err);
+          expect(err).to.be.null;
+          done();
+        });
+      });
+    });
+
     it('Add member to DL should work with only one', function(done){
       let api = new ZimbraAdminApi(auth_data);
       let member = Date.now().toString() + '@customer.dev';
