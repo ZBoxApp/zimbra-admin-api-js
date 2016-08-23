@@ -883,7 +883,7 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
       let alias = Date.now() + '@itlinux.cl';
       api.getDistributionList('abierta@customer.dev', function(err, data){
         let dl = data;
-        dl.addDistributionListAlias(alias, function(err, data){
+        api.addDistributionListAlias(dl.id, alias, function(err, data){
           if (err) return console.error(err);
           expect(err).to.be.null;
           done();
