@@ -1044,4 +1044,35 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
     });
   });
 
+  describe('Misc tests', function() {
+    this.timeout(5000);
+
+    it('MoveBlobs:it should move the Blobs', function(done) {
+      if (!process.env.TEST_ZIMBRA_NE) {
+        done();
+        return true;
+      }
+      var auth = {
+        'url': process.env.ZIMBRA_NE_URL,
+        'user': process.env.ZIMBRA_NE_USER,
+        'password': process.env.ZIMBRA_NE_PASSWORD
+      };
+      let api = new ZimbraAdminApi(auth);
+      const maxBytes = 1000000;
+      const request_object = {
+        types: 'all',
+        sourceVolumeIds: '1',
+        destVolumeId: '3',
+        maxBytes: maxBytes
+      };
+      api.moveBlobs("192.168.0.152", request_object, function(err, data){
+        if (err) console.log(err);
+        expect(data.numBlobsMoved).to.be.above(-1);
+        expect(data.numBytesMoved).to.be.below(maxBytes);
+        expect(data.totalMailboxes).to.be.above(1);
+        done();
+      });
+    });
+  });
+
 })();

@@ -85,6 +85,10 @@ class ResponseParser {
     return callback(null, result);
   }
 
+  static debugResponse(data, request_data, callback) {
+    return callback(null, data.get());
+  }
+
   // For requests that returns empty Object when Success
   static emptyResponse(data, request_data, callback){
     const response_object = data.get()[request_data.response_name];
@@ -112,6 +116,11 @@ class ResponseParser {
   static grantsResponse(data, request_data, callback) {
     const result = {};
     const response_object = data.get().GetGrantsResponse;
+    return callback(null, response_object);
+  }
+
+  static moveBlobsResponse(data, request_data, callback) {
+    const response_object = data.get().MoveBlobsResponse;
     return callback(null, response_object);
   }
 

@@ -690,6 +690,24 @@ class ZimbraAdminApi {
     return this.performRequest(request_data);
   }
 
+  // Movel Blobs
+  // https://files.zimbra.com/docs/soap_api/8.7.0/api-reference/zimbraAdmin/MoveBlobs.html
+  // request is an object
+  // query: https://wiki.zimbra.com/wiki/Zimbra_Web_Client_Search_Tips
+  moveBlobs(server, request, callback) {
+    if (!server) return false;
+    this.client.options.url = "https://" + server + ":7071/service/admin/soap";
+    const request_data = this.buildRequestData(`MoveBlobs`, callback);
+    const query = request.query;
+    delete(request.query)
+    request_data.params.params = request;
+    if (query) {
+      request_data.params.params.query = {"_content": query};
+    }
+    request_data.parse_response = ResponseParser.moveBlobsResponse;
+    return this.performRequest(request_data);
+  }
+
   // Set account Password
   setPassword(zimbra_id, password, callback) {
     const request_data = this.buildRequestData(`SetPassword`, callback);

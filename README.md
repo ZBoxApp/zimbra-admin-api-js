@@ -7,6 +7,7 @@
 - [Errors](#errors)
 - [Zimbra Resources](#zimbra-resources)
 - [Common Functions](#common-functions)
+- [Server Operations](#server-operations)
 - [Batch Request Functions](#batch-request-functions)
 - [Creating Resources](#creating-resources)
 - [Modify Resources](#modify-resources)
@@ -187,6 +188,37 @@ client.getAllDistributionLists(query_object, callback);
 var query_object = { query: 'mail=*basic*' }
 client.getAllAccounts(query_object, callback);
 // Object {total: 29, more: false, account: Array[29]}
+```
+
+## Server Operations
+
+### Move Blobs
+Moves blobs between volumes. Unlike `HsmRequest`, this request is synchronous, and reads parameters from the request attributes instead of `zimbraHsmPolicy`.
+
+Takes the following parameters:
+
+* `server`, IP or hostname of the mailbox server,
+* `request_object`, Object with attributes to make the request.
+
+The `request_object` has the following attributes:
+
+* `types`: Comma separated list of search types. Legal values are: `conversation|message|contact|appointment|task|wiki|document`,
+* `sourceVolumeIds`: A comma separated list of source volume IDs
+* `destVolumeId`: Destination volume ID
+* `maxBytes`: Limit for the total number of bytes of data to move. Blob move will abort if this threshold is exceeded.
+* `query`: An _optional_ query to move only Blobs that match this query. For query syntax check [this documentation](https://wiki.zimbra.com/wiki/Zimbra_Web_Client_Search_Tips).
+
+```javascript
+const request_object = {
+  types: 'all', sourceVolumeIds: '1',
+  destVolumeId: '3', maxBytes: 100000
+};
+api.moveBlobs("192.168.0.272", request_object, callback);
+// {
+//  numBlobsMoved: 0,
+//  numBytesMoved: 0,
+//  totalMailboxes: 376
+// }
 ```
 
 ## Batch Request Functions
@@ -572,7 +604,7 @@ dl.getOwners(callback);
  3. **Commit** changes to your own branch
  4. **Push** your work back up to your fork
  5. Submit a **Pull request** so that we can review your changes
- 
+
 NOTE: Be sure to merge the latest from "upstream" before making a pull request!
 
 ### Developer Machine

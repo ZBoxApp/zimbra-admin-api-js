@@ -8,6 +8,7 @@ Makefile
 server.js
 lib/*
 TODOS.md
+tmp/
 .*
 
 ### JetBrains template
