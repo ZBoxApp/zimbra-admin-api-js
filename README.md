@@ -192,6 +192,20 @@ client.getAllAccounts(query_object, callback);
 
 ## Server Operations
 
+### Backup
+Do a backup `<account>` elements are required when `method=full` and server is running in standard backup mode. If server is running in auto-grouped backup mode, omit the account list in full backup request to trigger auto-grouped backup. If account list is specified, only those accounts will be backed up.
+
+Full documentation: https://files.zimbra.com/docs/soap_api/8.7.0/api-reference/zimbraAdmin/Backup.html
+
+The first param is the `Mailbox Server`. You need direct access to the `7071` port on this server.
+
+```javascript
+const backupRequest = {blobs: 'exclude', secondaryBlobs: 'exclude', searchIndex: 'exclude'};
+const accounts = ['account2@example.com', 'account1@example.com'];
+api.backup("localhost", backupRequest, null, accounts, callback);
+// {label: "full-20160830.222823.315"}
+```
+
 ### Get All Volumes
 Get All Volumes from the server. [This link](https://files.zimbra.com/docs/soap_api/8.7.0/api-reference/zimbraAdmin/GetAllVolumes.html) has full documentation
 

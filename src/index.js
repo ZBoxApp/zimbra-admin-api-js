@@ -668,6 +668,22 @@ class ZimbraAdminApi {
     return this.performRequest(request_data);
   }
 
+  // Full Doc: https://files.zimbra.com/docs/soap_api/8.7.0/api-reference/index.html
+  backup(server, backup, fileCopier, account, callback) {
+    if (server) {
+      this.client.options.url = "https://" + server + ":7071/service/admin/soap";
+    }
+    backup = backup || {};
+    if (!backup.method) backup.method = "full";
+    account = account || "all";
+    const request_data = this.buildRequestData(`Backup`, callback);
+    request_data.params.params.backup = backup;
+    request_data.params.params.backup.fileCopier = fileCopier;
+    request_data.params.params.backup.account = this.dictionary.convertToZimbraArray(account, 'name');
+    request_data.parse_response = ResponseParser.backupResponse;
+    return this.performRequest(request_data);
+  }
+
   // TODO: Fix this ugly FCKing Code
   batchCountAccounts(domains_ids, callback) {
     const that = this;

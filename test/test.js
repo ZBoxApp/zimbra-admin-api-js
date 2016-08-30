@@ -1083,6 +1083,27 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
         done();
       });
     });
+
+    it('Backup: it should make the backup', function(done){
+      this.timeout(35000);
+      if (!process.env.TEST_ZIMBRA_NE) {
+        done();
+        return true;
+      }
+      var auth = {
+        'url': process.env.ZIMBRA_NE_URL,
+        'user': process.env.ZIMBRA_NE_USER,
+        'password': process.env.ZIMBRA_NE_PASSWORD
+      };
+      let api = new ZimbraAdminApi(auth);
+      const backupRequest = {blobs: 'exclude', secondaryBlobs: 'exclude', searchIndex: 'exclude'};
+      const accounts = ['david@zboxapp.com', 'natalia@smartprint.cl'];
+      api.backup("192.168.0.154", backupRequest, null, accounts, function(err, data){
+        if (err) console.log(err);
+        expect(data.label).to.exist;
+        done();
+      });
+    })
   });
 
 })();

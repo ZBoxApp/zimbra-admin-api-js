@@ -48,6 +48,11 @@ class ResponseParser {
     return result;
   }
 
+  static backupResponse(data, request_data, callback) {
+    const response_object = data.get().BackupResponse.backup[0];
+    return callback(null, response_object);
+  };
+
   static batchResponse(data, callback) {
     const response_object = data.options.response.BatchResponse;
     if(response_object.Fault && response_object.Fault.length >= 1 ) {

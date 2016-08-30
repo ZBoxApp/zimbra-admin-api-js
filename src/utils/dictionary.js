@@ -87,11 +87,14 @@ class Dictionary {
 
   // This return a string or array of objects
   // useful for Zimbra functions that works with both
-  convertToZimbraArray (object) {
+  convertToZimbraArray (object, attribute) {
     const elements = [].concat.apply([], [object]);
     const result = [];
     elements.forEach((el) => {
-      result.push({ '_content': el });
+      const obj = {};
+      if (attribute) obj[attribute] = el;
+      if (!attribute) obj['_content'] = el;
+      result.push(obj);
     });
     return result;
   }
