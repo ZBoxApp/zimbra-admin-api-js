@@ -95,6 +95,16 @@ class ResponseParser {
     return callback(null, response_object);
   }
 
+  static getAllVolumesResponse(data, request_data, callback) {
+    const response_object = data.get()[request_data.response_name];
+    if (!response_object.volume) return callback(null, {});
+    const result = {};
+    response_object.volume.forEach((volume) => {
+      result[volume.name] = volume;
+    });
+    callback(null, result);
+  }
+
   static getMailboxResponse (data, _, callback) {
     const response_object = data.get().GetMailboxResponse.mbox[0];
     const result = {

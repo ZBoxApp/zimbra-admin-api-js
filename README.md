@@ -192,12 +192,46 @@ client.getAllAccounts(query_object, callback);
 
 ## Server Operations
 
+### Get All Volumes
+Get All Volumes from the server. [This link](https://files.zimbra.com/docs/soap_api/8.7.0/api-reference/zimbraAdmin/GetAllVolumes.html) has full documentation
+
+The `server` param is the `hostname` or `ip address` of the Mailbox Server. You need direct access to the `7071` port on this server.
+
+```javascript
+api.getAllVolumes("localhost", callback);
+// { message1:
+//    { id: 1,
+//      name: 'message1',
+//      type: 1,
+//      compressBlobs: false,
+//      compressionThreshold: 4096,
+//      mgbits: 8,
+//      mbits: 12,
+//      fgbits: 8,
+//      fbits: 12,
+//      rootpath: '/opt/zimbra/store',
+//      isCurrent: true },
+//   index1:
+//    { id: 2,
+//      name: 'index1',
+//      type: 10,
+//      compressBlobs: false,
+//      compressionThreshold: 4096,
+//      mgbits: 8,
+//      mbits: 12,
+//      fgbits: 8,
+//      fbits: 12,
+//      rootpath: '/opt/zimbra/index',
+//      isCurrent: true },
+// }
+```
+
 ### Move Blobs
 Moves blobs between volumes. Unlike `HsmRequest`, this request is synchronous, and reads parameters from the request attributes instead of `zimbraHsmPolicy`.
 
 Takes the following parameters:
 
-* `server`, IP or hostname of the mailbox server,
+* `server`, IP or hostname of the mailbox server. You need direct access to the `7071` port on this server,
 * `request_object`, Object with attributes to make the request.
 
 The `request_object` has the following attributes:

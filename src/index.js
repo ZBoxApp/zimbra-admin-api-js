@@ -690,6 +690,15 @@ class ZimbraAdminApi {
     return this.performRequest(request_data);
   }
 
+  // GetAllVolumes
+  // Get all volumes
+  getAllVolumes(server, callback) {
+    this.client.options.url = "https://" + server + ":7071/service/admin/soap";
+    const request_data = this.buildRequestData(`GetAllVolumes`, callback);
+    request_data.parse_response = ResponseParser.getAllVolumesResponse;
+    return this.performRequest(request_data);
+  }
+
   // Movel Blobs
   // https://files.zimbra.com/docs/soap_api/8.7.0/api-reference/zimbraAdmin/MoveBlobs.html
   // request is an object

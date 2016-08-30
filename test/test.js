@@ -1073,6 +1073,16 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
         done();
       });
     });
+
+    it('GetAllVolumes: it should return the Volumes info', function(done) {
+      let api = new ZimbraAdminApi(auth_data);
+      api.getAllVolumes("localhost", function(err, data){
+        if (err) console.log(err);
+        expect(data["message1"]).to.exist;
+        expect(data["index1"].isCurrent).to.be.true;
+        done();
+      });
+    });
   });
 
 })();
