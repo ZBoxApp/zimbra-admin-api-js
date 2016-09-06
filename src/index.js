@@ -21,6 +21,7 @@ class ZimbraAdminApi {
     this.url = auth_object.url;
     this.user = auth_object.user;
     this.password = auth_object.password;
+    this.isAdmin = auth_object.isAdmin || true;
     this._client = new jszimbra.Communication({url: auth_object.url});
     this.dictionary = new Dictionary();
     this.arrayAsObject = auth_object.arrayAsObject || false;
@@ -86,7 +87,7 @@ class ZimbraAdminApi {
   login(callback) {
     let auth_object = {
       'username': this.user, 'secret': this.password,
-      'isPassword': true, 'isAdmin': true
+      'isPassword': true, 'isAdmin': this.isAdmin
     };
     let that = this;
     this.client.auth(auth_object, function(err, response){
