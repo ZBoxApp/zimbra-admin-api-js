@@ -1104,6 +1104,15 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
         done();
       });
     })
+
+    // it('zimbraMail: should list the folders', function(done){
+    //   let api = new ZimbraAdminApi(auth_data);
+    //   api.getFolder({}, function(err, data){
+    //     if (err) console.log(err);
+    //     console.log(data.GetFolderResponse.folder)
+    //     done();
+    //   });
+    // });
   });
 
 })();

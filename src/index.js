@@ -750,7 +750,2047 @@ class ZimbraAdminApi {
     return this.performRequest(request_data);
   }
 
-}
+  /**
+  * AddAppointmentInvite - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/AddAppointmentInvite.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.ptst
+  * @param {msg} reqObject.m
+  **/
+  addAppointmentInvite(reqObject, callback) {
+    const request_data = this.buildRequestData('AddAppointmentInvite', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
 
+
+  /**
+  * AddComment - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/AddComment.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {addedComment} reqObject.comment
+  **/
+  addComment(reqObject, callback) {
+    const request_data = this.buildRequestData('AddComment', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * AddMsg - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/AddMsg.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {boolean} reqObject.filterSent
+  * @param {addMsgSpec} reqObject.m
+  **/
+  addMsg(reqObject, callback) {
+    const request_data = this.buildRequestData('AddMsg', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * AddTaskInvite - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/AddTaskInvite.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.ptst
+  * @param {msg} reqObject.m
+  **/
+  addTaskInvite(reqObject, callback) {
+    const request_data = this.buildRequestData('AddTaskInvite', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * AnnounceOrganizerChange - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/AnnounceOrganizerChange.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.id
+  **/
+  announceOrganizerChange(reqObject, callback) {
+    const request_data = this.buildRequestData('AnnounceOrganizerChange', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * ApplyFilterRules - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/ApplyFilterRules.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {namedElement[]} reqObject.filterRules
+  * @param {idsAttr} reqObject.m
+  * @param {{"_content": <CONTENT TEXT>}} reqObject.query
+  **/
+  applyFilterRules(reqObject, callback) {
+    const request_data = this.buildRequestData('ApplyFilterRules', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * ApplyOutgoingFilterRules - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/ApplyOutgoingFilterRules.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {namedElement[]} reqObject.filterRules
+  * @param {idsAttr} reqObject.m
+  * @param {{"_content": <CONTENT TEXT>}} reqObject.query
+  **/
+  applyOutgoingFilterRules(reqObject, callback) {
+    const request_data = this.buildRequestData('ApplyOutgoingFilterRules', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * AutoComplete - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/AutoComplete.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.name
+  * @param {galSearchType} reqObject.t
+  * @param {boolean} reqObject.needExp
+  * @param {string} reqObject.folders
+  * @param {boolean} reqObject.includeGal
+  **/
+  autoComplete(reqObject, callback) {
+    const request_data = this.buildRequestData('AutoComplete', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * BounceMsg - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/BounceMsg.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {bounceMsgSpec} reqObject.m
+  **/
+  bounceMsg(reqObject, callback) {
+    const request_data = this.buildRequestData('BounceMsg', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * Browse - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/Browse.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.browseBy
+  * @param {string} reqObject.regex
+  * @param {int} reqObject.maxToReturn
+  **/
+  browse(reqObject, callback) {
+    const request_data = this.buildRequestData('Browse', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * CancelAppointment - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/CancelAppointment.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.id
+  * @param {int} reqObject.comp
+  * @param {int} reqObject.ms
+  * @param {int} reqObject.rev
+  * @param {instanceRecurIdInfo} reqObject.inst
+  * @param {calTZInfo} reqObject.tz
+  * @param {msg} reqObject.m
+  **/
+  cancelAppointment(reqObject, callback) {
+    const request_data = this.buildRequestData('CancelAppointment', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * CancelTask - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/CancelTask.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.id
+  * @param {int} reqObject.comp
+  * @param {int} reqObject.ms
+  * @param {int} reqObject.rev
+  * @param {instanceRecurIdInfo} reqObject.inst
+  * @param {calTZInfo} reqObject.tz
+  * @param {msg} reqObject.m
+  **/
+  cancelTask(reqObject, callback) {
+    const request_data = this.buildRequestData('CancelTask', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * CheckDeviceStatus - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/CheckDeviceStatus.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {id} reqObject.device
+  **/
+  checkDeviceStatus(reqObject, callback) {
+    const request_data = this.buildRequestData('CheckDeviceStatus', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * CheckPermission - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/CheckPermission.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {targetSpec} reqObject.target
+  * @param {{"_content": <CONTENT TEXT>}[]} reqObject.right
+  **/
+  checkPermission(reqObject, callback) {
+    const request_data = this.buildRequestData('CheckPermission', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * CheckRecurConflicts - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/CheckRecurConflicts.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {long} reqObject.s
+  * @param {long} reqObject.e
+  * @param {boolean} reqObject.all
+  * @param {string} reqObject.excludeUid
+  * @param {calTZInfo[]} reqObject.tz
+  * @param {freeBusyUserSpec[]} reqObject.usr
+  **/
+  checkRecurConflicts(reqObject, callback) {
+    const request_data = this.buildRequestData('CheckRecurConflicts', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * CheckSpelling - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/CheckSpelling.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  checkSpelling(reqObject, callback) {
+    const request_data = this.buildRequestData('CheckSpelling', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * CompleteTaskInstance - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/CompleteTaskInstance.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.id
+  * @param {dtTimeInfo} reqObject.exceptId
+  * @param {calTZInfo} reqObject.tz
+  **/
+  completeTaskInstance(reqObject, callback) {
+    const request_data = this.buildRequestData('CompleteTaskInstance', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * ContactAction - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/ContactAction.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {contactActionSelector} reqObject.action
+  **/
+  contactAction(reqObject, callback) {
+    const request_data = this.buildRequestData('ContactAction', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * ConvAction - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/ConvAction.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {actionSelector} reqObject.action
+  **/
+  convAction(reqObject, callback) {
+    const request_data = this.buildRequestData('ConvAction', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * CounterAppointment - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/CounterAppointment.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.id
+  * @param {int} reqObject.comp
+  * @param {int} reqObject.ms
+  * @param {int} reqObject.rev
+  * @param {msg} reqObject.m
+  **/
+  counterAppointment(reqObject, callback) {
+    const request_data = this.buildRequestData('CounterAppointment', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * CreateAppointmentException - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/CreateAppointmentException.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.id
+  * @param {int} reqObject.comp
+  * @param {int} reqObject.ms
+  * @param {int} reqObject.rev
+  * @param {boolean} reqObject.echo
+  * @param {int} reqObject.max
+  * @param {boolean} reqObject.html
+  * @param {boolean} reqObject.neuter
+  * @param {boolean} reqObject.forcesend
+  * @param {msg} reqObject.m
+  **/
+  createAppointmentException(reqObject, callback) {
+    const request_data = this.buildRequestData('CreateAppointmentException', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * CreateAppointment - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/CreateAppointment.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {boolean} reqObject.echo
+  * @param {int} reqObject.max
+  * @param {boolean} reqObject.html
+  * @param {boolean} reqObject.neuter
+  * @param {boolean} reqObject.forcesend
+  * @param {msg} reqObject.m
+  **/
+  createAppointment(reqObject, callback) {
+    const request_data = this.buildRequestData('CreateAppointment', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * CreateContact - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/CreateContact.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {boolean} reqObject.verbose
+  * @param {contactSpec} reqObject.cn
+  **/
+  createContact(reqObject, callback) {
+    const request_data = this.buildRequestData('CreateContact', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * CreateDataSource - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/CreateDataSource.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  createDataSource(reqObject, callback) {
+    const request_data = this.buildRequestData('CreateDataSource', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * CreateFolder - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/CreateFolder.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {newFolderSpec} reqObject.folder
+  **/
+  createFolder(reqObject, callback) {
+    const request_data = this.buildRequestData('CreateFolder', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * CreateMountpoint - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/CreateMountpoint.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {newMountpointSpec} reqObject.link
+  **/
+  createMountpoint(reqObject, callback) {
+    const request_data = this.buildRequestData('CreateMountpoint', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * CreateNote - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/CreateNote.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {newNoteSpec} reqObject.note
+  **/
+  createNote(reqObject, callback) {
+    const request_data = this.buildRequestData('CreateNote', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * CreateSearchFolder - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/CreateSearchFolder.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {newSearchFolderSpec} reqObject.search
+  **/
+  createSearchFolder(reqObject, callback) {
+    const request_data = this.buildRequestData('CreateSearchFolder', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * CreateTag - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/CreateTag.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {tagSpec} reqObject.tag
+  **/
+  createTag(reqObject, callback) {
+    const request_data = this.buildRequestData('CreateTag', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * CreateTaskException - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/CreateTaskException.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  createTaskException(reqObject, callback) {
+    const request_data = this.buildRequestData('CreateTaskException', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * CreateTask - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/CreateTask.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  createTask(reqObject, callback) {
+    const request_data = this.buildRequestData('CreateTask', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * CreateWaitSet - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/CreateWaitSet.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.defTypes
+  * @param {boolean} reqObject.allAccounts
+  * @param {waitSetAddSpec[]} reqObject.add
+  **/
+  createWaitSet(reqObject, callback) {
+    const request_data = this.buildRequestData('CreateWaitSet', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * DeclineCounterAppointment - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/DeclineCounterAppointment.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {msg} reqObject.m
+  **/
+  declineCounterAppointment(reqObject, callback) {
+    const request_data = this.buildRequestData('DeclineCounterAppointment', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * DeleteDataSource - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/DeleteDataSource.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  deleteDataSource(reqObject, callback) {
+    const request_data = this.buildRequestData('DeleteDataSource', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * DeleteDevice - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/DeleteDevice.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {id} reqObject.device
+  **/
+  deleteDevice(reqObject, callback) {
+    const request_data = this.buildRequestData('DeleteDevice', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * DestroyWaitSet - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/DestroyWaitSet.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.waitSet
+  **/
+  destroyWaitSet(reqObject, callback) {
+    const request_data = this.buildRequestData('DestroyWaitSet', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * DiffDocument - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/DiffDocument.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {diffDocumentVersionSpec} reqObject.doc
+  **/
+  diffDocument(reqObject, callback) {
+    const request_data = this.buildRequestData('DiffDocument', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * DismissCalendarItemAlarm - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/DismissCalendarItemAlarm.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  dismissCalendarItemAlarm(reqObject, callback) {
+    const request_data = this.buildRequestData('DismissCalendarItemAlarm', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * DocumentAction - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/DocumentAction.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {documentActionSelector} reqObject.action
+  **/
+  documentAction(reqObject, callback) {
+    const request_data = this.buildRequestData('DocumentAction', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * EmptyDumpster - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/EmptyDumpster.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  emptyDumpster(reqObject, callback) {
+    const request_data = this.buildRequestData('EmptyDumpster', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * EnableSharedReminder - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/EnableSharedReminder.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {sharedReminderMount} reqObject.link
+  **/
+  enableSharedReminder(reqObject, callback) {
+    const request_data = this.buildRequestData('EnableSharedReminder', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * ExpandRecur - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/ExpandRecur.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {long} reqObject.s
+  * @param {long} reqObject.e
+  * @param {calTZInfo[]} reqObject.tz
+  **/
+  expandRecur(reqObject, callback) {
+    const request_data = this.buildRequestData('ExpandRecur', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * ExportContacts - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/ExportContacts.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.ct
+  * @param {string} reqObject.l
+  * @param {string} reqObject.csvfmt
+  * @param {string} reqObject.csvlocale
+  * @param {string} reqObject.csvsep
+  **/
+  exportContacts(reqObject, callback) {
+    const request_data = this.buildRequestData('ExportContacts', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * FolderAction - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/FolderAction.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {folderActionSelector} reqObject.action
+  **/
+  folderAction(reqObject, callback) {
+    const request_data = this.buildRequestData('FolderAction', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * ForwardAppointmentInvite - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/ForwardAppointmentInvite.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.id
+  * @param {msg} reqObject.m
+  **/
+  forwardAppointmentInvite(reqObject, callback) {
+    const request_data = this.buildRequestData('ForwardAppointmentInvite', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * ForwardAppointment - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/ForwardAppointment.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.id
+  * @param {dtTimeInfo} reqObject.exceptId
+  * @param {calTZInfo} reqObject.tz
+  * @param {msg} reqObject.m
+  **/
+  forwardAppointment(reqObject, callback) {
+    const request_data = this.buildRequestData('ForwardAppointment', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GenerateUUID - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GenerateUUID.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  generateUUID(reqObject, callback) {
+    const request_data = this.buildRequestData('GenerateUUID', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetActivityStream - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetActivityStream.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.id
+  * @param {int} reqObject.offset
+  * @param {int} reqObject.limit
+  * @param {activityFilter} reqObject.filter
+  **/
+  getActivityStream(reqObject, callback) {
+    const request_data = this.buildRequestData('GetActivityStream', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetAllDevices - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetAllDevices.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  getAllDevices(reqObject, callback) {
+    const request_data = this.buildRequestData('GetAllDevices', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetAppointment - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetAppointment.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {boolean} reqObject.sync
+  * @param {boolean} reqObject.includeContent
+  * @param {boolean} reqObject.includeInvites
+  * @param {string} reqObject.uid
+  * @param {string} reqObject.id
+  **/
+  getAppointment(reqObject, callback) {
+    const request_data = this.buildRequestData('GetAppointment', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetApptSummaries - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetApptSummaries.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {long} reqObject.s
+  * @param {long} reqObject.e
+  * @param {string} reqObject.l
+  **/
+  getApptSummaries(reqObject, callback) {
+    const request_data = this.buildRequestData('GetApptSummaries', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetCalendarItemSummaries - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetCalendarItemSummaries.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {long} reqObject.s
+  * @param {long} reqObject.e
+  * @param {string} reqObject.l
+  **/
+  getCalendarItemSummaries(reqObject, callback) {
+    const request_data = this.buildRequestData('GetCalendarItemSummaries', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetComments - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetComments.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {parentId} reqObject.comment
+  **/
+  getComments(reqObject, callback) {
+    const request_data = this.buildRequestData('GetComments', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetContacts - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetContacts.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {boolean} reqObject.sync
+  * @param {string} reqObject.l
+  * @param {string} reqObject.sortBy
+  * @param {boolean} reqObject.derefGroupMember
+  * @param {boolean} reqObject.returnHiddenAttrs
+  * @param {long} reqObject.maxMembers
+  * @param {attributeName[]} reqObject.a
+  * @param {attributeName[]} reqObject.ma
+  * @param {id[]} reqObject.cn
+  **/
+  getContacts(reqObject, callback) {
+    const request_data = this.buildRequestData('GetContacts', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetConv - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetConv.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {conversationSpec} reqObject.c
+  **/
+  getConv(reqObject, callback) {
+    const request_data = this.buildRequestData('GetConv', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetCustomMetadata - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetCustomMetadata.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.id
+  * @param {sectionAttr} reqObject.meta
+  **/
+  getCustomMetadata(reqObject, callback) {
+    const request_data = this.buildRequestData('GetCustomMetadata', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetDataSources - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetDataSources.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  getDataSources(reqObject, callback) {
+    const request_data = this.buildRequestData('GetDataSources', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetDocumentShareURL - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetDocumentShareURL.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {itemSpec} reqObject.item
+  **/
+  getDocumentShareURL(reqObject, callback) {
+    const request_data = this.buildRequestData('GetDocumentShareURL', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetEffectiveFolderPerms - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetEffectiveFolderPerms.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {folderSpec} reqObject.folder
+  **/
+  getEffectiveFolderPerms(reqObject, callback) {
+    const request_data = this.buildRequestData('GetEffectiveFolderPerms', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetFilterRules - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetFilterRules.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  getFilterRules(reqObject, callback) {
+    const request_data = this.buildRequestData('GetFilterRules', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetFolder - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetFolder.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {boolean} reqObject.visible
+  * @param {boolean} reqObject.needGranteeName
+  * @param {string} reqObject.view
+  * @param {int} reqObject.depth
+  * @param {boolean} reqObject.tr
+  * @param {getFolderSpec} reqObject.folder
+  **/
+  getFolder(reqObject, callback) {
+    const request_data = this.buildRequestData('GetFolder', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetFreeBusy - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetFreeBusy.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {long} reqObject.s
+  * @param {long} reqObject.e
+  * @param {string} reqObject.uid
+  * @param {string} reqObject.id
+  * @param {string} reqObject.name
+  * @param {string} reqObject.excludeUid
+  * @param {freeBusyUserSpec[]} reqObject.usr
+  **/
+  getFreeBusy(reqObject, callback) {
+    const request_data = this.buildRequestData('GetFreeBusy', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetICal - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetICal.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.id
+  * @param {long} reqObject.s
+  * @param {long} reqObject.e
+  **/
+  getICal(reqObject, callback) {
+    const request_data = this.buildRequestData('GetICal', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetImportStatus - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetImportStatus.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  getImportStatus(reqObject, callback) {
+    const request_data = this.buildRequestData('GetImportStatus', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetItem - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetItem.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {itemSpec} reqObject.item
+  **/
+  getItem(reqObject, callback) {
+    const request_data = this.buildRequestData('GetItem', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetMailboxMetadata - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetMailboxMetadata.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {sectionAttr} reqObject.meta
+  **/
+  getMailboxMetadata(reqObject, callback) {
+    const request_data = this.buildRequestData('GetMailboxMetadata', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetMiniCal - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetMiniCal.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {long} reqObject.s
+  * @param {long} reqObject.e
+  * @param {id[]} reqObject.folder
+  * @param {calTZInfo} reqObject.tz
+  **/
+  getMiniCal(reqObject, callback) {
+    const request_data = this.buildRequestData('GetMiniCal', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetMsgMetadata - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetMsgMetadata.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {idsAttr} reqObject.m
+  **/
+  getMsgMetadata(reqObject, callback) {
+    const request_data = this.buildRequestData('GetMsgMetadata', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetMsg - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetMsg.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {msgSpec} reqObject.m
+  **/
+  getMsg(reqObject, callback) {
+    const request_data = this.buildRequestData('GetMsg', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetNote - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetNote.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {id} reqObject.note
+  **/
+  getNote(reqObject, callback) {
+    const request_data = this.buildRequestData('GetNote', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetNotifications - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetNotifications.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {boolean} reqObject.markSeen
+  **/
+  getNotifications(reqObject, callback) {
+    const request_data = this.buildRequestData('GetNotifications', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetOutgoingFilterRules - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetOutgoingFilterRules.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  getOutgoingFilterRules(reqObject, callback) {
+    const request_data = this.buildRequestData('GetOutgoingFilterRules', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetPermission - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetPermission.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.unusedCodeGenHelper
+  * @param {right[]} reqObject.ace
+  **/
+  getPermission(reqObject, callback) {
+    const request_data = this.buildRequestData('GetPermission', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetRecur - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetRecur.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.id
+  **/
+  getRecur(reqObject, callback) {
+    const request_data = this.buildRequestData('GetRecur', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetSearchFolder - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetSearchFolder.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  getSearchFolder(reqObject, callback) {
+    const request_data = this.buildRequestData('GetSearchFolder', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetShareDetails - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetShareDetails.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {id} reqObject.item
+  **/
+  getShareDetails(reqObject, callback) {
+    const request_data = this.buildRequestData('GetShareDetails', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetShareNotifications - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetShareNotifications.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  getShareNotifications(reqObject, callback) {
+    const request_data = this.buildRequestData('GetShareNotifications', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetSpellDictionaries - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetSpellDictionaries.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  getSpellDictionaries(reqObject, callback) {
+    const request_data = this.buildRequestData('GetSpellDictionaries', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetSystemRetentionPolicy - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetSystemRetentionPolicy.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  getSystemRetentionPolicy(reqObject, callback) {
+    const request_data = this.buildRequestData('GetSystemRetentionPolicy', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetTag - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetTag.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  getTag(reqObject, callback) {
+    const request_data = this.buildRequestData('GetTag', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetTask - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetTask.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {boolean} reqObject.sync
+  * @param {boolean} reqObject.includeContent
+  * @param {boolean} reqObject.includeInvites
+  * @param {string} reqObject.uid
+  * @param {string} reqObject.id
+  **/
+  getTask(reqObject, callback) {
+    const request_data = this.buildRequestData('GetTask', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetTaskSummaries - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetTaskSummaries.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {long} reqObject.s
+  * @param {long} reqObject.e
+  * @param {string} reqObject.l
+  **/
+  getTaskSummaries(reqObject, callback) {
+    const request_data = this.buildRequestData('GetTaskSummaries', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetWatchers - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetWatchers.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  getWatchers(reqObject, callback) {
+    const request_data = this.buildRequestData('GetWatchers', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetWatchingItems - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetWatchingItems.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  getWatchingItems(reqObject, callback) {
+    const request_data = this.buildRequestData('GetWatchingItems', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetWorkingHours - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetWorkingHours.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {long} reqObject.s
+  * @param {long} reqObject.e
+  * @param {string} reqObject.id
+  * @param {string} reqObject.name
+  **/
+  getWorkingHours(reqObject, callback) {
+    const request_data = this.buildRequestData('GetWorkingHours', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetYahooAuthToken - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetYahooAuthToken.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.user
+  * @param {string} reqObject.password
+  **/
+  getYahooAuthToken(reqObject, callback) {
+    const request_data = this.buildRequestData('GetYahooAuthToken', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GetYahooCookie - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GetYahooCookie.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.user
+  **/
+  getYahooCookie(reqObject, callback) {
+    const request_data = this.buildRequestData('GetYahooCookie', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * GrantPermission - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/GrantPermission.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.unusedCodeGenHelper
+  * @param {accountACEinfo[]} reqObject.ace
+  **/
+  grantPermission(reqObject, callback) {
+    const request_data = this.buildRequestData('GrantPermission', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * ICalReply - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/ICalReply.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {{"_content": <CONTENT TEXT>}} reqObject.ical
+  **/
+  iCalReply(reqObject, callback) {
+    const request_data = this.buildRequestData('ICalReply', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * ImportAppointments - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/ImportAppointments.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.l
+  * @param {string} reqObject.ct
+  * @param {contentSpec} reqObject.content
+  **/
+  importAppointments(reqObject, callback) {
+    const request_data = this.buildRequestData('ImportAppointments', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * ImportContacts - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/ImportContacts.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.ct
+  * @param {string} reqObject.l
+  * @param {string} reqObject.csvfmt
+  * @param {string} reqObject.csvlocale
+  * @param {content} reqObject.content
+  **/
+  importContacts(reqObject, callback) {
+    const request_data = this.buildRequestData('ImportContacts', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * ImportData - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/ImportData.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  importData(reqObject, callback) {
+    const request_data = this.buildRequestData('ImportData', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * InvalidateReminderDevice - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/InvalidateReminderDevice.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.a
+  **/
+  invalidateReminderDevice(reqObject, callback) {
+    const request_data = this.buildRequestData('InvalidateReminderDevice', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * ItemAction - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/ItemAction.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {actionSelector} reqObject.action
+  **/
+  itemAction(reqObject, callback) {
+    const request_data = this.buildRequestData('ItemAction', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * ListDocumentRevisions - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/ListDocumentRevisions.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {listDocumentRevisionsSpec} reqObject.doc
+  **/
+  listDocumentRevisions(reqObject, callback) {
+    const request_data = this.buildRequestData('ListDocumentRevisions', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * ModifyAppointment - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/ModifyAppointment.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.id
+  * @param {int} reqObject.comp
+  * @param {int} reqObject.ms
+  * @param {int} reqObject.rev
+  * @param {boolean} reqObject.echo
+  * @param {int} reqObject.max
+  * @param {boolean} reqObject.html
+  * @param {boolean} reqObject.neuter
+  * @param {boolean} reqObject.forcesend
+  * @param {msg} reqObject.m
+  **/
+  modifyAppointment(reqObject, callback) {
+    const request_data = this.buildRequestData('ModifyAppointment', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * ModifyContact - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/ModifyContact.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {boolean} reqObject.replace
+  * @param {boolean} reqObject.verbose
+  * @param {modifyContactSpec} reqObject.cn
+  **/
+  modifyContact(reqObject, callback) {
+    const request_data = this.buildRequestData('ModifyContact', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * ModifyDataSource - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/ModifyDataSource.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  modifyDataSource(reqObject, callback) {
+    const request_data = this.buildRequestData('ModifyDataSource', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * ModifyFilterRules - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/ModifyFilterRules.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {filterRule[]} reqObject.filterRules
+  **/
+  modifyFilterRules(reqObject, callback) {
+    const request_data = this.buildRequestData('ModifyFilterRules', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * ModifyMailboxMetadata - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/ModifyMailboxMetadata.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {meta} reqObject.meta
+  **/
+  modifyMailboxMetadata(reqObject, callback) {
+    const request_data = this.buildRequestData('ModifyMailboxMetadata', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * ModifyOutgoingFilterRules - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/ModifyOutgoingFilterRules.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {filterRule[]} reqObject.filterRules
+  **/
+  modifyOutgoingFilterRules(reqObject, callback) {
+    const request_data = this.buildRequestData('ModifyOutgoingFilterRules', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * ModifySearchFolder - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/ModifySearchFolder.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {modifySearchFolderSpec} reqObject.search
+  **/
+  modifySearchFolder(reqObject, callback) {
+    const request_data = this.buildRequestData('ModifySearchFolder', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * ModifyTask - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/ModifyTask.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  modifyTask(reqObject, callback) {
+    const request_data = this.buildRequestData('ModifyTask', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * MsgAction - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/MsgAction.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {actionSelector} reqObject.action
+  **/
+  msgAction(reqObject, callback) {
+    const request_data = this.buildRequestData('MsgAction', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * NoOp - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/NoOp.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {boolean} reqObject.wait
+  * @param {boolean} reqObject.delegate
+  * @param {boolean} reqObject.limitToOneBlocked
+  * @param {long} reqObject.timeout
+  **/
+  noOp(reqObject, callback) {
+    const request_data = this.buildRequestData('NoOp', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * NoteAction - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/NoteAction.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {noteActionSelector} reqObject.action
+  **/
+  noteAction(reqObject, callback) {
+    const request_data = this.buildRequestData('NoteAction', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * PurgeRevision - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/PurgeRevision.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {purgeRevisionSpec} reqObject.revision
+  **/
+  purgeRevision(reqObject, callback) {
+    const request_data = this.buildRequestData('PurgeRevision', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * RankingAction - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/RankingAction.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {rankingActionSpec} reqObject.action
+  **/
+  rankingAction(reqObject, callback) {
+    const request_data = this.buildRequestData('RankingAction', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * RegisterDevice - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/RegisterDevice.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {namedElement} reqObject.device
+  **/
+  registerDevice(reqObject, callback) {
+    const request_data = this.buildRequestData('RegisterDevice', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * RemoveAttachments - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/RemoveAttachments.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {msgPartIds} reqObject.m
+  **/
+  removeAttachments(reqObject, callback) {
+    const request_data = this.buildRequestData('RemoveAttachments', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * RevokePermission - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/RevokePermission.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.unusedCodeGenHelper
+  * @param {accountACEinfo[]} reqObject.ace
+  **/
+  revokePermission(reqObject, callback) {
+    const request_data = this.buildRequestData('RevokePermission', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * SaveDocument - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/SaveDocument.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {documentSpec} reqObject.doc
+  **/
+  saveDocument(reqObject, callback) {
+    const request_data = this.buildRequestData('SaveDocument', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * SaveDraft - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/SaveDraft.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {saveDraftMsg} reqObject.m
+  **/
+  saveDraft(reqObject, callback) {
+    const request_data = this.buildRequestData('SaveDraft', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * SearchConv - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/SearchConv.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.cid
+  * @param {boolean} reqObject.nest
+  * @param {boolean} reqObject.includeTagDeleted
+  * @param {boolean} reqObject.includeTagMuted
+  * @param {string} reqObject.allowableTaskStatus
+  * @param {long} reqObject.calExpandInstStart
+  * @param {long} reqObject.calExpandInstEnd
+  * @param {boolean} reqObject.inDumpster
+  * @param {string} reqObject.types
+  * @param {string} reqObject.groupBy
+  * @param {boolean} reqObject.quick
+  * @param {string} reqObject.sortBy
+  * @param {string} reqObject.fetch
+  * @param {boolean} reqObject.read
+  * @param {int} reqObject.max
+  * @param {boolean} reqObject.html
+  * @param {boolean} reqObject.needExp
+  * @param {boolean} reqObject.neuter
+  * @param {wantRecipsSetting} reqObject.recip
+  * @param {boolean} reqObject.prefetch
+  * @param {string} reqObject.resultMode
+  * @param {boolean} reqObject.fullConversation
+  * @param {string} reqObject.field
+  * @param {int} reqObject.limit
+  * @param {int} reqObject.offset
+  * @param {{"_content": <CONTENT TEXT>}} reqObject.query
+  * @param {attributeName[]} reqObject.header
+  * @param {calTZInfo} reqObject.tz
+  * @param {{"_content": <CONTENT TEXT>}} reqObject.locale
+  * @param {cursorInfo} reqObject.cursor
+  **/
+  searchConv(reqObject, callback) {
+    const request_data = this.buildRequestData('SearchConv', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * Search - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/Search.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {boolean} reqObject.warmup
+  * @param {boolean} reqObject.includeTagDeleted
+  * @param {boolean} reqObject.includeTagMuted
+  * @param {string} reqObject.allowableTaskStatus
+  * @param {long} reqObject.calExpandInstStart
+  * @param {long} reqObject.calExpandInstEnd
+  * @param {boolean} reqObject.inDumpster
+  * @param {string} reqObject.types
+  * @param {string} reqObject.groupBy
+  * @param {boolean} reqObject.quick
+  * @param {string} reqObject.sortBy
+  * @param {string} reqObject.fetch
+  * @param {boolean} reqObject.read
+  * @param {int} reqObject.max
+  * @param {boolean} reqObject.html
+  * @param {boolean} reqObject.needExp
+  * @param {boolean} reqObject.neuter
+  * @param {wantRecipsSetting} reqObject.recip
+  * @param {boolean} reqObject.prefetch
+  * @param {string} reqObject.resultMode
+  * @param {boolean} reqObject.fullConversation
+  * @param {string} reqObject.field
+  * @param {int} reqObject.limit
+  * @param {int} reqObject.offset
+  * @param {{"_content": <CONTENT TEXT>}} reqObject.query
+  * @param {attributeName[]} reqObject.header
+  * @param {calTZInfo} reqObject.tz
+  * @param {{"_content": <CONTENT TEXT>}} reqObject.locale
+  * @param {cursorInfo} reqObject.cursor
+  **/
+  search(reqObject, callback) {
+    const request_data = this.buildRequestData('Search', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * SendDeliveryReport - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/SendDeliveryReport.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.mid
+  **/
+  sendDeliveryReport(reqObject, callback) {
+    const request_data = this.buildRequestData('SendDeliveryReport', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * SendInviteReply - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/SendInviteReply.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.id
+  * @param {int} reqObject.compNum
+  * @param {string} reqObject.verb
+  * @param {boolean} reqObject.updateOrganizer
+  * @param {string} reqObject.idnt
+  * @param {dtTimeInfo} reqObject.exceptId
+  * @param {calTZInfo} reqObject.tz
+  * @param {msg} reqObject.m
+  **/
+  sendInviteReply(reqObject, callback) {
+    const request_data = this.buildRequestData('SendInviteReply', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * SendMsg - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/SendMsg.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {boolean} reqObject.needCalendarSentByFixup
+  * @param {boolean} reqObject.isCalendarForward
+  * @param {boolean} reqObject.noSave
+  * @param {string} reqObject.suid
+  * @param {msgToSend} reqObject.m
+  **/
+  sendMsg(reqObject, callback) {
+    const request_data = this.buildRequestData('SendMsg', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * SendShareNotification - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/SendShareNotification.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {action} reqObject.action
+  * @param {id} reqObject.item
+  * @param {emailAddrInfo[]} reqObject.e
+  * @param {{"_content": <CONTENT TEXT>}} reqObject.notes
+  **/
+  sendShareNotification(reqObject, callback) {
+    const request_data = this.buildRequestData('SendShareNotification', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * SendVerificationCode - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/SendVerificationCode.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.a
+  **/
+  sendVerificationCode(reqObject, callback) {
+    const request_data = this.buildRequestData('SendVerificationCode', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * SetAppointment - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/SetAppointment.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.f
+  * @param {string} reqObject.t
+  * @param {string} reqObject.tn
+  * @param {string} reqObject.l
+  * @param {boolean} reqObject.noNextAlarm
+  * @param {long} reqObject.nextAlarm
+  * @param {setCalendarItemInfo} reqObject.default
+  * @param {setCalendarItemInfo[]} reqObject.except
+  * @param {setCalendarItemInfo[]} reqObject.cancel
+  * @param {calReply[]} reqObject.replies
+  **/
+  setAppointment(reqObject, callback) {
+    const request_data = this.buildRequestData('SetAppointment', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * SetCustomMetadata - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/SetCustomMetadata.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.id
+  * @param {meta} reqObject.meta
+  **/
+  setCustomMetadata(reqObject, callback) {
+    const request_data = this.buildRequestData('SetCustomMetadata', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * SetMailboxMetadata - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/SetMailboxMetadata.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {meta} reqObject.meta
+  **/
+  setMailboxMetadata(reqObject, callback) {
+    const request_data = this.buildRequestData('SetMailboxMetadata', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * SetTask - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/SetTask.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.f
+  * @param {string} reqObject.t
+  * @param {string} reqObject.tn
+  * @param {string} reqObject.l
+  * @param {boolean} reqObject.noNextAlarm
+  * @param {long} reqObject.nextAlarm
+  * @param {setCalendarItemInfo} reqObject.default
+  * @param {setCalendarItemInfo[]} reqObject.except
+  * @param {setCalendarItemInfo[]} reqObject.cancel
+  * @param {calReply[]} reqObject.replies
+  **/
+  setTask(reqObject, callback) {
+    const request_data = this.buildRequestData('SetTask', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * SnoozeCalendarItemAlarm - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/SnoozeCalendarItemAlarm.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  snoozeCalendarItemAlarm(reqObject, callback) {
+    const request_data = this.buildRequestData('SnoozeCalendarItemAlarm', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * Sync - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/Sync.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.token
+  * @param {long} reqObject.calCutoff
+  * @param {string} reqObject.l
+  * @param {boolean} reqObject.typed
+  **/
+  sync(reqObject, callback) {
+    const request_data = this.buildRequestData('Sync', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * TagAction - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/TagAction.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {tagActionSelector} reqObject.action
+  **/
+  tagAction(reqObject, callback) {
+    const request_data = this.buildRequestData('TagAction', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * TestDataSource - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/TestDataSource.html | Zimbra Doc }
+  * @param {Object} reqObject
+  **/
+  testDataSource(reqObject, callback) {
+    const request_data = this.buildRequestData('TestDataSource', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * UpdateDeviceStatus - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/UpdateDeviceStatus.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {idStatus} reqObject.device
+  **/
+  updateDeviceStatus(reqObject, callback) {
+    const request_data = this.buildRequestData('UpdateDeviceStatus', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * VerifyCode - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/VerifyCode.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.a
+  * @param {string} reqObject.code
+  **/
+  verifyCode(reqObject, callback) {
+    const request_data = this.buildRequestData('VerifyCode', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+
+
+  /**
+  * WaitSet - {@link https://files.zimbra.com/docs/soap_api/8.6.0/api-reference/zimbraMail/WaitSet.html | Zimbra Doc }
+  * @param {Object} reqObject
+  * @param {string} reqObject.waitSet
+  * @param {string} reqObject.seq
+  * @param {boolean} reqObject.block
+  * @param {string} reqObject.defTypes
+  * @param {long} reqObject.timeout
+  * @param {waitSetAddSpec[]} reqObject.add
+  * @param {waitSetAddSpec[]} reqObject.update
+  * @param {id[]} reqObject.remove
+  **/
+  waitSet(reqObject, callback) {
+    const request_data = this.buildRequestData('WaitSet', callback);
+    request_data.params.params = reqObject;
+    request_data.params.namespace = 'zimbraMail';
+    request_data.parse_response = ResponseParser.debugResponse;
+    return this.performRequest(request_data);
+  }
+}
 
 module.exports = ZimbraAdminApi;
