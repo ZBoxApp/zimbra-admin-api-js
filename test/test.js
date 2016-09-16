@@ -827,6 +827,22 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
     });
 
   });
+  describe('COS tests', function() {
+    this.timeout(5000);
+
+    it('Should create a COS', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let cos_name = Date.now();
+      let attrs={'zimbraFeatureContactsEnabled' : 'FALSE'};
+      api.createCos(cos_name, attrs, function(err, cos){
+        if (err) return console.error(err);
+        expect(err).to.be.null;
+        done();
+      });
+    })
+
+
+  });
 
   describe('DistributionList tests', function() {
     this.timeout(5000);

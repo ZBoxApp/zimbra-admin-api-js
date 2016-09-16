@@ -400,6 +400,11 @@ class ZimbraAdminApi {
     return this.create('Domain', resource_data, callback);
   }
 
+  createCos(name, attributes, callback ) {
+    const resource_data = this.buildResourceData(name, attributes);
+    return this.create('Cos', resource_data, callback);
+  }
+
   getDistributionList(identifier, callback) {
     return this.get('DistributionList', identifier, callback);
   }
