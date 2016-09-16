@@ -592,6 +592,13 @@ class ZimbraAdminApi {
     return this.remove('Domain', resource_data, callback);
   }
 
+  deleteCos(id_cos, callback){
+    const request_data = this.buildRequestData('DeleteCos', callback);
+    request_data.parse_response = ResponseParser.emptyResponse;
+    request_data.params.params = { 'id': {'_content': id_cos}};
+    return this.performRequest(request_data);
+  }
+
   removeDomainAdmin(domain, account_id, coses, callback) {
     this.getDomain(domain, (err, domain) => {
       if (err) return callback(err);

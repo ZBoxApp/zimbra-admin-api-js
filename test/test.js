@@ -841,6 +841,21 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
       });
     })
 
+    it.only('Should delete COS "unknow" ', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.getCos("unknow", function(err, cos){
+        if (err) return console.error(err);
+        let cosId = cos.id;
+        console.log(cosId);
+        api.deleteCos(cosId, function(err, res){
+          if (err) return console.error(err);
+          console.log(res);
+          expect(err).to.be.null;
+          done();
+        })
+      });
+    })
+
 
   });
 
