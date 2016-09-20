@@ -572,6 +572,13 @@ class ZimbraAdminApi {
     this.modify('DistributionList', resource_data, callback);
   }
 
+  modifyCos(id_cos, attributes, callback){
+    const request_data = this.buildRequestData('ModifyCos', callback);
+    request_data.parse_response = ResponseParser.emptyResponse;
+    request_data.params.params = { 'id':{'_content': id_cos}, 'a': this.dictionary.attributesToArray(attributes)};
+    return this.performRequest(request_data);
+  }
+
   // Remove Account
   removeAccount(zimbra_id, callback) {
     let resource_data = { id: zimbra_id };
@@ -598,6 +605,7 @@ class ZimbraAdminApi {
     request_data.params.params = { 'id': {'_content': id_cos}};
     return this.performRequest(request_data);
   }
+
 
   removeDomainAdmin(domain, account_id, coses, callback) {
     this.getDomain(domain, (err, domain) => {

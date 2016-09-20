@@ -419,6 +419,35 @@ This are functions especifics to `Cos`.
 client.getAllCos(callback);
 ```
 
+## Create / Delete Cos
+To create a Cos
+```javascript
+//Simple, without attributes
+var attributes = {};
+client.createCos("cos_name", attributes, callback);
+// With attributes
+var attributes = {'zimbraFeatureContactsEnabled' : 'FALSE'};
+client.createCos("cos_name", attributes, callback)
+```
+
+To delete a Cos
+```javascript
+client.deleteCos("cos_Id", callback)
+```
+
+## Get Cos
+
+```javascript
+client.getCos(name|id, callback);
+```
+
+## Modify Cos
+```javascript
+var attributes = {'zimbraDumpsterEnabled' : 'TRUE'};
+client.modifyCos("cos_Id", attributes, callback);
+```
+
+
 ## Domains
 This are functions especifics to `Domains`.
 
@@ -564,6 +593,18 @@ dl.getOwners(callback);
 // {name: 'email_address', id: 'ZimbraId', type: 'usr|grp'}
 ```
 
+### Add / Remove Alias
+To set alias at `DL` .
+```javascript
+client.addDistributionListAlias(dl.id, alias, callback);
+```
+
+To delete alias of `DL`.
+```javascript
+api.removeDistributionListAlias(dl.id, alias, callback);
+```
+
+
 
 ## Contributing
 
@@ -572,7 +613,7 @@ dl.getOwners(callback);
  3. **Commit** changes to your own branch
  4. **Push** your work back up to your fork
  5. Submit a **Pull request** so that we can review your changes
- 
+
 NOTE: Be sure to merge the latest from "upstream" before making a pull request!
 
 ### Developer Machine

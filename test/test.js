@@ -841,20 +841,34 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
       });
     })
 
-    it.only('Should delete COS "unknow" ', function(done){
+    // it('Should delete COS "unknow" ', function(done){
+    //   let api = new ZimbraAdminApi(auth_data);
+    //   api.getCos("unknow", function(err, cos){
+    //     if (err) return console.error(err);
+    //     let cosId = cos.id;
+    //     console.log(cosId);
+    //     api.deleteCos(cosId, function(err, res){
+    //       if (err) return console.error(err);
+    //       console.log(res);
+    //       expect(err).to.be.null;
+    //       done();
+    //     })
+    //   });
+    // })
+
+    it('Should modify a Cos "basic"', function(done){
       let api = new ZimbraAdminApi(auth_data);
-      api.getCos("unknow", function(err, cos){
-        if (err) return console.error(err);
-        let cosId = cos.id;
-        console.log(cosId);
-        api.deleteCos(cosId, function(err, res){
-          if (err) return console.error(err);
+      let attrs = {'zimbraDumpsterEnabled' : 'TRUE'};
+      api.getCos("basic", function(err, cos){
+        if(err) return console.error(err);
+        api.modifyCos(cos.id, attrs, function(err, res){
+          if(err) return console.error(err);
           console.log(res);
           expect(err).to.be.null;
           done();
-        })
+        });
       });
-    })
+    });
 
 
   });
@@ -916,6 +930,7 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
         let dl = data;
         api.addDistributionListAlias(dl.id, alias, function(err, data){
           if (err) return console.error(err);
+          console.log(data);
           expect(err).to.be.null;
           done();
         });
@@ -931,6 +946,7 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
           if (err) return console.error(err);
           api.removeDistributionListAlias(dl.id, alias, function(err, data){
             if (err) return console.error(err);
+            console.log(data);
             expect(err).to.be.null;
             done();
           });
