@@ -447,6 +447,18 @@ var attributes = {'zimbraDumpsterEnabled' : 'TRUE'};
 client.modifyCos("cos_Id", attributes, callback);
 ```
 
+## Rename Cos
+```javascript
+var newName = "basicv2"
+client.renameCos("cos_Id", newName, callback);
+```
+
+## Copy Cos
+To copy a Cos with other name
+```javascript
+var newCos = "Pro2";
+client.copyCos(nameCos|idCos, newCos, callback);
+```
 
 ## Domains
 This are functions especifics to `Domains`.

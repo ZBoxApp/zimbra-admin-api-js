@@ -606,6 +606,13 @@ class ZimbraAdminApi {
     return this.performRequest(request_data);
   }
 
+  copyCos(cos, newcos, callback){
+    const request_data = this.buildRequestData('CopyCos', callback);
+    request_data.parse_response = ResponseParser.emptyResponse;
+    request_data.params.params = { 'name': { '_content': newcos }, 'cos':{ '_content': cos, by: this.dictionary.byIdOrName(cos)}};
+    return this.performRequest(request_data);
+  }
+
 
   removeDomainAdmin(domain, account_id, coses, callback) {
     this.getDomain(domain, (err, domain) => {
@@ -644,6 +651,11 @@ class ZimbraAdminApi {
   renameDistributionList(zimbra_id, new_name, callback) {
     const resource_data = { id: zimbra_id, newName: new_name };
     return this.rename('DistributionList', resource_data, callback);
+  }
+
+  renameCos(cos_Id, new_name, callback) {
+    const resource_data = { id: {'_content': cos_Id}, newName: {'_content': new_name} }
+    return this.rename('Cos', resource_data, callback);
   }
 
   revokeRight(target_data, grantee_data, right_name, callback) {

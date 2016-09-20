@@ -841,20 +841,20 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
       });
     })
 
-    // it('Should delete COS "unknow" ', function(done){
-    //   let api = new ZimbraAdminApi(auth_data);
-    //   api.getCos("unknow", function(err, cos){
-    //     if (err) return console.error(err);
-    //     let cosId = cos.id;
-    //     console.log(cosId);
-    //     api.deleteCos(cosId, function(err, res){
-    //       if (err) return console.error(err);
-    //       console.log(res);
-    //       expect(err).to.be.null;
-    //       done();
-    //     })
-    //   });
-    // })
+    it('Should delete COS "unknow" ', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.getCos("unknow", function(err, cos){
+        if (err) return console.error(err);
+        let cosId = cos.id;
+        console.log(cosId);
+        api.deleteCos(cosId, function(err, res){
+          if (err) return console.error(err);
+          console.log(res);
+          expect(err).to.be.null;
+          done();
+        })
+      });
+    })
 
     it('Should modify a Cos "basic"', function(done){
       let api = new ZimbraAdminApi(auth_data);
@@ -870,6 +870,30 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
       });
     });
 
+    it('Should rename Cos "Basic"', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let newName = "basicv2"
+      api.getCos("basic", function(err, cos){
+        if(err) return console.error(err);
+        api.renameCos(cos.id, newName, function(err, res){
+          if(err) return console.log(err);
+          console.log(res);
+          expect(err).to.be.null;
+          done();
+        });
+      });
+    });
+
+    it.only('Should create a copy of Cos Professional, called Pro2 ', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let newCos = "Pro2";
+      api.copyCos("professional", newCos, function(err, res){
+        if(err) return console.error(err);
+        console.log(res);
+        expect(err).to.be.null;
+        done();
+      })
+    });
 
   });
 
