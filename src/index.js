@@ -254,10 +254,15 @@ class ZimbraAdminApi {
     return this.performRequest(request_data);
   }
 
-  //Add distribution list alias
-  //
   addDistributionListAlias(dl_id, alias, callback) {
     const request_data = this.buildRequestData('AddDistributionListAlias', callback);
+    request_data.parse_response = ResponseParser.emptyResponse;
+    request_data.params.params = { 'id': dl_id, 'alias': alias };
+    return this.performRequest(request_data);
+  }
+
+  removeDistributionListAlias(dl_id, alias, callback) {
+    const request_data = this.buildRequestData('RemoveDistributionListAlias', callback);
     request_data.parse_response = ResponseParser.emptyResponse;
     request_data.params.params = { 'id': dl_id, 'alias': alias };
     return this.performRequest(request_data);
@@ -394,6 +399,11 @@ class ZimbraAdminApi {
   createDomain(name, attributes, callback) {
     const resource_data = this.buildResourceData(name, attributes);
     return this.create('Domain', resource_data, callback);
+  }
+
+  createCos(name, attributes, callback ) {
+    const resource_data = this.buildResourceData(name, attributes);
+    return this.create('Cos', resource_data, callback);
   }
 
   getDistributionList(identifier, callback) {
@@ -563,6 +573,13 @@ class ZimbraAdminApi {
     this.modify('DistributionList', resource_data, callback);
   }
 
+  modifyCos(id_cos, attributes, callback){
+    const request_data = this.buildRequestData('ModifyCos', callback);
+    request_data.parse_response = ResponseParser.emptyResponse;
+    request_data.params.params = { 'id':{'_content': id_cos}, 'a': this.dictionary.attributesToArray(attributes)};
+    return this.performRequest(request_data);
+  }
+
   // Remove Account
   removeAccount(zimbra_id, callback) {
     let resource_data = { id: zimbra_id };
@@ -582,6 +599,21 @@ class ZimbraAdminApi {
     let resource_data = { id: zimbra_id };
     return this.remove('Domain', resource_data, callback);
   }
+
+  deleteCos(id_cos, callback){
+    const request_data = this.buildRequestData('DeleteCos', callback);
+    request_data.parse_response = ResponseParser.emptyResponse;
+    request_data.params.params = { 'id': {'_content': id_cos}};
+    return this.performRequest(request_data);
+  }
+
+  copyCos(cos, newcos, callback){
+    const request_data = this.buildRequestData('CopyCos', callback);
+    request_data.parse_response = ResponseParser.emptyResponse;
+    request_data.params.params = { 'name': { '_content': newcos }, 'cos':{ '_content': cos, by: this.dictionary.byIdOrName(cos)}};
+    return this.performRequest(request_data);
+  }
+
 
   removeDomainAdmin(domain, account_id, coses, callback) {
     this.getDomain(domain, (err, domain) => {
@@ -620,6 +652,11 @@ class ZimbraAdminApi {
   renameDistributionList(zimbra_id, new_name, callback) {
     const resource_data = { id: zimbra_id, newName: new_name };
     return this.rename('DistributionList', resource_data, callback);
+  }
+
+  renameCos(cos_Id, new_name, callback) {
+    const resource_data = { id: {'_content': cos_Id}, newName: {'_content': new_name} }
+    return this.rename('Cos', resource_data, callback);
   }
 
   revokeRight(target_data, grantee_data, right_name, callback) {
