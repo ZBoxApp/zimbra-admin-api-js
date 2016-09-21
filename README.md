@@ -499,6 +499,47 @@ This are functions especifics to `Cos`.
 client.getAllCos(callback);
 ```
 
+## Create / Delete Cos
+To create a Cos
+```javascript
+//Simple, without attributes
+var attributes = {};
+client.createCos("cos_name", attributes, callback);
+// With attributes
+var attributes = {'zimbraFeatureContactsEnabled' : 'FALSE'};
+client.createCos("cos_name", attributes, callback)
+```
+
+To delete a Cos
+```javascript
+client.deleteCos("cos_Id", callback)
+```
+
+## Get Cos
+
+```javascript
+client.getCos(name|id, callback);
+```
+
+## Modify Cos
+```javascript
+var attributes = {'zimbraDumpsterEnabled' : 'TRUE'};
+client.modifyCos("cos_Id", attributes, callback);
+```
+
+## Rename Cos
+```javascript
+var newName = "basicv2"
+client.renameCos("cos_Id", newName, callback);
+```
+
+## Copy Cos
+To copy a Cos with other name
+```javascript
+var newCos = "Pro2";
+client.copyCos(nameCos|idCos, newCos, callback);
+```
+
 ## Domains
 This are functions especifics to `Domains`.
 
@@ -643,6 +684,18 @@ dl.getOwners(callback);
 // Array of Objects
 // {name: 'email_address', id: 'ZimbraId', type: 'usr|grp'}
 ```
+
+### Add / Remove Alias
+To set alias at `DL` .
+```javascript
+client.addDistributionListAlias(dl.id, alias, callback);
+```
+
+To delete alias of `DL`.
+```javascript
+api.removeDistributionListAlias(dl.id, alias, callback);
+```
+
 
 
 ## Contributing

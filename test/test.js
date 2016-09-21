@@ -827,6 +827,75 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
     });
 
   });
+  describe('COS tests', function() {
+    this.timeout(5000);
+
+    it('Should create a COS', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let cos_name = Date.now();
+      let attrs={'zimbraFeatureContactsEnabled' : 'FALSE'};
+      api.createCos(cos_name, attrs, function(err, cos){
+        if (err) return console.error(err);
+        expect(err).to.be.null;
+        done();
+      });
+    })
+
+    it('Should delete COS "unknow" ', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.getCos("unknow", function(err, cos){
+        if (err) return console.error(err);
+        let cosId = cos.id;
+        console.log(cosId);
+        api.deleteCos(cosId, function(err, res){
+          if (err) return console.error(err);
+          console.log(res);
+          expect(err).to.be.null;
+          done();
+        })
+      });
+    })
+
+    it('Should modify a Cos "basic"', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let attrs = {'zimbraDumpsterEnabled' : 'TRUE'};
+      api.getCos("basic", function(err, cos){
+        if(err) return console.error(err);
+        api.modifyCos(cos.id, attrs, function(err, res){
+          if(err) return console.error(err);
+          console.log(res);
+          expect(err).to.be.null;
+          done();
+        });
+      });
+    });
+
+    it('Should rename Cos "Basic"', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let newName = "basicv2"
+      api.getCos("basic", function(err, cos){
+        if(err) return console.error(err);
+        api.renameCos(cos.id, newName, function(err, res){
+          if(err) return console.log(err);
+          console.log(res);
+          expect(err).to.be.null;
+          done();
+        });
+      });
+    });
+
+    it.only('Should create a copy of Cos Professional, called Pro2 ', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let newCos = Date.now();
+      api.copyCos("professional", newCos, function(err, res){
+        if(err) return console.error(err);
+        console.log(res);
+        expect(err).to.be.null;
+        done();
+      })
+    });
+
+  });
 
   describe('DistributionList tests', function() {
     this.timeout(5000);
@@ -885,11 +954,30 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
         let dl = data;
         api.addDistributionListAlias(dl.id, alias, function(err, data){
           if (err) return console.error(err);
+          console.log(data);
           expect(err).to.be.null;
           done();
         });
       });
     });
+
+    it('removeDistributionListAlias should remove the alias', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      let alias = Date.now() + '@itlinux.cl';
+      api.getDistributionList('abierta@customer.dev', function(err, data){
+        let dl = data;
+        api.addDistributionListAlias(dl.id, alias, function(err, data){
+          if (err) return console.error(err);
+          api.removeDistributionListAlias(dl.id, alias, function(err, data){
+            if (err) return console.error(err);
+            console.log(data);
+            expect(err).to.be.null;
+            done();
+          });
+        });
+      });
+    });
+
 
     it('Add member to DL should work with only one', function(done){
       let api = new ZimbraAdminApi(auth_data);
