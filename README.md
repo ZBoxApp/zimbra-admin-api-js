@@ -22,6 +22,8 @@
 ## Example
 
 First, instantiate the wrapper.
+
+### As an Admin Account
 ```javascript
 var client = new ZimbraAdminApi({
   'url': 'http://zimbra.zboxapp.dev:8000/service/admin/soap',
@@ -40,8 +42,23 @@ ZimbraAdminApi.version();
 // "version"
 ```
 
+### As a Normal Account
+You must use the correct `url`.
+
+```javascript
+var client = new ZimbraAdminApi({
+  'url': 'http://zimbra.zboxapp.dev:8000/service/soap',
+  'user': 'normal_user@zboxapp.dev',
+  'password':'12345678',
+  'isAdmin': false
+});
+```
+
 ## Install
-**TODO**
+
+```
+$ npm install --save zimbra-admin-api-js
+```
 
 ## Callback
 You have to pass a `callback` to all the functions, that receives to params:
