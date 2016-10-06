@@ -884,12 +884,11 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
       });
     });
 
-    it.only('Should create a copy of Cos Professional, called Pro2 ', function(done){
+    it.only('Should create a copy of Cos Professional', function(done){
       let api = new ZimbraAdminApi(auth_data);
       let newCos = Date.now();
       api.copyCos("professional", newCos, function(err, res){
         if(err) return console.error(err);
-        console.log(res);
         expect(err).to.be.null;
         done();
       })
