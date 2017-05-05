@@ -18,7 +18,8 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
   var auth_data = {
     'url': zimbraURL,
     'user': zimbraAdminUser,
-    'password': zimbraAdminPassword
+    'password': zimbraAdminPassword,
+    'isAdmin': true
   };
 
   describe('Basic tests', function() {
@@ -376,7 +377,6 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
       let api = new ZimbraAdminApi(auth_data);
       api.getAccountMembership(account, function(err, data){
         if (err) return console.log(err);
-        console.log(data);
         expect(data.length).to.be.equal(0);
         done();
       });
@@ -829,70 +829,69 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
   });
   describe('COS tests', function() {
     this.timeout(5000);
+    let cos_name = Date.now().toString();
+    let cos_id;
 
     it('Should create a COS', function(done){
       let api = new ZimbraAdminApi(auth_data);
-      let cos_name = Date.now();
       let attrs={'zimbraFeatureContactsEnabled' : 'FALSE'};
       api.createCos(cos_name, attrs, function(err, cos){
         if (err) return console.error(err);
         expect(err).to.be.null;
+        cos_id = cos.id;
         done();
       });
     })
 
-    it('Should delete COS "unknow" ', function(done){
-      let api = new ZimbraAdminApi(auth_data);
-      api.getCos("unknow", function(err, cos){
-        if (err) return console.error(err);
-        let cosId = cos.id;
-        console.log(cosId);
-        api.deleteCos(cosId, function(err, res){
-          if (err) return console.error(err);
-          console.log(res);
-          expect(err).to.be.null;
-          done();
-        })
-      });
-    })
-
-    it('Should modify a Cos "basic"', function(done){
+    it('Should modify a Cos', function(done){
       let api = new ZimbraAdminApi(auth_data);
       let attrs = {'zimbraDumpsterEnabled' : 'TRUE'};
-      api.getCos("basic", function(err, cos){
+      api.getCos(cos_name, function(err, cos){
         if(err) return console.error(err);
         api.modifyCos(cos.id, attrs, function(err, res){
           if(err) return console.error(err);
-          console.log(res);
           expect(err).to.be.null;
           done();
         });
       });
     });
 
-    it('Should rename Cos "Basic"', function(done){
+    it.skip('Should rename Cos', function(done){
       let api = new ZimbraAdminApi(auth_data);
-      let newName = "basicv2"
-      api.getCos("basic", function(err, cos){
+      let newName = Date.now().toString();
+      api.getCos(cos_name, function(err, cos){
         if(err) return console.error(err);
         api.renameCos(cos.id, newName, function(err, res){
           if(err) return console.log(err);
-          console.log(res);
           expect(err).to.be.null;
           done();
         });
       });
     });
 
-    it('Should create a copy of Cos Professional', function(done){
+    it.skip('Should create a copy of Cos', function(done){
       let api = new ZimbraAdminApi(auth_data);
       let newCos = Date.now();
-      api.copyCos("professional", newCos, function(err, res){
+      api.copyCos(cos_name, newCos, function(err, res){
         if(err) return console.error(err);
         expect(err).to.be.null;
         done();
       })
     });
+
+    it('Should delete COS', function(done){
+      let api = new ZimbraAdminApi(auth_data);
+      api.getCos(cos_name, function(err, cos){
+        if (err) return console.error(err);
+        let cosId = cos.id;
+        console.log(cosId);
+        api.deleteCos(cosId, function(err, res){
+          if (err) return console.error(err);
+          expect(err).to.be.null;
+          done();
+        })
+      });
+    })
 
   });
 
@@ -953,7 +952,6 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
         let dl = data;
         api.addDistributionListAlias(dl.id, alias, function(err, data){
           if (err) return console.error(err);
-          console.log(data);
           expect(err).to.be.null;
           done();
         });
@@ -969,7 +967,6 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
           if (err) return console.error(err);
           api.removeDistributionListAlias(dl.id, alias, function(err, data){
             if (err) return console.error(err);
-            console.log(data);
             expect(err).to.be.null;
             done();
           });

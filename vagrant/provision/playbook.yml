@@ -19,6 +19,10 @@
       - name: 'zimbra'
         ip: '192.168.50.10'
 
+  tasks:
+    - name: up network card
+      command: /usr/sbin/ifconfig eth1 up
+
   roles:
     - role: common
     - role: bertvv.bind
