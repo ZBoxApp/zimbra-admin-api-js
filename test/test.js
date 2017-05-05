@@ -884,7 +884,7 @@ var zimbraAdminPassword = process.env.ZIMBRA_PASSWORD || '12345678';
       });
     });
 
-    it.only('Should create a copy of Cos Professional', function(done){
+    it.skip('Should create a copy of Cos Professional', function(done){
       let api = new ZimbraAdminApi(auth_data);
       let newCos = Date.now();
       api.copyCos("professional", newCos, function(err, res){
