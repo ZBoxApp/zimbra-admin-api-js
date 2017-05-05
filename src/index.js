@@ -149,9 +149,9 @@ class ZimbraAdminApi {
     } else {
       const that = this;
       let getCallback = function(err, response){
-        if (err) return this.handleError(err);
+        if (err) return that.handleError(err);
         if (request_data.batch) return that.makeBatchRequest(request_data.requests, request_data.callback);
-        that.makeRequest(request_data);
+        that.makeRequest(request_data)
       };
       this.login(getCallback);
     }
