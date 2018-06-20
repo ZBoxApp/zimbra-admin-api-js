@@ -236,6 +236,18 @@ class ZimbraAdminApi {
     return this.performRequest(request_data);
   }
 
+  getAccountMembership(accountId, callback) {
+    const request_data = this.buildRequestData('GetAccountMembership', callback);
+    request_data.parse_response = ResponseParser.getResponse;
+    request_data.params.params = {
+      account: {
+        by: "id",
+        _content: accountId
+      }
+    };
+    return this.performRequest(request_data);
+  }
+
   // Specific functions
 
   addAccountAlias(account_id, alias, callback) {
